@@ -1,0 +1,17 @@
+{
+  "name": "Inspection App – Excise Inspection & Diary",
+  "short_name": "Inspection App",
+  "description": "Offline inspection register and monthly/weekly diary (Prohibition & Excise, Surat)",
+  "id": "./",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f4f6fb",
+  "theme_color": "#1a237e",
+  "icons": [
+    {"src": "assets/icon-192.png", "sizes": "192x192", "type": "image/png"},
+    {"src": "assets/icon-512.png", "sizes": "512x512", "type": "image/png"},
+    {"src": "assets/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}
