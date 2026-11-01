@@ -7,7 +7,8 @@ window.APP_CONFIG = {
   GOOGLE_CLIENT_ID: '694974653098-6i8knrg4ot4759f0sbfgvetv0sqt2h84.apps.googleusercontent.com',
   // HTTPS address of the hosted PWA's oauth.html (must be listed as an Authorized redirect URI of the Web client),
   // e.g. https://yourname.github.io/inspection-app/oauth.html
-  OAUTH_REDIRECT_URL: 'https://silver-haupia-758dcf.netlify.app/oauth.html',
+  // v1.7.8: on the GitHub Pages site use its own oauth.html; elsewhere (APK, Netlify) unchanged
+  OAUTH_REDIRECT_URL: (location.hostname === 'aryajignesh007.github.io') ? 'https://aryajignesh007.github.io/inspection-app/oauth.html' : 'https://silver-haupia-758dcf.netlify.app/oauth.html',
   // Drive scope: hidden app-data folder – the app can never see or change any of Sir's other Drive files.
   DRIVE_SCOPE: 'https://www.googleapis.com/auth/drive.appdata',
   // v1.7.0: also the team folder (only files this app creates) and Google Calendar events (team Meet meetings)

@@ -409,7 +409,7 @@ const routes = {
       ['#abstract', '🏷', 'Licence types & abstract', 'Totals, ધોરણ, code mapping, carry-forward'], ['#templates', '🧾', 'Inspection forms', 'M-A / F.L. form templates'], ['#keywords', '🏷', 'Keywords / કીવર્ડ્સ', 'Your own quick words for diary & forms'],
       ['#import', '⬇️', 'Import data', 'Existing data, Excel lists, old diaries'], ['#sync', '🔄', 'Sync with Google Drive', 'Google Drive સાથે સિંક · Android ⇄ iPhone'], ['#distclean', '🧹', 'Clean district data', 'Remove the other district’s licensees put here by mistake'], ['#backup', '💾', 'Backup & restore', 'બેકઅપ · auto-backup, share, restore'], ['#settings', '⚙️', 'Settings', 'Name, letterhead, holidays, office']];
     view().innerHTML = `<div class="card"><ul class="list">${items.map(([h, i, t, s]) => `<li onclick="go('${h}')"><span style="font-size:22px">${i}</span><div class="main"><div class="t">${t}</div><div class="s">${s}</div></div>›</li>`).join('')}</ul></div>
-      <div class="card muted">Inspection App v1.7.7 · Data is stored on this phone; if you switch on Google Drive sync, a copy is kept in a hidden app folder of your own Google Drive (no other server). Automatic backups: More › Backup & restore.</div>`;
+      <div class="card muted">Inspection App v1.7.8 · Data is stored on this phone; if you switch on Google Drive sync, a copy is kept in a hidden app folder of your own Google Drive (no other server). Automatic backups: More › Backup & restore.</div>`;
   },
   async abstract() {
     const cfg = await L.abstractCfg(), rows = await L.abstractRows();

@@ -105,7 +105,8 @@ const REM = {
 
 /* ---------- v1.7.1 portal figures (fetched JSON, cached per district) ---------- */
 const PFIG = {
-  URL: 'https://silver-haupia-758dcf.netlify.app/portal-figures.json',
+  URL: 'https://aryajignesh007.github.io/inspection-app/portal-figures.json',
+  URLS: ['https://aryajignesh007.github.io/inspection-app/portal-figures.json', 'https://silver-haupia-758dcf.netlify.app/portal-figures.json'],
   K: { cur: 'pf.cur', prev: 'pf.prev', err: 'pf.err' },
   get(k) { try { return JSON.parse(localStorage.getItem(DIST.ls(PFIG.K[k])) || 'null'); } catch (e) { return null; } },
   set(k, v) { localStorage.setItem(DIST.ls(PFIG.K[k]), JSON.stringify(v)); },
@@ -119,7 +120,7 @@ const PFIG = {
   /** store new figures; previous kept for delta only when asOf changed */
   accept(f) { const cur = PFIG.get('cur'); if (cur && cur.asOf !== f.asOf) PFIG.set('prev', cur); if (!cur || cur.asOf !== f.asOf || JSON.stringify(cur) !== JSON.stringify(f)) PFIG.set('cur', f); PFIG.set('err', null); return f; },
   async fetchNow() {
-    try { const r = await fetch(PFIG.URL + '?t=' + Date.now(), { cache: 'no-store' }); if (!r.ok) throw new Error('HTTP ' + r.status);
+    try { let r = null, le = null; for (const u of PFIG.URLS) { try { r = await fetch(u + '?t=' + Date.now(), { cache: 'no-store' }); if (r.ok) break; le = new Error('HTTP ' + r.status); } catch (e) { le = e; } r = null; } if (!r) throw le || new Error('fetch failed');
       const f = PFIG.pick(await r.json(), DIST.key); if (!f) { PFIG.set('err', 'not fetched yet'); return null; } return PFIG.accept(PFIG.validate(f));
     } catch (e) { PFIG.set('err', 'offline – showing last saved (' + e.message + ')'); return null; }
   },
