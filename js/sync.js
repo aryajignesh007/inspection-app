@@ -104,7 +104,7 @@ const GDRIVE = {
 
 /* ---------------- Sync engine + sign-in ---------------- */
 const SY = {
-  DEBOUNCE_MS: 20000, _timer: null, _running: null, _applying: 0, raw: null, status: { state: 'idle' },
+  DEBOUNCE_MS: 20000, FAST_MS: 4000, FAST_STORES: ['inspections', 'visits', 'days', 'diaries'], _timer: null, _running: null, _applying: 0, raw: null, status: { state: 'idle' },
   // v1.6.1: the Google client ID + redirect ALWAYS come from config.js (a saved Setup value caused redirect_uri_mismatch)
   cfg() { const base = Object.assign({}, (typeof window !== 'undefined' && window.APP_CONFIG) || {}), o = { ...(SY._cfgOverride || {}) };
     delete o.GOOGLE_CLIENT_ID; delete o.OAUTH_REDIRECT_URL; const out = { ...base, ...o, GOOGLE_CLIENT_ID: base.GOOGLE_CLIENT_ID, OAUTH_REDIRECT_URL: base.OAUTH_REDIRECT_URL };
@@ -132,9 +132,10 @@ const SY = {
     DB.clear = async s => { if (!SY._applying && SYM.SYNC_STORES.includes(s)) { const old = await SY.raw.all(s); const now = SY.now(); const ts = old.filter(r => SYM.syncable(s, r)).map(r => ({ k: SYM.rid(s, r[SYM.KEYS[s]]), u: now, d: dev })); if (ts.length) await SY.raw.putMany('tombstones', ts); } return SY.raw.clear(s); };
   },
   async tomb(s, k, dev) { await SY.raw.put('tombstones', { k: SYM.rid(s, k), u: SY.now(), d: dev }); },
-  changed(s, v) { if (SY._applying || s === 'tombstones' || (s === 'settings' && !SYM.syncable(s, v))) return; SY.markDirty(); },
-  markDirty() { SY._dirty = true; SY.rawPut('settings', { key: 'sync.dirty', value: true }).catch(() => {}); SY.schedule(); },
-  schedule(ms = SY.DEBOUNCE_MS) { clearTimeout(SY._timer); SY._timer = setTimeout(() => SY.auto('after-change'), ms); },
+  changed(s, v) { if (SY._applying || s === 'tombstones' || (s === 'settings' && !SYM.syncable(s, v))) return; SY.markDirty(SY.FAST_STORES.includes(s) ? SY.FAST_MS : SY.DEBOUNCE_MS); },
+  // v1.7.9: inspections / visits / diary sync ~4 s after save or delete (was 20 s)
+  markDirty(ms) { SY._dirty = true; SY.rawPut('settings', { key: 'sync.dirty', value: true }).catch(() => {}); SY.schedule(ms); },
+  schedule(ms) { if (!ms) ms = SY.DEBOUNCE_MS; clearTimeout(SY._timer); SY._timer = setTimeout(() => SY.auto('after-change'), ms); },
   /* ---- token handling ---- */
   token() { try { const t = JSON.parse(localStorage.getItem(LSK('sync.token')) || 'null'); return t && t.exp > Date.now() + 60000 ? t.access_token : null; } catch (e) { return null; } },
   saveToken(access_token, expires_in) { localStorage.setItem(LSK('sync.token'), JSON.stringify({ access_token, exp: Date.now() + (Number(expires_in) || 3600) * 1000 })); },

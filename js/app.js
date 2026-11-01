@@ -409,7 +409,7 @@ const routes = {
       ['#abstract', '🏷', 'Licence types & abstract', 'Totals, ધોરણ, code mapping, carry-forward'], ['#templates', '🧾', 'Inspection forms', 'M-A / F.L. form templates'], ['#keywords', '🏷', 'Keywords / કીવર્ડ્સ', 'Your own quick words for diary & forms'],
       ['#import', '⬇️', 'Import data', 'Existing data, Excel lists, old diaries'], ['#sync', '🔄', 'Sync with Google Drive', 'Google Drive સાથે સિંક · Android ⇄ iPhone'], ['#distclean', '🧹', 'Clean district data', 'Remove the other district’s licensees put here by mistake'], ['#backup', '💾', 'Backup & restore', 'બેકઅપ · auto-backup, share, restore'], ['#settings', '⚙️', 'Settings', 'Name, letterhead, holidays, office']];
     view().innerHTML = `<div class="card"><ul class="list">${items.map(([h, i, t, s]) => `<li onclick="go('${h}')"><span style="font-size:22px">${i}</span><div class="main"><div class="t">${t}</div><div class="s">${s}</div></div>›</li>`).join('')}</ul></div>
-      <div class="card muted">Inspection App v1.7.8 · Data is stored on this phone; if you switch on Google Drive sync, a copy is kept in a hidden app folder of your own Google Drive (no other server). Automatic backups: More › Backup & restore.</div>`;
+      <div class="card muted">Inspection App v1.7.9 · Data is stored on this phone; if you switch on Google Drive sync, a copy is kept in a hidden app folder of your own Google Drive (no other server). Automatic backups: More › Backup & restore.</div>`;
   },
   async abstract() {
     const cfg = await L.abstractCfg(), rows = await L.abstractRows();
@@ -565,7 +565,7 @@ const routes = {
 Object.assign(routes, VISIT_ROUTES, KW_ROUTES, DASH_ROUTES, TEAM_ROUTES, DLIST_ROUTES);
 /* ---------------- GOOGLE DRIVE SYNC ---------------- */
 async function syncCard() {
-  if (!(await DB.getSetting('sync.enabled', false))) return '';
+  if (!(await DB.getSetting('sync.enabled', false))) return SY.cfg().GOOGLE_CLIENT_ID ? `<div class="card warnbox" onclick="go('#sync')" style="cursor:pointer;padding:10px 14px">🔑 <b>Sync this phone with your other phone</b> – tap, then “Sign in with Google &amp; sync” / બીજા ફોન સાથે સિંક કરો ›</div>` : '';
   const last = await DB.getSetting('sync.last', null), st = SY.status.state;
   const icon = st === 'syncing' ? '⏳' : st === 'ok' || (last && st === 'idle') ? '🔄' : '⚠️';
   const msg = st === 'signin' ? 'Tap to sign in to Google again / ફરી સાઇન-ઇન કરો' : st === 'offline' ? 'Offline – will sync later / ઓફલાઇન' : st === 'error' ? 'Sync problem – tap / સિંક સમસ્યા' : '';
@@ -585,7 +585,7 @@ routes.sync = async function () {
       ${email ? `<div class="muted">Google account: ${esc(email)}</div>` : ''}${dirty ? '<div class="muted">Changes on this phone are waiting to be synced. / ફેરફારો સિંક બાકી.</div>' : ''}
       <button class="btn block" id="sNow" style="margin-top:8px" ${c.GOOGLE_CLIENT_ID ? '' : 'disabled'}>${tok ? '🔄 Sync now / હમણાં સિંક કરો' : '🔑 Sign in with Google &amp; sync / Google સાથે જોડો'}</button>
       ${en ? `<button class="btn sec block" id="sOff">Turn sync off on this phone / આ ફોન પર સિંક બંધ</button>` : ''}</div>
-    <div class="card"><h3>How it works / કેવી રીતે</h3><div class="muted">Your Android phone and iPhone each keep their own copy and work offline. When online they exchange changes through <b>one hidden file in your own Google Drive</b> (app folder – the app cannot see your other Drive files). Sync runs when the app opens, ~20 s after a change, and when you press Sync now. If the same record was changed on both phones, the newer change wins and the other is kept in the conflict list below. A safety backup is taken before the first sync.</div></div>
+    <div class="card"><h3>How it works / કેવી રીતે</h3><div class="muted">Your Android phone and iPhone each keep their own copy and work offline. When online they exchange changes through <b>one hidden file in your own Google Drive</b> (app folder – the app cannot see your other Drive files). Each district (Surat / Valsad) has its own sync file and syncs while that district is open. Sign in with the <b>same Google account</b> for a district on both phones. Sync runs when the app opens, a few seconds after you save or delete an inspection, visit or diary day, and when you press Sync now. If the same record was changed on both phones, the newer change wins and the other is kept in the conflict list below. A safety backup is taken before the first sync.</div></div>
     <div class="card"><h3>⚖️ Conflicts / અથડામણ (${conf.length})</h3>${conf.length ? `<ul class="list">${conf.slice(0, 30).map(x => `<li><div class="main"><div class="t">${esc(x.id.replace('|', ' › '))}</div><div class="s">${esc(SY.fmt(x.at))} · kept ${x.kept.deleted ? 'delete' : 'version'} of ${esc(SY.fmt(x.kept.u))}; older ${x.lost.deleted ? 'delete' : 'version'} of ${esc(SY.fmt(x.lost.u))} saved here</div></div></li>`).join('')}</ul><button class="btn sec block" id="cExp">Download conflict list (JSON)</button>` : '<div class="muted">None. 👍</div>'}</div>
     <div class="card"><h3>⚙️ Setup / સેટઅપ</h3><div class="muted">From GOOGLE-SETUP-GUIDE.pdf. Stored only on this phone.</div>
       <label>Google client ID in use (built in, read-only)</label><input readonly value="${esc(c.GOOGLE_CLIENT_ID || '(none)')}" style="font-size:12px;background:#f3f4f8">
