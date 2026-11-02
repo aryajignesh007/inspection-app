@@ -7,7 +7,7 @@ main{max-width:860px;margin:auto;padding:12px}
 .card{background:#fff;border-radius:10px;box-shadow:0 1px 3px #0002;padding:14px;margin-bottom:12px}
 label{font-size:13px;font-weight:600;display:block;margin-bottom:4px}
 select,input{width:100%;box-sizing:border-box;font-size:16px;padding:9px;border:1px solid #bbc;border-radius:7px;background:#fff}
-tr.gp td{background:#eef7e8}tr.hl td{background:#cdeac0;font-weight:700}input.neg{color:#c00000}input[readonly]{background:#eef1f6;font-weight:600;text-align:right}
+tr.gp td{background:#eef7e8}tr.co td{background:#eaf1fb}tr.hl2 td{background:#cfe0f5}.pre button{font-size:12px;padding:3px 8px;margin:4px 4px 0 0;background:#557}tr.hl td{background:#cdeac0;font-weight:700}input.neg{color:#c00000}input[readonly]{background:#eef1f6;font-weight:600;text-align:right}
 table{width:100%;border-collapse:collapse;font-size:14px}td,th{border:1px solid #d5d9e2;padding:7px;vertical-align:top}
 th{background:#7a1f1f;color:#fff;text-align:left}td.sr{width:34px;text-align:center;font-weight:600}
 .row{display:flex;gap:8px}.row>*{flex:1}
@@ -43,6 +43,14 @@ h2{font-size:16px;margin:0 0 10px;color:#7a1f1f}small{color:#667}
 <tr class="gp imp" id="r2a"><td class="sr">N</td><td><b>GP after Customs per bottle</b><br><small>GP &minus; Custom Duty</small></td><td><input id="gp2" readonly></td></tr>
 <tr class="gp imp" id="r2b"><td class="sr">O</td><td>GP after Customs % of MRP (excl. VAT)</td><td><input id="gpp2" readonly></td></tr>
 <tr class="gp imp" id="r2c"><td class="sr">P</td><td>GP after Customs per Case</td><td><input id="gpc2" readonly></td></tr>
+<tr class="co"><td class="sr"></td><td>Commission basis</td><td><select id="cb"><option value="0">% of MRP excl. VAT</option><option value="1">% of MRP incl. all taxes</option></select></td></tr>
+<tr class="co"><td class="sr"></td><td>Wholesaler commission %<div class="pre" data-t="wc"></div></td><td><input id="wc" type="number" min="0" max="100" step="any" value="0"></td></tr>
+<tr class="co"><td class="sr"></td><td>Retailer commission %<div class="pre" data-t="rc"></div></td><td><input id="rc" type="number" min="0" max="100" step="any" value="0"></td></tr>
+<tr class="co"><td class="sr">Q</td><td>Retailer commission amount</td><td><input id="rca" readonly></td></tr>
+<tr class="co"><td class="sr">R</td><td>Wholesaler commission amount</td><td><input id="wca" readonly></td></tr>
+<tr class="co hl2"><td class="sr">S</td><td><b>Importer Gross Operating Profit per bottle</b><br><small>GP (selected basis) &minus; Wholesaler &minus; Retailer commission</small></td><td><input id="gop" readonly></td></tr>
+<tr class="co"><td class="sr">T</td><td>Importer GOP % of MRP (excl. VAT)</td><td><input id="gopp" readonly></td></tr>
+<tr class="co"><td class="sr">U</td><td>Importer GOP per Case</td><td><input id="gopc" readonly></td></tr>
 </table>
 <button id="clr" class="sec">Clear</button>
 </div>
@@ -69,10 +77,15 @@ function table(x,vals){const vp=$('vp').value,cp=$('cp').value;
 After customs (imports, customs as cost): above - Custom Duty
 GP % = Gross Profit / MRP (Excluding VAT)
 Per case = per bottle x Number of Bottles (Case)</td><td class="res">${vals[x.rows.length]??''}</td></tr>`;
+ h+=`<tr style="background:#eaf1fb"><td class="sr">${n+1}</td><td><b>Importer Gross Operating Profit</b></td><td class="f">Commission base = MRP (Excluding VAT) [default] or MRP (Including All Taxes)
+Retailer commission = base x Retailer %
+Wholesaler commission = base x Wholesaler %
+GOP = Gross Profit (selected basis) - Wholesaler commission - Retailer commission
+GOP % = GOP / MRP (Excluding VAT); per case = GOP x Bottles per case</td><td class="res">${vals[x.rows.length+1]??''}</td></tr>`;
  $('ft').innerHTML=h;$('note').innerHTML=x.note?'<div class="note"><b>Note:</b> '+esc(x.note)+'</div>':''}
 function calc(){const x=cur(),c=parseFloat($('c').value),A=parseFloat($('A').value)||0,s=+$('sz').value,L=s/1000;
  $('nb').value=(S.find(z=>z[0]==s)||[])[1]||'';
- ['ex','m','vat','cu','tot','gp','gpp','gpc','totc','gp2','gpp2','gpc2'].forEach(k=>$(k).value='');
+ ['ex','m','vat','cu','tot','gp','gpp','gpc','totc','gp2','gpp2','gpc2','rca','wca','gop','gopp','gopc'].forEach(k=>$(k).value='');
  if(isNaN(c)){table(x,[]);return}
  const v={c,L,A,ex:0};const ex=R(ev(x.ex,v));v.ex=ex;const m=R(ev(x.mrp,v));const vp=+$('vp').value/100;
  let vals;
@@ -81,8 +94,10 @@ function calc(){const x=cur(),c=parseFloat($('c').value),A=parseFloat($('A').val
  $('ex').value=fmt(ex);$('m').value=fmt(m);
  const gp=R(m-c-ex),nb=+$('nb').value||0,t=parseFloat($('tot').value);$('gp').value=fmt(gp);$('gpp').value=m?(gp/m*100).toFixed(2)+' %':'';
  $('gpc').value=nb?fmt(R(gp*nb)):'';$('totc').value=nb?fmt(R(t*nb)):'';['gp','gpp','gpc'].forEach(k=>$(k).classList.toggle('neg',gp<0));
- const cu2=x.imp?(parseFloat($('cu').value)||0):0,g2=R(gp-cu2);$('gp2').value=fmt(g2);$('gpp2').value=m?(g2/m*100).toFixed(2)+' %':'';$('gpc2').value=nb?fmt(R(g2*nb)):'';['gp2','gpp2','gpc2'].forEach(k=>$(k).classList.toggle('neg',g2<0));hl();
- vals.push(`<span style="color:${gp<0?'#c00000':'inherit'}">${fmt(gp)}</span>`);table(x,vals)}
+ const cu2=x.imp?(parseFloat($('cu').value)||0):0,g2=R(gp-cu2);$('gp2').value=fmt(g2);$('gpp2').value=m?(g2/m*100).toFixed(2)+' %':'';$('gpc2').value=nb?fmt(R(g2*nb)):'';['gp2','gpp2','gpc2','rca','wca','gop','gopp','gopc'].forEach(k=>$(k).classList.toggle('neg',g2<0));hl();
+ const base=$('cb').value==='1'?t:m,rca=R(base*(parseFloat($('rc').value)||0)/100),wca=R(base*(parseFloat($('wc').value)||0)/100),gsel=($('gb').value==='1'&&x.imp)?g2:gp,gop=R(gsel-wca-rca);
+ $('rca').value=fmt(rca);$('wca').value=fmt(wca);$('gop').value=fmt(gop);$('gopp').value=m?(gop/m*100).toFixed(2)+' %':'';$('gopc').value=nb?fmt(R(gop*nb)):'';['gop','gopp','gopc'].forEach(k=>$(k).classList.toggle('neg',gop<0));
+ vals.push(`<span style="color:${gp<0?'#c00000':'inherit'}">${fmt(gp)}</span>`);vals.push(`<span style="color:${gop<0?'#c00000':'inherit'}">${fmt(gop)}</span>`);table(x,vals)}
 function setcat(){const x=cur();$('ttl').textContent='MRP Calculation for '+x.title;
  document.querySelectorAll('.imp').forEach(e=>e.style.display=x.imp?'':'none');document.querySelectorAll('.dom').forEach(e=>e.style.display=x.imp?'none':'');
  document.querySelectorAll('[data-l]').forEach(e=>e.textContent=e.dataset.l.split(',')[x.imp?1:0]);
@@ -91,7 +106,8 @@ function setcat(){const x=cur();$('ttl').textContent='MRP Calculation for '+x.ti
 function hl(){const b=$('gb').value==='1'&&cur().imp;document.querySelectorAll('tr.gp').forEach(r=>r.classList.remove('hl'));
  (b?['r2a','r2b','r2c']:['gp','gpp','gpc'].map(k=>$(k).closest('tr').id||($(k).closest('tr').id='r1'+k))).forEach(i=>$(i).classList.add('hl'));
  $('bnote').textContent=cur().imp?'':'No customs in this category: both bases give the same GP.'}
-$('gb').onchange=hl;$('cat').onchange=setcat;['c','A','sz','vp','cp'].forEach(k=>$(k).oninput=calc);
+$('gb').onchange=calc;$('cb').onchange=calc;$('wc').oninput=calc;$('rc').oninput=calc;
+document.querySelectorAll('.pre').forEach(d=>[0,5,10,15,20].forEach(v=>{const b=document.createElement('button');b.type='button';b.textContent=v+'%';b.onclick=()=>{$(d.dataset.t).value=v;calc()};d.appendChild(b)}));$('cat').onchange=setcat;['c','A','sz','vp','cp'].forEach(k=>$(k).oninput=calc);
 $('clr').onclick=()=>{$('c').value='';$('A').value='';$('up').value='';calc()};
 const q=new URLSearchParams(location.search).get('GrNo');const qi=C.findIndex(x=>x.g===q);$('cat').value=qi>=0?qi:C.findIndex(x=>x.g==='501');setcat();
 </script></body></html>
