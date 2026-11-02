@@ -1,26 +1,26 @@
 {
- "asOf": "2026-11-01T17:07:00+05:30",
+ "asOf": "2026-11-02T10:09:00+05:30",
  "note": "Pendency counts read from the portals by Grok Bot; e-Prohibition officer-wise list shown with Sir's approval. null = not checked.",
  "districts": {
   "surat": {
-   "asOf": "2026-11-01T17:04:00+05:30",
+   "asOf": "2026-11-02T10:07:00+05:30",
    "district": "surat",
    "eprohibition": {
-    "asOf": "2026-11-01T17:02:00+05:30",
+    "asOf": "2026-11-02T10:02:00+05:30",
     "newApplications": 105,
     "pending": 54,
     "approved": 43,
     "rejected": 8,
     "officerPendency": {
      "title": "Office Pendancy As On Today",
-     "date": "2026-11-01",
+     "date": "2026-11-02",
      "columns": [
       "New Application",
       "Amendment Application",
       "Renewal Application",
       "Surrender Application"
      ],
-     "asOf": "2026-11-01T17:02:00+05:30",
+     "asOf": "2026-11-02T10:02:00+05:30",
      "rows": [
       {
        "pendingWith": "Superintendent of Prohibition and Excise (JIGNESH S TANNA)",
@@ -80,7 +80,7 @@
     }
    },
    "esarkar": {
-    "asOf": "2026-11-01T17:04:00+05:30",
+    "asOf": "2026-11-02T10:07:00+05:30",
     "files": 0,
     "other": {
      "e-Tappal": 0,
@@ -90,7 +90,7 @@
     }
    },
    "lems": {
-    "asOf": "2026-11-01T17:03:00+05:30",
+    "asOf": "2026-11-02T10:04:00+05:30",
     "ipVerificationNew": 1,
     "ipVerificationExtend": 0,
     "other": {
@@ -102,24 +102,24 @@
    }
   },
   "valsad": {
-   "asOf": "2026-11-01T17:07:00+05:30",
+   "asOf": "2026-11-02T10:09:00+05:30",
    "district": "valsad",
    "eprohibition": {
-    "asOf": "2026-11-01T17:02:00+05:30",
+    "asOf": "2026-11-02T10:02:00+05:30",
     "newApplications": 44,
     "pending": 20,
     "approved": 14,
     "rejected": 10,
     "officerPendency": {
      "title": "Office Pendancy As On Today",
-     "date": "2026-11-01",
+     "date": "2026-11-02",
      "columns": [
       "New Application",
       "Amendment Application",
       "Renewal Application",
       "Surrender Application"
      ],
-     "asOf": "2026-11-01T17:02:00+05:30",
+     "asOf": "2026-11-02T10:02:00+05:30",
      "rows": [
       {
        "pendingWith": "Inspector Prohibition (AKSHAYKUMAR S PATEL)",
@@ -179,7 +179,7 @@
     }
    },
    "esarkar": {
-    "asOf": "2026-11-01T17:07:00+05:30",
+    "asOf": "2026-11-02T10:09:00+05:30",
     "files": 1,
     "other": {
      "e-Tappal": 1,
@@ -192,7 +192,7 @@
     }
    },
    "lems": {
-    "asOf": "2026-11-01T17:06:00+05:30",
+    "asOf": "2026-11-02T10:06:00+05:30",
     "ipVerificationNew": 0,
     "ipVerificationExtend": 0,
     "other": {
