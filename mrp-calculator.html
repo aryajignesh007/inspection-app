@@ -7,7 +7,7 @@ main{max-width:860px;margin:auto;padding:12px}
 .card{background:#fff;border-radius:10px;box-shadow:0 1px 3px #0002;padding:14px;margin-bottom:12px}
 label{font-size:13px;font-weight:600;display:block;margin-bottom:4px}
 select,input{width:100%;box-sizing:border-box;font-size:16px;padding:9px;border:1px solid #bbc;border-radius:7px;background:#fff}
-input[readonly]{background:#eef1f6;font-weight:600;text-align:right}
+tr.gp td{background:#eef7e8}input.neg{color:#c00000}input[readonly]{background:#eef1f6;font-weight:600;text-align:right}
 table{width:100%;border-collapse:collapse;font-size:14px}td,th{border:1px solid #d5d9e2;padding:7px;vertical-align:top}
 th{background:#7a1f1f;color:#fff;text-align:left}td.sr{width:34px;text-align:center;font-weight:600}
 .row{display:flex;gap:8px}.row>*{flex:1}
@@ -35,6 +35,10 @@ h2{font-size:16px;margin:0 0 10px;color:#7a1f1f}small{color:#667}
 <tr><td class="sr" data-l="F,G">F</td><td>Value Added Tax (VAT)</td><td><input id="vat" readonly></td></tr>
 <tr class="imp"><td class="sr">H</td><td>Custom Duty <div class="row" style="margin-top:4px"><span style="flex:0;align-self:center">X</span><select id="cp"><option>150</option><option>160</option><option>165</option><option>110</option><option>100</option><option>75</option></select><span style="flex:0;align-self:center">%</span></div></td><td><input id="cu" readonly></td></tr>
 <tr class="total"><td class="sr" data-l="G,I">G</td><td><b>MRP (Including All Taxes)</b></td><td><input id="tot" readonly></td></tr>
+<tr class="gp"><td class="sr" data-l="H,J">H</td><td><b>Gross Profit per bottle</b><br><small>MRP excl. VAT &minus; Mfg Cost &minus; Excise</small></td><td><input id="gp" readonly></td></tr>
+<tr class="gp"><td class="sr" data-l="I,K">I</td><td>Gross Profit % of MRP (excl. VAT)</td><td><input id="gpp" readonly></td></tr>
+<tr class="gp"><td class="sr" data-l="J,L">J</td><td>Gross Profit per Case</td><td><input id="gpc" readonly></td></tr>
+<tr class="gp"><td class="sr" data-l="K,M">K</td><td>MRP (Including All Taxes) per Case</td><td><input id="totc" readonly></td></tr>
 </table>
 <button id="clr" class="sec">Clear</button>
 </div>
@@ -57,16 +61,22 @@ function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;')}
 function table(x,vals){const vp=$('vp').value,cp=$('cp').value;
  let h='<tr><th>Sr</th><th>Particulars</th><th>Formula</th><th>Result</th></tr>';
  x.rows.forEach((r,i)=>{let f=r[1].replace(/40\.00/g,(+vp).toFixed(2)).replace(/150\.00/g,(+cp).toFixed(2));h+=`<tr><td class="sr">${i+1}</td><td class="f" style="font-family:inherit">${esc(r[0])}</td><td class="f">${esc(f)}</td><td class="res">${vals[i]??''}</td></tr>`});
+ const n=x.rows.length+1;h+=`<tr style="background:#eef7e8"><td class="sr">${n}</td><td><b>Gross Profit</b> (dealer/trade margin)</td><td class="f">MRP (Excluding VAT) - Manufacturing Cost - Excise Duty
+GP % = Gross Profit / MRP (Excluding VAT)
+Per case = per bottle x Number of Bottles (Case)</td><td class="res">${vals[x.rows.length]??''}</td></tr>`;
  $('ft').innerHTML=h;$('note').innerHTML=x.note?'<div class="note"><b>Note:</b> '+esc(x.note)+'</div>':''}
 function calc(){const x=cur(),c=parseFloat($('c').value),A=parseFloat($('A').value)||0,s=+$('sz').value,L=s/1000;
  $('nb').value=(S.find(z=>z[0]==s)||[])[1]||'';
- ['ex','m','vat','cu','tot'].forEach(k=>$(k).value='');
+ ['ex','m','vat','cu','tot','gp','gpp','gpc','totc'].forEach(k=>$(k).value='');
  if(isNaN(c)){table(x,[]);return}
  const v={c,L,A,ex:0};const ex=R(ev(x.ex,v));v.ex=ex;const m=R(ev(x.mrp,v));const vp=+$('vp').value/100;
  let vals;
  if(x.imp){const cu=R(A*(+$('cp').value)/100),vat=R((m+cu)*vp),t=R(m+vat+cu);$('cu').value=fmt(cu);$('vat').value=fmt(vat);$('tot').value=fmt(t);vals=[fmt(ex),fmt(m),fmt(cu),fmt(vat),fmt(t)]}
  else{const vat=R(m*vp),t=R(m+vat);$('vat').value=fmt(vat);$('tot').value=fmt(t);vals=[fmt(ex),fmt(m),fmt(vat),fmt(t)]}
- $('ex').value=fmt(ex);$('m').value=fmt(m);table(x,vals)}
+ $('ex').value=fmt(ex);$('m').value=fmt(m);
+ const gp=R(m-c-ex),nb=+$('nb').value||0,t=parseFloat($('tot').value);$('gp').value=fmt(gp);$('gpp').value=m?(gp/m*100).toFixed(2)+' %':'';
+ $('gpc').value=nb?fmt(R(gp*nb)):'';$('totc').value=nb?fmt(R(t*nb)):'';['gp','gpp','gpc'].forEach(k=>$(k).classList.toggle('neg',gp<0));
+ vals.push(`<span style="color:${gp<0?'#c00000':'inherit'}">${fmt(gp)}</span>`);table(x,vals)}
 function setcat(){const x=cur();$('ttl').textContent='MRP Calculation for '+x.title;
  document.querySelectorAll('.imp').forEach(e=>e.style.display=x.imp?'':'none');document.querySelectorAll('.dom').forEach(e=>e.style.display=x.imp?'none':'');
  document.querySelectorAll('[data-l]').forEach(e=>e.textContent=e.dataset.l.split(',')[x.imp?1:0]);
