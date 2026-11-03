@@ -1,12 +1,12 @@
 {
- "asOf": "2026-11-03T10:09:00+05:30",
+ "asOf": "2026-11-03T17:16:00+05:30",
  "note": "Pendency counts read from the portals by Grok Bot; e-Prohibition officer-wise list shown with Sir's approval. null = not checked.",
  "districts": {
   "surat": {
-   "asOf": "2026-11-03T10:07:00+05:30",
+   "asOf": "2026-11-03T17:13:00+05:30",
    "district": "surat",
    "eprohibition": {
-    "asOf": "2026-11-03T10:02:00+05:30",
+    "asOf": "2026-11-03T17:02:00+05:30",
     "newApplications": 105,
     "pending": 54,
     "approved": 43,
@@ -20,8 +20,17 @@
       "Renewal Application",
       "Surrender Application"
      ],
-     "asOf": "2026-11-03T10:02:00+05:30",
+     "asOf": "2026-11-03T17:02:00+05:30",
      "rows": [
+      {
+       "pendingWith": "Superintendent of Prohibition and Excise (JIGNESH S TANNA)",
+       "counts": {
+        "New Application": 0,
+        "Amendment Application": 1,
+        "Renewal Application": 0,
+        "Surrender Application": 0
+       }
+      },
       {
        "pendingWith": "Inspector Prohibition (Alkaben P Hirapara)",
        "counts": {
@@ -35,9 +44,9 @@
        "pendingWith": "Office Superintendent (Dipesh H Patel)",
        "counts": {
         "New Application": 0,
-        "Amendment Application": 2,
-        "Renewal Application": 1,
-        "Surrender Application": 1
+        "Amendment Application": 3,
+        "Renewal Application": 0,
+        "Surrender Application": 0
        }
       },
       {
@@ -71,8 +80,8 @@
     }
    },
    "esarkar": {
-    "asOf": "2026-11-03T10:07:00+05:30",
-    "files": 0,
+    "asOf": "2026-11-03T17:13:00+05:30",
+    "files": 2,
     "other": {
      "e-Tappal": 0,
      "New Tappals": 0,
@@ -81,22 +90,22 @@
     }
    },
    "lems": {
-    "asOf": "2026-11-03T10:04:00+05:30",
-    "ipVerificationNew": 0,
+    "asOf": "2026-11-03T17:04:00+05:30",
+    "ipVerificationNew": 4,
     "ipVerificationExtend": 0,
     "other": {
      "Overtime Verification": 0,
-     "IP report: Submitted (awaiting)": 1,
-     "IP report: ReSubmitted (awaiting)": 0,
-     "IP awaiting action – total": 1
+     "IP report: Submitted (awaiting)": 0,
+     "IP report: ReSubmitted (awaiting)": 3,
+     "IP awaiting action – total": 3
     }
    }
   },
   "valsad": {
-   "asOf": "2026-11-03T10:09:00+05:30",
+   "asOf": "2026-11-03T17:16:00+05:30",
    "district": "valsad",
    "eprohibition": {
-    "asOf": "2026-11-03T10:02:00+05:30",
+    "asOf": "2026-11-03T17:02:00+05:30",
     "newApplications": 44,
     "pending": 20,
     "approved": 14,
@@ -110,13 +119,22 @@
       "Renewal Application",
       "Surrender Application"
      ],
-     "asOf": "2026-11-03T10:02:00+05:30",
+     "asOf": "2026-11-03T17:02:00+05:30",
      "rows": [
+      {
+       "pendingWith": "Superintendent of Prohibition and Excise (J S Tanna)",
+       "counts": {
+        "New Application": 0,
+        "Amendment Application": 3,
+        "Renewal Application": 0,
+        "Surrender Application": 0
+       }
+      },
       {
        "pendingWith": "Inspector Prohibition (AKSHAYKUMAR S PATEL)",
        "counts": {
         "New Application": 1,
-        "Amendment Application": 5,
+        "Amendment Application": 4,
         "Renewal Application": 0,
         "Surrender Application": 0
        }
@@ -125,16 +143,16 @@
        "pendingWith": "Office Superintendent (DIPAK DEVJIBHAI VISANI)",
        "counts": {
         "New Application": 0,
-        "Amendment Application": 4,
+        "Amendment Application": 0,
         "Renewal Application": 0,
-        "Surrender Application": 0
+        "Surrender Application": 3
        }
       },
       {
        "pendingWith": "Junior Clerk (HITESHBHAI GOVINDBHAI CHAUDHARI)",
        "counts": {
         "New Application": 0,
-        "Amendment Application": 5,
+        "Amendment Application": 8,
         "Renewal Application": 0,
         "Surrender Application": 0
        }
@@ -143,7 +161,7 @@
        "pendingWith": "Senior Clerk (Vishal M Minama)",
        "counts": {
         "New Application": 0,
-        "Amendment Application": 4,
+        "Amendment Application": 8,
         "Renewal Application": 0,
         "Surrender Application": 0
        }
@@ -161,7 +179,7 @@
        "pendingWith": "Sub Inspector (NILESHKUMAR R VASAVE)",
        "counts": {
         "New Application": 2,
-        "Amendment Application": 13,
+        "Amendment Application": 7,
         "Renewal Application": 0,
         "Surrender Application": 0
        }
@@ -170,7 +188,7 @@
     }
    },
    "esarkar": {
-    "asOf": "2026-11-03T10:09:00+05:30",
+    "asOf": "2026-11-03T17:16:00+05:30",
     "files": 0,
     "other": {
      "e-Tappal": 0,
@@ -183,7 +201,7 @@
     }
    },
    "lems": {
-    "asOf": "2026-11-03T10:06:00+05:30",
+    "asOf": "2026-11-03T17:06:00+05:30",
     "ipVerificationNew": 0,
     "ipVerificationExtend": 0,
     "other": {
