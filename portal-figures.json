@@ -1,26 +1,26 @@
 {
- "asOf": "2026-11-02T17:15:00+05:30",
+ "asOf": "2026-11-03T10:09:00+05:30",
  "note": "Pendency counts read from the portals by Grok Bot; e-Prohibition officer-wise list shown with Sir's approval. null = not checked.",
  "districts": {
   "surat": {
-   "asOf": "2026-11-02T17:14:00+05:30",
+   "asOf": "2026-11-03T10:07:00+05:30",
    "district": "surat",
    "eprohibition": {
-    "asOf": "2026-11-02T17:07:00+05:30",
+    "asOf": "2026-11-03T10:02:00+05:30",
     "newApplications": 105,
     "pending": 54,
     "approved": 43,
     "rejected": 8,
     "officerPendency": {
      "title": "Office Pendancy As On Today",
-     "date": "2026-11-02",
+     "date": "2026-11-03",
      "columns": [
       "New Application",
       "Amendment Application",
       "Renewal Application",
       "Surrender Application"
      ],
-     "asOf": "2026-11-02T17:07:00+05:30",
+     "asOf": "2026-11-03T10:02:00+05:30",
      "rows": [
       {
        "pendingWith": "Inspector Prohibition (Alkaben P Hirapara)",
@@ -71,17 +71,17 @@
     }
    },
    "esarkar": {
-    "asOf": "2026-11-02T17:14:00+05:30",
+    "asOf": "2026-11-03T10:07:00+05:30",
     "files": 0,
     "other": {
-     "e-Tappal": 2,
+     "e-Tappal": 0,
      "New Tappals": 0,
      "RTI": 0,
      "Workdesk": 0
     }
    },
    "lems": {
-    "asOf": "2026-11-02T17:10:00+05:30",
+    "asOf": "2026-11-03T10:04:00+05:30",
     "ipVerificationNew": 0,
     "ipVerificationExtend": 0,
     "other": {
@@ -93,38 +93,29 @@
    }
   },
   "valsad": {
-   "asOf": "2026-11-02T17:15:00+05:30",
+   "asOf": "2026-11-03T10:09:00+05:30",
    "district": "valsad",
    "eprohibition": {
-    "asOf": "2026-11-02T17:07:00+05:30",
+    "asOf": "2026-11-03T10:02:00+05:30",
     "newApplications": 44,
     "pending": 20,
     "approved": 14,
     "rejected": 10,
     "officerPendency": {
      "title": "Office Pendancy As On Today",
-     "date": "2026-11-02",
+     "date": "2026-11-03",
      "columns": [
       "New Application",
       "Amendment Application",
       "Renewal Application",
       "Surrender Application"
      ],
-     "asOf": "2026-11-02T17:07:00+05:30",
+     "asOf": "2026-11-03T10:02:00+05:30",
      "rows": [
-      {
-       "pendingWith": "Superintendent of Prohibition and Excise (J S Tanna)",
-       "counts": {
-        "New Application": 0,
-        "Amendment Application": 0,
-        "Renewal Application": 0,
-        "Surrender Application": 1
-       }
-      },
       {
        "pendingWith": "Inspector Prohibition (AKSHAYKUMAR S PATEL)",
        "counts": {
-        "New Application": 2,
+        "New Application": 1,
         "Amendment Application": 5,
         "Renewal Application": 0,
         "Surrender Application": 0
@@ -134,7 +125,7 @@
        "pendingWith": "Office Superintendent (DIPAK DEVJIBHAI VISANI)",
        "counts": {
         "New Application": 0,
-        "Amendment Application": 3,
+        "Amendment Application": 4,
         "Renewal Application": 0,
         "Surrender Application": 0
        }
@@ -143,7 +134,7 @@
        "pendingWith": "Junior Clerk (HITESHBHAI GOVINDBHAI CHAUDHARI)",
        "counts": {
         "New Application": 0,
-        "Amendment Application": 6,
+        "Amendment Application": 5,
         "Renewal Application": 0,
         "Surrender Application": 0
        }
@@ -170,7 +161,7 @@
        "pendingWith": "Sub Inspector (NILESHKUMAR R VASAVE)",
        "counts": {
         "New Application": 2,
-        "Amendment Application": 14,
+        "Amendment Application": 13,
         "Renewal Application": 0,
         "Surrender Application": 0
        }
@@ -179,10 +170,10 @@
     }
    },
    "esarkar": {
-    "asOf": "2026-11-02T17:15:00+05:30",
-    "files": 1,
+    "asOf": "2026-11-03T10:09:00+05:30",
+    "files": 0,
     "other": {
-     "e-Tappal": 2,
+     "e-Tappal": 0,
      "New Tappals": 0,
      "RTI": 0,
      "Workdesk": 0,
@@ -192,7 +183,7 @@
     }
    },
    "lems": {
-    "asOf": "2026-11-02T17:12:00+05:30",
+    "asOf": "2026-11-03T10:06:00+05:30",
     "ipVerificationNew": 0,
     "ipVerificationExtend": 0,
     "other": {
