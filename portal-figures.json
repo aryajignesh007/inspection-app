@@ -1,26 +1,26 @@
 {
- "asOf": "2026-11-03T17:16:00+05:30",
+ "asOf": "2026-11-04T10:11:00+05:30",
  "note": "Pendency counts read from the portals by Grok Bot; e-Prohibition officer-wise list shown with Sir's approval. null = not checked.",
  "districts": {
   "surat": {
-   "asOf": "2026-11-03T17:13:00+05:30",
+   "asOf": "2026-11-04T10:09:00+05:30",
    "district": "surat",
    "eprohibition": {
-    "asOf": "2026-11-03T17:02:00+05:30",
+    "asOf": "2026-11-04T10:04:00+05:30",
     "newApplications": 105,
     "pending": 54,
     "approved": 43,
     "rejected": 8,
     "officerPendency": {
      "title": "Office Pendancy As On Today",
-     "date": "2026-11-03",
+     "date": "2026-11-04",
      "columns": [
       "New Application",
       "Amendment Application",
       "Renewal Application",
       "Surrender Application"
      ],
-     "asOf": "2026-11-03T17:02:00+05:30",
+     "asOf": "2026-11-04T10:04:00+05:30",
      "rows": [
       {
        "pendingWith": "Superintendent of Prohibition and Excise (JIGNESH S TANNA)",
@@ -61,8 +61,8 @@
       {
        "pendingWith": "Senior Clerk (Sameer P Kapuriya)",
        "counts": {
-        "New Application": 0,
-        "Amendment Application": 5,
+        "New Application": 1,
+        "Amendment Application": 6,
         "Renewal Application": 0,
         "Surrender Application": 1
        }
@@ -70,7 +70,7 @@
       {
        "pendingWith": "Sub Inspector (Vishal C Dodiya)",
        "counts": {
-        "New Application": 1,
+        "New Application": 0,
         "Amendment Application": 2,
         "Renewal Application": 0,
         "Surrender Application": 0
@@ -80,8 +80,8 @@
     }
    },
    "esarkar": {
-    "asOf": "2026-11-03T17:13:00+05:30",
-    "files": 2,
+    "asOf": "2026-11-04T10:09:00+05:30",
+    "files": 0,
     "other": {
      "e-Tappal": 0,
      "New Tappals": 0,
@@ -90,36 +90,36 @@
     }
    },
    "lems": {
-    "asOf": "2026-11-03T17:04:00+05:30",
-    "ipVerificationNew": 4,
+    "asOf": "2026-11-04T10:05:00+05:30",
+    "ipVerificationNew": 1,
     "ipVerificationExtend": 0,
     "other": {
      "Overtime Verification": 0,
      "IP report: Submitted (awaiting)": 0,
-     "IP report: ReSubmitted (awaiting)": 3,
-     "IP awaiting action – total": 3
+     "IP report: ReSubmitted (awaiting)": 1,
+     "IP awaiting action – total": 1
     }
    }
   },
   "valsad": {
-   "asOf": "2026-11-03T17:16:00+05:30",
+   "asOf": "2026-11-04T10:11:00+05:30",
    "district": "valsad",
    "eprohibition": {
-    "asOf": "2026-11-03T17:02:00+05:30",
+    "asOf": "2026-11-04T10:01:00+05:30",
     "newApplications": 44,
     "pending": 20,
     "approved": 14,
     "rejected": 10,
     "officerPendency": {
      "title": "Office Pendancy As On Today",
-     "date": "2026-11-03",
+     "date": "2026-11-04",
      "columns": [
       "New Application",
       "Amendment Application",
       "Renewal Application",
       "Surrender Application"
      ],
-     "asOf": "2026-11-03T17:02:00+05:30",
+     "asOf": "2026-11-04T10:01:00+05:30",
      "rows": [
       {
        "pendingWith": "Superintendent of Prohibition and Excise (J S Tanna)",
@@ -127,14 +127,14 @@
         "New Application": 0,
         "Amendment Application": 3,
         "Renewal Application": 0,
-        "Surrender Application": 0
+        "Surrender Application": 3
        }
       },
       {
        "pendingWith": "Inspector Prohibition (AKSHAYKUMAR S PATEL)",
        "counts": {
         "New Application": 1,
-        "Amendment Application": 4,
+        "Amendment Application": 5,
         "Renewal Application": 0,
         "Surrender Application": 0
        }
@@ -143,16 +143,16 @@
        "pendingWith": "Office Superintendent (DIPAK DEVJIBHAI VISANI)",
        "counts": {
         "New Application": 0,
-        "Amendment Application": 0,
+        "Amendment Application": 2,
         "Renewal Application": 0,
-        "Surrender Application": 3
+        "Surrender Application": 0
        }
       },
       {
        "pendingWith": "Junior Clerk (HITESHBHAI GOVINDBHAI CHAUDHARI)",
        "counts": {
-        "New Application": 0,
-        "Amendment Application": 8,
+        "New Application": 1,
+        "Amendment Application": 6,
         "Renewal Application": 0,
         "Surrender Application": 0
        }
@@ -188,7 +188,7 @@
     }
    },
    "esarkar": {
-    "asOf": "2026-11-03T17:16:00+05:30",
+    "asOf": "2026-11-04T10:11:00+05:30",
     "files": 0,
     "other": {
      "e-Tappal": 0,
@@ -201,7 +201,7 @@
     }
    },
    "lems": {
-    "asOf": "2026-11-03T17:06:00+05:30",
+    "asOf": "2026-11-04T10:07:00+05:30",
     "ipVerificationNew": 0,
     "ipVerificationExtend": 0,
     "other": {
