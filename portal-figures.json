@@ -1,9 +1,9 @@
 {
- "asOf": "2026-11-04T17:05:00+05:30",
+ "asOf": "2026-11-04T17:15:00+05:30",
  "note": "Pendency counts read from the portals by Grok Bot; e-Prohibition officer-wise list shown with Sir's approval. null = not checked.",
  "districts": {
   "surat": {
-   "asOf": "2026-11-04T17:03:00+05:30",
+   "asOf": "2026-11-04T17:13:00+05:30",
    "district": "surat",
    "eprohibition": {
     "asOf": "2026-11-04T17:00:00+05:30",
@@ -80,10 +80,10 @@
     }
    },
    "esarkar": {
-    "asOf": "2026-11-04T10:09:00+05:30",
+    "asOf": "2026-11-04T17:13:00+05:30",
     "files": 0,
     "other": {
-     "e-Tappal": 0,
+     "e-Tappal": 1,
      "New Tappals": 0,
      "RTI": 0,
      "Workdesk": 0
@@ -102,7 +102,7 @@
    }
   },
   "valsad": {
-   "asOf": "2026-11-04T17:05:00+05:30",
+   "asOf": "2026-11-04T17:15:00+05:30",
    "district": "valsad",
    "eprohibition": {
     "asOf": "2026-11-04T17:00:00+05:30",
@@ -188,10 +188,10 @@
     }
    },
    "esarkar": {
-    "asOf": "2026-11-04T10:11:00+05:30",
-    "files": 0,
+    "asOf": "2026-11-04T17:15:00+05:30",
+    "files": 7,
     "other": {
-     "e-Tappal": 0,
+     "e-Tappal": 2,
      "New Tappals": 0,
      "RTI": 0,
      "Workdesk": 0,
