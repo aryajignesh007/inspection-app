@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-06T21:26+05:30",
+ "generated": "2026-11-06T21:30+05:30",
  "from": "2026-04",
  "source": "Saved twice-daily portal readings (e-Prohibition, LEMS, e-Sarkar). A month without readings is marked noData – no figure is estimated.",
  "districts": {
@@ -45,8 +45,7 @@
       "ipNew": 1,
       "ipExtend": 0,
       "ipAwaiting": 0,
-      "healthPending": null,
-      "healthDisposed": null
+      "healthRegistered": null
      },
      "avgIpAwaiting": 2.5,
      "peakIpAwaiting": 7,
@@ -88,8 +87,7 @@
       "ipNew": 1,
       "ipExtend": 0,
       "ipAwaiting": 1,
-      "healthPending": null,
-      "healthDisposed": null
+      "healthRegistered": null
      },
      "avgIpAwaiting": 1.2,
      "peakIpAwaiting": 3,
@@ -151,8 +149,7 @@
       "ipNew": 0,
       "ipExtend": 0,
       "ipAwaiting": 0,
-      "healthPending": null,
-      "healthDisposed": null
+      "healthRegistered": null
      },
      "avgIpAwaiting": 0.0,
      "peakIpAwaiting": 0,
@@ -194,8 +191,7 @@
       "ipNew": 0,
       "ipExtend": 0,
       "ipAwaiting": 0,
-      "healthPending": null,
-      "healthDisposed": null
+      "healthRegistered": null
      },
      "avgIpAwaiting": 0.0,
      "peakIpAwaiting": 0,
