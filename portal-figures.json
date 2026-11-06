@@ -1,19 +1,19 @@
 {
- "asOf": "2026-11-05T17:19:00+05:30",
+ "asOf": "2026-11-06T10:27:00+05:30",
  "note": "Pendency counts read from the portals by Grok Bot; e-Prohibition officer-wise list shown with Sir's approval. null = not checked.",
  "districts": {
   "surat": {
-   "asOf": "2026-11-05T17:15:00+05:30",
+   "asOf": "2026-11-06T10:24:00+05:30",
    "district": "surat",
    "eprohibition": {
-    "asOf": "2026-11-05T17:07:00+05:30",
+    "asOf": "2026-11-06T10:06:00+05:30",
     "newApplications": 105,
     "pending": 54,
     "approved": 43,
     "rejected": 8,
     "officerPendency": {
      "title": "Office Pendancy As On Today",
-     "date": "2026-11-05",
+     "date": "2026-11-06",
      "columns": [
       "New Application",
       "Amendment Application",
@@ -24,9 +24,9 @@
       {
        "pendingWith": "Superintendent of Prohibition and Excise (JIGNESH S TANNA)",
        "counts": {
-        "New Application": 2,
-        "Amendment Application": 5,
-        "Renewal Application": 1,
+        "New Application": 0,
+        "Amendment Application": 2,
+        "Renewal Application": 0,
         "Surrender Application": 0
        }
       },
@@ -53,7 +53,7 @@
        "counts": {
         "New Application": 0,
         "Amendment Application": 1,
-        "Renewal Application": 0,
+        "Renewal Application": 1,
         "Surrender Application": 0
        }
       },
@@ -76,11 +76,11 @@
        }
       }
      ],
-     "asOf": "2026-11-05T17:07:00+05:30"
+     "asOf": "2026-11-06T10:06:00+05:30"
     }
    },
    "esarkar": {
-    "asOf": "2026-11-05T17:15:00+05:30",
+    "asOf": "2026-11-06T10:24:00+05:30",
     "files": 0,
     "other": {
      "e-Tappal": 0,
@@ -90,7 +90,7 @@
     }
    },
    "lems": {
-    "asOf": "2026-11-05T17:11:00+05:30",
+    "asOf": "2026-11-06T10:14:00+05:30",
     "ipVerificationNew": 1,
     "ipVerificationExtend": 0,
     "other": {
@@ -102,17 +102,17 @@
    }
   },
   "valsad": {
-   "asOf": "2026-11-05T17:17:00+05:30",
+   "asOf": "2026-11-06T10:27:00+05:30",
    "district": "valsad",
    "eprohibition": {
-    "asOf": "2026-11-05T17:09:00+05:30",
+    "asOf": "2026-11-06T10:11:00+05:30",
     "newApplications": 44,
     "pending": 20,
     "approved": 14,
     "rejected": 10,
     "officerPendency": {
      "title": "Office Pendancy As On Today",
-     "date": "2026-11-05",
+     "date": "2026-11-06",
      "columns": [
       "New Application",
       "Amendment Application",
@@ -151,7 +151,7 @@
        "pendingWith": "Junior Clerk (HITESHBHAI GOVINDBHAI CHAUDHARI)",
        "counts": {
         "New Application": 0,
-        "Amendment Application": 4,
+        "Amendment Application": 5,
         "Renewal Application": 0,
         "Surrender Application": 0
        }
@@ -184,11 +184,11 @@
        }
       }
      ],
-     "asOf": "2026-11-05T17:09:00+05:30"
+     "asOf": "2026-11-06T10:11:00+05:30"
     }
    },
    "esarkar": {
-    "asOf": "2026-11-05T17:17:00+05:30",
+    "asOf": "2026-11-06T10:27:00+05:30",
     "files": 2,
     "other": {
      "e-Tappal": 0,
@@ -201,7 +201,7 @@
     }
    },
    "lems": {
-    "asOf": "2026-11-05T17:13:00+05:30",
+    "asOf": "2026-11-06T10:22:00+05:30",
     "ipVerificationNew": 0,
     "ipVerificationExtend": 0,
     "other": {
