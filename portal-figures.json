@@ -3,7 +3,7 @@
  "note": "Pendency counts read from the portals by Grok Bot; e-Prohibition officer-wise list shown with Sir's approval. null = not checked.",
  "districts": {
   "surat": {
-   "asOf": "2026-11-06T21:50:53+05:30",
+   "asOf": "2026-11-06T23:50:55+05:30",
    "district": "surat",
    "eprohibition": {
     "asOf": "2026-11-06T21:43:00+05:30",
@@ -126,7 +126,7 @@
    }
   },
   "valsad": {
-   "asOf": "2026-11-06T22:13:23+05:30",
+   "asOf": "2026-11-06T23:54:04+05:30",
    "district": "valsad",
    "eprohibition": {
     "asOf": "2026-11-06T21:48:00+05:30",

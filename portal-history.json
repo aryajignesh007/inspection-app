@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-07T00:06+05:30",
+ "generated": "2026-11-07T00:08+05:30",
  "from": "2026-04",
  "source": "Saved twice-daily portal readings (e-Prohibition, LEMS, e-Sarkar). A month without readings is marked noData – no figure is estimated.",
  "districts": {
@@ -14,13 +14,19 @@
     "noData": true
    },
    "2026-07": {
-    "noData": true
+    "noData": true,
+    "healthPermitMonth": {
+     "registered": 1
+    }
    },
    "2026-08": {
     "noData": true
    },
    "2026-09": {
-    "noData": true
+    "noData": true,
+    "healthPermitMonth": {
+     "registered": 54
+    }
    },
    "2026-10": {
     "readings": 6,
@@ -62,12 +68,15 @@
      "peakFiles": 5,
      "avgTappal": 0.7,
      "peakTappal": 3
+    },
+    "healthPermitMonth": {
+     "registered": 30
     }
    },
    "2026-11": {
-    "readings": 11,
+    "readings": 12,
     "firstAt": "2026-11-01T10:11:00+05:30",
-    "lastAt": "2026-11-06T21:50:53+05:30",
+    "lastAt": "2026-11-06T23:50:55+05:30",
     "eprohibition": {
      "start": {
       "newApplications": 105,
@@ -87,12 +96,12 @@
       "ipNew": 1,
       "ipExtend": 0,
       "ipAwaiting": 1,
-      "healthRegistered": null
+      "healthRegistered": 156
      },
      "avgIpAwaiting": 1.2,
      "peakIpAwaiting": 3,
      "avgIpNew": 1.1,
-     "healthRecorded": false
+     "healthRecorded": true
     },
     "esarkar": {
      "end": {
@@ -102,8 +111,11 @@
      },
      "avgFiles": 0.2,
      "peakFiles": 2,
-     "avgTappal": 0.3,
+     "avgTappal": 0.2,
      "peakTappal": 2
+    },
+    "healthPermitMonth": {
+     "registered": 62
     }
    }
   },
@@ -124,7 +136,10 @@
     "noData": true
    },
    "2026-09": {
-    "noData": true
+    "noData": true,
+    "healthPermitMonth": {
+     "registered": 4
+    }
    },
    "2026-10": {
     "readings": 6,
@@ -166,12 +181,15 @@
      "peakFiles": 3,
      "avgTappal": 0.5,
      "peakTappal": 3
+    },
+    "healthPermitMonth": {
+     "registered": 24
     }
    },
    "2026-11": {
-    "readings": 11,
+    "readings": 12,
     "firstAt": "2026-11-01T10:19:00+05:30",
-    "lastAt": "2026-11-06T22:13:23+05:30",
+    "lastAt": "2026-11-06T23:54:04+05:30",
     "eprohibition": {
      "start": {
       "newApplications": 44,
@@ -191,12 +209,12 @@
       "ipNew": 0,
       "ipExtend": 0,
       "ipAwaiting": 0,
-      "healthRegistered": null
+      "healthRegistered": 34
      },
      "avgIpAwaiting": 0.0,
      "peakIpAwaiting": 0,
      "avgIpNew": 0.0,
-     "healthRecorded": false
+     "healthRecorded": true
     },
     "esarkar": {
      "end": {
@@ -204,10 +222,13 @@
       "eTappal": 0,
       "rti": 0
      },
-     "avgFiles": 1.4,
+     "avgFiles": 1.2,
      "peakFiles": 7,
      "avgTappal": 0.6,
      "peakTappal": 2
+    },
+    "healthPermitMonth": {
+     "registered": 6
     }
    }
   }
