@@ -1,11 +1,11 @@
 {
- "generated": "2026-11-06T21:36+05:30",
- "method": "days = disposal date \u2212 application date, per application; grouped by month of disposal. Approved: \"Application Date\" \u2192 \"Approved date\" (e-Prohibition Approved License List). Rejected lists used only if scraped with a rejection date. Rows missing either date are not used.",
+ "generated": "2026-11-06T21:50+05:30",
+ "method": "days = Approved date \u2212 Application Date per application in e-Prohibition \u203a Approved License List (signed-in read, 06-Nov-2026), grouped by month of approval. Counts and day statistics only; rejections, amendments and renewals are not in this list.",
  "districts": {
   "surat": {
-   "asOf": "2026-10-30T04:45",
-   "lists": [
-    "PRIVATE-licensees-surat.json:ApprovedLicenseList"
+   "asOf": "2026-11-06T21:43+05:30",
+   "sources": [
+    "e-Prohibition \u203a Approved License List (1511 rows read)"
    ],
    "rejectedRead": false,
    "months": {
@@ -162,13 +162,24 @@
      "maxDays": 124,
      "within30": 0,
      "within60": 0
+    },
+    "2026-11": {
+     "disposed": 1,
+     "approved": 1,
+     "rejected": 0,
+     "avgDays": 16,
+     "medianDays": 16,
+     "minDays": 16,
+     "maxDays": 16,
+     "within30": 1,
+     "within60": 1
     }
    }
   },
   "valsad": {
-   "asOf": "2026-10-30T04:45",
-   "lists": [
-    "PRIVATE-licensees-valsad.json:ApprovedLicenseList"
+   "asOf": "2026-11-06T21:48+05:30",
+   "sources": [
+    "e-Prohibition \u203a Approved License List (426 rows read)"
    ],
    "rejectedRead": false,
    "months": {
@@ -195,15 +206,15 @@
      "within60": 1
     },
     "2025-11": {
-     "disposed": 2,
-     "approved": 2,
+     "disposed": 1,
+     "approved": 1,
      "rejected": 0,
      "avgDays": 42,
-     "medianDays": 42.0,
+     "medianDays": 42,
      "minDays": 42,
      "maxDays": 42,
      "within30": 0,
-     "within60": 2
+     "within60": 1
     },
     "2026-01": {
      "disposed": 1,
