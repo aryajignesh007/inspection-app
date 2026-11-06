@@ -1,15 +1,15 @@
 {
- "asOf": "2026-11-06T10:27:00+05:30",
+ "asOf": "2026-11-06T22:13:00+05:30",
  "note": "Pendency counts read from the portals by Grok Bot; e-Prohibition officer-wise list shown with Sir's approval. null = not checked.",
  "districts": {
   "surat": {
-   "asOf": "2026-11-06T10:24:00+05:30",
+   "asOf": "2026-11-06T21:50:53+05:30",
    "district": "surat",
    "eprohibition": {
-    "asOf": "2026-11-06T10:06:00+05:30",
-    "newApplications": 105,
+    "asOf": "2026-11-06T21:43:00+05:30",
+    "newApplications": 106,
     "pending": 54,
-    "approved": 43,
+    "approved": 44,
     "rejected": 8,
     "officerPendency": {
      "title": "Office Pendancy As On Today",
@@ -61,7 +61,7 @@
        "pendingWith": "Senior Clerk (Sameer P Kapuriya)",
        "counts": {
         "New Application": 0,
-        "Amendment Application": 3,
+        "Amendment Application": 4,
         "Renewal Application": 0,
         "Surrender Application": 0
        }
@@ -70,24 +70,28 @@
        "pendingWith": "Sub Inspector (Vishal C Dodiya)",
        "counts": {
         "New Application": 0,
-        "Amendment Application": 1,
+        "Amendment Application": 0,
         "Renewal Application": 0,
         "Surrender Application": 1
        }
       }
-     ],
-     "asOf": "2026-11-06T10:06:00+05:30"
+     ]
     }
    },
    "esarkar": {
-    "asOf": "2026-11-06T10:24:00+05:30",
+    "asOf": "2026-11-06T21:50:53+05:30",
     "files": 0,
     "other": {
      "e-Tappal": 0,
      "New Tappals": 0,
      "RTI": 0,
-     "Workdesk": 0
-    }
+     "Workdesk": 0,
+     "MP-MLA": 0,
+     "Special Files": 0,
+     "Inquiry Files": 0,
+     "Files Marked Await": 0
+    },
+    "note": "Pending on desk (Workdesk tiles). Received/disposed month counts not yet readable: the e-Sarkar tabs (e-Tappal, Files, RTI, Reports) did not open a separate count view in this run."
    },
    "lems": {
     "asOf": "2026-11-06T10:14:00+05:30",
@@ -102,10 +106,10 @@
    }
   },
   "valsad": {
-   "asOf": "2026-11-06T10:27:00+05:30",
+   "asOf": "2026-11-06T22:13:23+05:30",
    "district": "valsad",
    "eprohibition": {
-    "asOf": "2026-11-06T10:11:00+05:30",
+    "asOf": "2026-11-06T21:48:00+05:30",
     "newApplications": 44,
     "pending": 20,
     "approved": 14,
@@ -121,19 +125,10 @@
      ],
      "rows": [
       {
-       "pendingWith": "Superintendent of Prohibition and Excise (J S Tanna)",
-       "counts": {
-        "New Application": 0,
-        "Amendment Application": 1,
-        "Renewal Application": 0,
-        "Surrender Application": 0
-       }
-      },
-      {
        "pendingWith": "Inspector Prohibition (AKSHAYKUMAR S PATEL)",
        "counts": {
         "New Application": 2,
-        "Amendment Application": 5,
+        "Amendment Application": 4,
         "Renewal Application": 0,
         "Surrender Application": 0
        }
@@ -142,7 +137,7 @@
        "pendingWith": "Office Superintendent (DIPAK DEVJIBHAI VISANI)",
        "counts": {
         "New Application": 0,
-        "Amendment Application": 1,
+        "Amendment Application": 3,
         "Renewal Application": 0,
         "Surrender Application": 0
        }
@@ -151,7 +146,7 @@
        "pendingWith": "Junior Clerk (HITESHBHAI GOVINDBHAI CHAUDHARI)",
        "counts": {
         "New Application": 0,
-        "Amendment Application": 5,
+        "Amendment Application": 4,
         "Renewal Application": 0,
         "Surrender Application": 0
        }
@@ -160,7 +155,7 @@
        "pendingWith": "Senior Clerk (Vishal M Minama)",
        "counts": {
         "New Application": 0,
-        "Amendment Application": 6,
+        "Amendment Application": 3,
         "Renewal Application": 0,
         "Surrender Application": 0
        }
@@ -178,18 +173,17 @@
        "pendingWith": "Sub Inspector (NILESHKUMAR R VASAVE)",
        "counts": {
         "New Application": 2,
-        "Amendment Application": 9,
+        "Amendment Application": 13,
         "Renewal Application": 0,
         "Surrender Application": 0
        }
       }
-     ],
-     "asOf": "2026-11-06T10:11:00+05:30"
+     ]
     }
    },
    "esarkar": {
-    "asOf": "2026-11-06T10:27:00+05:30",
-    "files": 2,
+    "asOf": "2026-11-06T22:13:23+05:30",
+    "files": 0,
     "other": {
      "e-Tappal": 0,
      "New Tappals": 0,
@@ -197,8 +191,10 @@
      "Workdesk": 0,
      "MP-MLA": 0,
      "Special Files": 0,
-     "Inquiry Files": 0
-    }
+     "Inquiry Files": 0,
+     "Files Marked Await": 0
+    },
+    "note": "Pending on desk (Workdesk tiles). Received/disposed month counts not yet readable: the e-Sarkar tabs (e-Tappal, Files, RTI, Reports) did not open a separate count view in this run."
    },
    "lems": {
     "asOf": "2026-11-06T10:22:00+05:30",

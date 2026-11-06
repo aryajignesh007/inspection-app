@@ -1,0 +1,288 @@
+{
+ "generated": "2026-11-06T21:36+05:30",
+ "method": "days = disposal date \u2212 application date, per application; grouped by month of disposal. Approved: \"Application Date\" \u2192 \"Approved date\" (e-Prohibition Approved License List). Rejected lists used only if scraped with a rejection date. Rows missing either date are not used.",
+ "districts": {
+  "surat": {
+   "asOf": "2026-10-30T04:45",
+   "lists": [
+    "PRIVATE-licensees-surat.json:ApprovedLicenseList"
+   ],
+   "rejectedRead": false,
+   "months": {
+    "2025-06": {
+     "disposed": 1,
+     "approved": 1,
+     "rejected": 0,
+     "avgDays": 38,
+     "medianDays": 38,
+     "minDays": 38,
+     "maxDays": 38,
+     "within30": 0,
+     "within60": 1
+    },
+    "2025-09": {
+     "disposed": 3,
+     "approved": 3,
+     "rejected": 0,
+     "avgDays": 18.7,
+     "medianDays": 20,
+     "minDays": 10,
+     "maxDays": 26,
+     "within30": 3,
+     "within60": 3
+    },
+    "2025-10": {
+     "disposed": 1,
+     "approved": 1,
+     "rejected": 0,
+     "avgDays": 35,
+     "medianDays": 35,
+     "minDays": 35,
+     "maxDays": 35,
+     "within30": 0,
+     "within60": 1
+    },
+    "2025-11": {
+     "disposed": 2,
+     "approved": 2,
+     "rejected": 0,
+     "avgDays": 31,
+     "medianDays": 31.0,
+     "minDays": 21,
+     "maxDays": 41,
+     "within30": 1,
+     "within60": 2
+    },
+    "2025-12": {
+     "disposed": 3,
+     "approved": 3,
+     "rejected": 0,
+     "avgDays": 72.3,
+     "medianDays": 72,
+     "minDays": 5,
+     "maxDays": 140,
+     "within30": 1,
+     "within60": 1
+    },
+    "2026-01": {
+     "disposed": 3,
+     "approved": 3,
+     "rejected": 0,
+     "avgDays": 39,
+     "medianDays": 34,
+     "minDays": 14,
+     "maxDays": 69,
+     "within30": 1,
+     "within60": 2
+    },
+    "2026-02": {
+     "disposed": 4,
+     "approved": 4,
+     "rejected": 0,
+     "avgDays": 57.5,
+     "medianDays": 16.0,
+     "minDays": 2,
+     "maxDays": 196,
+     "within30": 3,
+     "within60": 3
+    },
+    "2026-03": {
+     "disposed": 1,
+     "approved": 1,
+     "rejected": 0,
+     "avgDays": 3,
+     "medianDays": 3,
+     "minDays": 3,
+     "maxDays": 3,
+     "within30": 1,
+     "within60": 1
+    },
+    "2026-04": {
+     "disposed": 4,
+     "approved": 4,
+     "rejected": 0,
+     "avgDays": 81.8,
+     "medianDays": 59.0,
+     "minDays": 20,
+     "maxDays": 189,
+     "within30": 1,
+     "within60": 2
+    },
+    "2026-05": {
+     "disposed": 7,
+     "approved": 7,
+     "rejected": 0,
+     "avgDays": 36.6,
+     "medianDays": 35,
+     "minDays": 9,
+     "maxDays": 59,
+     "within30": 3,
+     "within60": 7
+    },
+    "2026-06": {
+     "disposed": 5,
+     "approved": 5,
+     "rejected": 0,
+     "avgDays": 50.2,
+     "medianDays": 52,
+     "minDays": 11,
+     "maxDays": 73,
+     "within30": 1,
+     "within60": 3
+    },
+    "2026-07": {
+     "disposed": 5,
+     "approved": 5,
+     "rejected": 0,
+     "avgDays": 32,
+     "medianDays": 25,
+     "minDays": 15,
+     "maxDays": 58,
+     "within30": 3,
+     "within60": 5
+    },
+    "2026-09": {
+     "disposed": 2,
+     "approved": 2,
+     "rejected": 0,
+     "avgDays": 35,
+     "medianDays": 35.0,
+     "minDays": 26,
+     "maxDays": 44,
+     "within30": 1,
+     "within60": 2
+    },
+    "2026-10": {
+     "disposed": 2,
+     "approved": 2,
+     "rejected": 0,
+     "avgDays": 94.5,
+     "medianDays": 94.5,
+     "minDays": 65,
+     "maxDays": 124,
+     "within30": 0,
+     "within60": 0
+    }
+   }
+  },
+  "valsad": {
+   "asOf": "2026-10-30T04:45",
+   "lists": [
+    "PRIVATE-licensees-valsad.json:ApprovedLicenseList"
+   ],
+   "rejectedRead": false,
+   "months": {
+    "2025-07": {
+     "disposed": 1,
+     "approved": 1,
+     "rejected": 0,
+     "avgDays": 7,
+     "medianDays": 7,
+     "minDays": 7,
+     "maxDays": 7,
+     "within30": 1,
+     "within60": 1
+    },
+    "2025-10": {
+     "disposed": 1,
+     "approved": 1,
+     "rejected": 0,
+     "avgDays": 57,
+     "medianDays": 57,
+     "minDays": 57,
+     "maxDays": 57,
+     "within30": 0,
+     "within60": 1
+    },
+    "2025-11": {
+     "disposed": 2,
+     "approved": 2,
+     "rejected": 0,
+     "avgDays": 42,
+     "medianDays": 42.0,
+     "minDays": 42,
+     "maxDays": 42,
+     "within30": 0,
+     "within60": 2
+    },
+    "2026-01": {
+     "disposed": 1,
+     "approved": 1,
+     "rejected": 0,
+     "avgDays": 31,
+     "medianDays": 31,
+     "minDays": 31,
+     "maxDays": 31,
+     "within30": 0,
+     "within60": 1
+    },
+    "2026-05": {
+     "disposed": 1,
+     "approved": 1,
+     "rejected": 0,
+     "avgDays": 36,
+     "medianDays": 36,
+     "minDays": 36,
+     "maxDays": 36,
+     "within30": 0,
+     "within60": 1
+    },
+    "2026-06": {
+     "disposed": 3,
+     "approved": 3,
+     "rejected": 0,
+     "avgDays": 85.7,
+     "medianDays": 106,
+     "minDays": 0,
+     "maxDays": 151,
+     "within30": 1,
+     "within60": 1
+    },
+    "2026-07": {
+     "disposed": 2,
+     "approved": 2,
+     "rejected": 0,
+     "avgDays": 135.5,
+     "medianDays": 135.5,
+     "minDays": 85,
+     "maxDays": 186,
+     "within30": 0,
+     "within60": 0
+    },
+    "2026-08": {
+     "disposed": 1,
+     "approved": 1,
+     "rejected": 0,
+     "avgDays": 67,
+     "medianDays": 67,
+     "minDays": 67,
+     "maxDays": 67,
+     "within30": 0,
+     "within60": 0
+    },
+    "2026-09": {
+     "disposed": 1,
+     "approved": 1,
+     "rejected": 0,
+     "avgDays": 37,
+     "medianDays": 37,
+     "minDays": 37,
+     "maxDays": 37,
+     "within30": 0,
+     "within60": 1
+    },
+    "2026-10": {
+     "disposed": 1,
+     "approved": 1,
+     "rejected": 0,
+     "avgDays": 13,
+     "medianDays": 13,
+     "minDays": 13,
+     "maxDays": 13,
+     "within30": 1,
+     "within60": 1
+    }
+   }
+  }
+ }
+}

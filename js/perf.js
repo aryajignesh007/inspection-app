@@ -14,6 +14,7 @@ const PR = {
   ],
   months(to) { const out = []; for (let m = PR.START; m <= to; m = addMonths(m, 1)) out.push(m); return out; },
   async history() { for (const u of [PR.URL, 'https://aryajignesh007.github.io/inspection-app/portal-history.json']) try { const r = await fetch(u + '?t=' + Date.now(), { cache: 'no-store' }); if (r.ok) { const j = await r.json(); localStorage.setItem(DIST.ls('pr.hist'), JSON.stringify(j)); return j; } } catch (e) {} try { return JSON.parse(localStorage.getItem(DIST.ls('pr.hist')) || 'null'); } catch (e) { return null; } },
+  async days() { for (const u of ['portal-days.json', 'https://aryajignesh007.github.io/inspection-app/portal-days.json']) try { const r = await fetch(u + '?t=' + Date.now(), { cache: 'no-store' }); if (r.ok) { const j = await r.json(); localStorage.setItem(DIST.ls('pr.days'), JSON.stringify(j)); return j; } } catch (e) {} try { return JSON.parse(localStorage.getItem(DIST.ls('pr.days')) || 'null'); } catch (e) { return null; } },
   async manual() { const o = {}; (await DB.all('pendency')).filter(p => p.portal === 'monthly').forEach(p => o[p.ym] = p); return o; },
   n: v => v === '' || v == null || isNaN(v) ? null : Number(v),
   pct: (d, r) => (d == null || r == null || r === 0) ? null : Math.round(1000 * d / r) / 10,
@@ -37,8 +38,8 @@ const PR = {
     return `<svg viewBox="0 0 ${W} ${H}" style="width:100%;max-width:520px;background:#fff">${g}</svg><div>${leg}</div>`;
   },
   async data(to) {
-    const months = PR.months(to), hist = await PR.history(), H = hist?.districts?.[DIST.key] || {}, man = await PR.manual();
-    return { months, H, man, rows: months.map(m => ({ ym: m, h: H[m] || { noData: true }, c: PR.calc(man[m], H[m]) })), hist };
+    const months = PR.months(to), hist = await PR.history(), H = hist?.districts?.[DIST.key] || {}, man = await PR.manual(), dj = await PR.days(), DD = dj?.districts?.[DIST.key] || {};
+    return { months, H, man, DD, dj, rows: months.map(m => ({ ym: m, h: H[m] || { noData: true }, c: PR.calc(man[m], H[m]), dd: DD.months?.[m] || null })), hist };
   },
   html(D, forPdf) {
     const { months, rows } = D, ser = (f) => rows.map(f), dash = v => v == null ? '–' : v;
@@ -55,6 +56,11 @@ const PR = {
       <div class="muted">Efficiency = disposed ÷ received in the month (from the portal's monthly figures entered below). Health Permit = registered count from LEMS FL2 Process (pending is not used); it adds to LEMS disposal but not to efficiency %. Months with no figures show "–"; nothing is estimated.</div>
       ${noData.length ? `<div class="warnbox" style="margin:6px 0">No portal data saved for: ${noData.map(esc).join(', ')}. Enter them from the portal's monthly report to fill the charts.</div>` : ''}
       <h4>Efficiency % by month</h4>${effChart}<h4>Disposal by month</h4>${dispChart}<h4>Pendency from twice-daily portal readings</h4>${pendChart}
+      <h4>e-Prohibition – days to dispose (application date → approved date) <small class="gu">નિકાલમાં લાગેલ દિવસ</small></h4>
+      ${PR.chart(months, [{ l: 'Median days', v: ser(r => r.dd?.medianDays ?? null) }, { l: 'Average days', v: ser(r => r.dd?.avgDays ?? null) }])}
+      <div class="scroll-x"><table class="t" style="width:100%;font-size:12px"><tr><th>Month disposed</th><th>Disposed (dated)</th><th>Median days</th><th>Average days</th><th>Min–Max</th><th>≤30 days</th><th>≤60 days</th></tr>
+      ${rows.map((r, i) => { const d = r.dd, p = rows[i - 1]?.dd; return `<tr><td>${esc(monthLabelEn(r.ym))}</td>${d ? `<td>${d.disposed}${d.rejected ? ' (' + d.rejected + ' rej.)' : ''}</td><td>${d.medianDays}${p ? mom(d.medianDays, p.medianDays) : ''}</td><td>${d.avgDays}</td><td>${d.minDays}–${d.maxDays}</td><td>${d.within30} (${Math.round(100 * d.within30 / d.disposed)}%)</td><td>${d.within60} (${Math.round(100 * d.within60 / d.disposed)}%)</td>` : '<td colspan="6" class="muted">no dated disposal in the portal list</td>'}</tr>`; }).join('')}</table></div>
+      <div class="muted">${D.DD.asOf ? `From the e-Prohibition Approved License List as read on ${esc(PFIG.when(D.DD.asOf))}. ` : 'Not read yet. '}${D.DD.rejectedRead ? '' : 'Rejections are not included yet (no rejection-date list read). '}Fewer days = faster disposal; ▼ = faster than the previous month.</div>
       <h4>Month-over-month table</h4><div class="scroll-x">${tbl}</div>`;
   },
   async route(ym) {
