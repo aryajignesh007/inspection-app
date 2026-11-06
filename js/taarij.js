@@ -8,7 +8,7 @@
 const TJ = {
   PREFIX: { surat: 'SUR', valsad: 'VAL' },
   otherKey: () => DIST.key === 'valsad' ? 'surat' : 'valsad',
-  ulnOf: x => String(x?.uln || x?.licenceNo || '').toUpperCase().replace(/\s+/g, ''),
+  ulnOf: x => String(x?.uln || x?.licenceNo || (x?.fields || []).find(f => /unique\s*licen[cs]e\s*number|^ULN$/i.test(f.label || ''))?.value || '').toUpperCase().replace(/\s+/g, ''),
   /** does this licence belong to district k? (by ULN prefix, else by the licensee's district field) */
   licBelongs(l, x, k = DIST.key) {
     const u = TJ.ulnOf(x), m = u.match(/^([A-Z]{3})\//);
@@ -60,6 +60,7 @@ const TJ = {
   inactiveReason(x) { return x?.inactiveReason || (TJ.isExpired(x) ? 'Validity ended ' + TJ.validEnd(x.validity) : 'inactive'); },
   /** inspection → skip? (looks the licence up on the licensee; else by the inspection's own type / name) */
   skipInspection(i, lic) {
+    if (i?.licenseeId && !lic) return true; // Deleted company: keep unknown history, but never count an orphan as an active licence.
     const c = normCode(i?.typeCode);
     const x = (lic?.licences || []).find(y => normCode(y.typeCode) === c) || { typeCode: i?.typeCode };
     return !!i?.excluded || !TJ.licBelongs(lic, i) || !TJ.licBelongs(lic, x) || (lic && !TJ.licenseeBelongs(lic)) || TJ.isInactive(x) || !!TJ.skipLicence(lic || { name: i?.licenseeName || i?.name || i?.firm || '' }, x);

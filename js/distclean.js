@@ -18,7 +18,8 @@ const DC = {
     const lics = await DB.all('licensees');
     const list = lics.filter(l => !TJ.licenseeBelongs(l)).map(l => ({ l, sure: true, why: 'Foreign ULN / explicit other-district field' }));
     const mixed = lics.filter(l => TJ.licenseeBelongs(l) && (l.licences || []).some(x => !TJ.licBelongs(l, x))).map(l => ({ before: l, after: { ...l, licences: l.licences.filter(x => TJ.licBelongs(l, x)) } }));
-    return { list, mixed, total: lics.length, otherChecked: false };
+    const foreignIns = (await DB.all('inspections')).filter(i => !TJ.licBelongs(null, i)).length;
+    return { list, mixed, foreignIns, total: lics.length, otherChecked: false };
   },
   /** Deterministic cleanup in THIS open DB only; never use names/addresses/inspection presence as authority. */
   async auto(force = false) {
@@ -31,7 +32,7 @@ const DC = {
         console.warn('District cleanup stopped: no in-district records remain. Restore the correct district list first.');
         return { blocked: 'would empty district' };
       }
-      const result = r.list.length || r.mixed.length ? await DC.remove(r.list.map(x => x.l.id), { withRecords: true, patches: r.mixed }) : { licensees: 0 };
+      const result = r.list.length || r.mixed.length || r.foreignIns ? await DC.remove(r.list.map(x => x.l.id), { withRecords: true, patches: r.mixed }) : { licensees: 0 };
       await DB.setSetting(flag, { at: new Date().toISOString(), removed: result.licensees });
       return result;
     })();
