@@ -1,5 +1,5 @@
 {
- "asOf": "2026-11-06T22:13:00+05:30",
+ "asOf": "2026-11-06T23:54:00+05:30",
  "note": "Pendency counts read from the portals by Grok Bot; e-Prohibition officer-wise list shown with Sir's approval. null = not checked.",
  "districts": {
   "surat": {
@@ -91,10 +91,10 @@
      "Inquiry Files": 0,
      "Files Marked Await": 0
     },
-    "note": "Pending on desk (Workdesk tiles). Received/disposed month counts not yet readable: the e-Sarkar tabs (e-Tappal, Files, RTI, Reports) did not open a separate count view in this run."
+    "note": "Pending on Workdesk tiles. Received/disposed totals by type are not shown on any e-Sarkar tab opened: Dispatch Register, Branch Dispatch Register, File Register (needs per-branch search) and Reports (opened an empty Dispatch Register). Not counted."
    },
    "lems": {
-    "asOf": "2026-11-06T10:14:00+05:30",
+    "asOf": "2026-11-06T23:50:55+05:30",
     "ipVerificationNew": 1,
     "ipVerificationExtend": 0,
     "other": {
@@ -102,6 +102,26 @@
      "IP report: Submitted (awaiting)": 0,
      "IP report: ReSubmitted (awaiting)": 1,
      "IP awaiting action – total": 1
+    },
+    "healthPermit": {
+     "asOf": "2026-11-06T23:50:55+05:30",
+     "source": "LEMS FL2 Process",
+     "tab": "FL2 Process › Apply For Permit (status Verified, Health Permit types)",
+     "registered": 156,
+     "byMonth": {
+      "2026-07": {
+       "registered": 1
+      },
+      "2026-09": {
+       "registered": 54
+      },
+      "2026-10": {
+       "registered": 30
+      },
+      "2026-11": {
+       "registered": 62
+      }
+     }
     }
    }
   },
@@ -194,10 +214,10 @@
      "Inquiry Files": 0,
      "Files Marked Await": 0
     },
-    "note": "Pending on desk (Workdesk tiles). Received/disposed month counts not yet readable: the e-Sarkar tabs (e-Tappal, Files, RTI, Reports) did not open a separate count view in this run."
+    "note": "Pending on Workdesk tiles. Received/disposed totals by type are not shown on any e-Sarkar tab opened: Dispatch Register, Branch Dispatch Register, File Register (needs per-branch search) and Reports (opened an empty Dispatch Register). Not counted."
    },
    "lems": {
-    "asOf": "2026-11-06T10:22:00+05:30",
+    "asOf": "2026-11-06T23:54:04+05:30",
     "ipVerificationNew": 0,
     "ipVerificationExtend": 0,
     "other": {
@@ -205,6 +225,23 @@
      "IP report: Submitted (awaiting)": 0,
      "IP report: ReSubmitted (awaiting)": 0,
      "IP awaiting action – total": 0
+    },
+    "healthPermit": {
+     "asOf": "2026-11-06T23:54:04+05:30",
+     "source": "LEMS FL2 Process",
+     "tab": "FL2 Process › Apply For Permit (status Verified, Health Permit types)",
+     "registered": 34,
+     "byMonth": {
+      "2026-09": {
+       "registered": 4
+      },
+      "2026-10": {
+       "registered": 24
+      },
+      "2026-11": {
+       "registered": 6
+      }
+     }
     }
    }
   }
