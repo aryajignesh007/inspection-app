@@ -8,7 +8,7 @@ const NT = {
   ACT: 'ગુજરાત નશાબંધી અધિનિયમ, ' + guNum(1949),
   MAR: 'ગુજરાત મિથાઈલ આલ્કોહોલ રૂલ્સ-' + guNum(1981),
   OFFICE: {
-    surat: { addr: 'એ- સાતમો માળ, બહુમાળી મકાન, નાનપુરા, સુરત-' + guNum('395001'), contact: 'ફોન નં-' + guNum('0261-2462244') + ', ઈ-મેઈલ-sp-pne-sur@gujarat.gov.in', distGu: 'સુરત' },
+    surat: { addr: 'એ- સાતમો માળ, બહુમાળી મકાન, નાનપુરા, સુરત-' + guNum('395001'), contact: 'ફોન નં-' + guNum('0261-2462280') + ', ઈ-મેઈલ-sp-pne-sur@gujarat.gov.in', distGu: 'સુરત' },
     valsad: { addr: "ત્રીજો માળ, 'આશિષ' બિલ્ડીંગ, જૂની આરટીઓ ઓફિસ, મદનવાડ, વલસાડ-" + guNum('396001'), contact: 'ઈ-મેઈલ: sp-pne-val@gujarat.gov.in', distGu: 'વલસાડ' }
   },
   /* suggested citations (officer edits). t = linking phrase used in the ક્ષતિ sentence */
