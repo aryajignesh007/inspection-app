@@ -157,6 +157,8 @@ IM.importPortal = async function (data, distKey) {
     if (JSON.stringify(rec) !== before) { rec.portalSyncedAt = src.portalSyncedAt || data.createdAt; changed.set(rec.id, rec); updated++; }
     index(rec);
   }
+  // pf40: tag licences that are never counted (hospitals/schools/excluded types/non-factory RS2) so a re-import cannot add them back to the counts
+  for (const rec of changed.values()) for (const x of rec.licences || []) { const r = typeof TJ !== 'undefined' ? TJ.skipLicence(rec, x) : ''; if (r) x.notCounted = r; else delete x.notCounted; }
   if (changed.size) await DB.putMany('licensees', [...changed.values()]);
   let merge = null; if (typeof PM !== 'undefined') { try { merge = await PM.run('after-portal-import'); await DB.setSetting(PM.FLAG, { at: new Date().toISOString(), via: 'import' }); } catch (e) { console.warn('portal merge', e); } }
   return { added, updated, licAdded, merge, total: (await DB.all('licensees')).length };

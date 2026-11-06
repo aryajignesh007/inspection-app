@@ -107,11 +107,11 @@ const L = {
     const prof = await this.profile(), cfg = await this.abstractCfg(), rows = await this.abstractRows();
     const days = await this.monthDays(ym, prof);
     const [y, m] = ym.split('-').map(Number);
-    const lmap = await this.licenseeMap(), mineOnly = list => list.filter(i => !i.licenseeId || !lmap[i.licenseeId] || TJ.licenseeBelongs(lmap[i.licenseeId]));   // v1.8.0: never count the other district's licensees
+    const lmap = await this.licenseeMap(), mineOnly = list => list.filter(i => !i.licenseeId || !lmap[i.licenseeId] || TJ.licenseeBelongs(lmap[i.licenseeId])), counted = list => list.filter(i => !TJ.skipInspection(i, i.licenseeId ? lmap[i.licenseeId] : null));   // pf40: hospitals/schools/excluded types not counted (records kept)   // v1.8.0: never count the other district's licensees
     const ins = mineOnly(await this.inspectionsIn(`${ym}-01`, `${ym}-${pad(daysInMonth(y, m))}`));
     const keyOf = i => i.licenseeId || i.reportNo || i.id;
     const monthSets = {}, unmapped = new Set();
-    for (const i of ins) { const rs = this.rowsForCode(i.typeCode, rows); if (!rs.length) unmapped.add(i.typeCode || '(blank)'); rs.forEach(r => (monthSets[r.key] ||= new Set()).add(keyOf(i))); }
+    for (const i of counted(ins)) { const rs = this.rowsForCode(i.typeCode, rows); if (!rs.length) unmapped.add(i.typeCode || '(blank)'); rs.forEach(r => (monthSets[r.key] ||= new Set()).add(keyOf(i))); }
     // progressive: from FY start (or carry-forward baseline) up to this month.
     // Valsad additional charge began 30 Sept 2026 — do not count earlier officers' checks.
     const fy = fyStartYm(ym); let base = {}, fromDate = `${fy}-01`;
@@ -124,7 +124,7 @@ const L = {
     }
     const progIns = fromDate.slice(0, 7) <= ym ? mineOnly(await this.inspectionsIn(fromDate, `${ym}-31`)) : [];
     const progSets = {};
-    for (const i of progIns) this.rowsForCode(i.typeCode, rows).forEach(r => (progSets[r.key] ||= new Set()).add(keyOf(i)));
+    for (const i of counted(progIns)) this.rowsForCode(i.typeCode, rows).forEach(r => (progSets[r.key] ||= new Set()).add(keyOf(i)));
     const abstract = rows.map(r => {
       const inspected = monthSets[r.key]?.size || 0;
       const progressive = Number(base[r.key] ?? base[r.label] ?? 0) + (progSets[r.key]?.size || 0);

@@ -18,12 +18,38 @@ const TJ = {
     return true;   // unknown → it is in this district's own database
   },
   licenseeBelongs(l, k = DIST.key) { const ls = l?.licences || []; return !ls.length || ls.some(x => TJ.licBelongs(l, x, k)); },
+  /* v1.8.0-pf40 Sir's standing "do not count" rules (both districts): DS3, DS4, DSP2, DSP3, DSP4, DD2 types; hospitals, clinics,
+     schools, colleges, universities and other institutions; RS2 only for factories / companies (Dodel Analytical kept).
+     Inspection records are never touched – skipped licences are only left out of totals, inspected and progressive counts. */
+  SKIP_TYPES: ['DS3', 'DS4', 'DSP2', 'DSP3', 'DSP4', 'DD2'],
+  INST_RE: /hospital|clinic|nursing\s*home|dispensary|maternity|medical\s*college|college|school|university|vidyalaya|vidhyalaya|vidyapith|vidyapeeth|vidya\s*mandir|mahavidyalaya|shala|\bshal\b|institute\s+of|\bpharmacy\s+college|\bp\.?\s*h\.?\s*c\b|\bc\.?\s*h\.?\s*c\b|primary\s+health|community\s+health|health\s+cent(er|re)|sub\s*district\s+hosp|civil\s+hosp|tb\s+(cent|office|hosp)|દવાખાન|હોસ્પિટલ|હોસ્પીટલ|ઇસ્પિતાલ|કોલેજ|કૉલેજ|શાળા|વિદ્યાલય|વિદ્યાપીઠ|યુનિવર્સિટી|આરોગ્ય\s*કેન્દ્ર|પ્રાથમિક\s*આરોગ્ય/i,
+  /* RS2 that is NOT a factory: government offices, labs, research bodies */
+  RS2_GOVT_RE: /superintendent|government|govt|sarkari|સરકારી|g\.?p\.?c\.?b|pollution\s+control|forensic|\bf\.?s\.?l\b|research\s+(institute|foundation)|snake|\bs\.?r\.?p\b|reserve\s+police|police|collector|mamlatdar|panchayat|municipal|nagar\s*palika|office\s+of|district\s+(tb|health)|tb\s+(cent|office)/i,
+  FIRM_RE: /\bp(vt|rivate)\b|\bltd\b|limited|\bllp\b|industr|\bmills?\b|sahakari|khand\s*udyog|udyog|\bco\.?\s*op|co-?operative|factory|chemical|pharma|dyestuff|dyes?\b|textile|laborator|lifescience|rasayan|polymer|plastics?|enterprise|corporation|\bcorp\b|works|manufactur|\bcompany\b|\b&\s*co\b|\bincorporated|\binc\b|organics|fertili|petro|refiner|distiller|brewer|engineering|products|dairy|foods?\b|power\s+station|electricity|\bplant\b|processors?|exports?|traders|trading/i,
+  KEEP_RE: /dodel\s+analytical/i,
+  /** reason string when this licence must NOT be counted, else '' */
+  skipLicence(l, x) {
+    const c = normCode(x?.typeCode || TJ.ulnOf(x).split('/')[1] || '');
+    if (TJ.SKIP_TYPES.includes(c)) return 'type ' + c;
+    const text = [l?.name, ...(l?.aka || []), l?.address].filter(Boolean).join(' ');
+    const name = [l?.name, ...(l?.aka || [])].filter(Boolean).join(' ');
+    if (TJ.KEEP_RE.test(text)) return '';
+    if (TJ.INST_RE.test(name) && !(TJ.FIRM_RE.test(name) && !/hospital|clinic|college|school|university|હોસ્પિટલ|કોલેજ|શાળા/i.test(name))) return 'hospital / school / college';
+    if (c === 'RS2' && (TJ.RS2_GOVT_RE.test(name) || !TJ.FIRM_RE.test(name))) return 'RS2 not a factory / company';
+    return '';
+  },
+  /** inspection → skip? (looks the licence up on the licensee; else by the inspection's own type / name) */
+  skipInspection(i, lic) {
+    const c = normCode(i?.typeCode);
+    const x = (lic?.licences || []).find(y => normCode(y.typeCode) === c) || { typeCode: i?.typeCode };
+    return !!TJ.skipLicence(lic || { name: i?.licenseeName || i?.name || i?.firm || '' }, x);
+  },
   /** {rowKey: [{name, uln, code}]} – active licences of this district per abstract row */
   async lists(rows) {
     rows ||= await L.abstractRows();
     const out = {}; rows.forEach(r => out[r.key] = []);
     for (const l of await DB.all('licensees')) for (const x of l.licences || []) {
-      if ((x.status || 'active') !== 'active' || !TJ.licBelongs(l, x)) continue;
+      if ((x.status || 'active') !== 'active' || !TJ.licBelongs(l, x) || TJ.skipLicence(l, x)) continue;
       const c = normCode(x.typeCode);
       for (const r of rows) if (r.codes.includes(c)) out[r.key].push({ name: l.name || '', uln: TJ.ulnOf(x), code: x.typeCode || '', area: l.area || '' });
     }
@@ -32,27 +58,29 @@ const TJ = {
   },
   /** cross-check of this district's licence list before printing the taarij (flags, never silently fixes) */
   async audit() {
-    const out = { otherDistrict: [], notPortal: [], badUln: [], dupUln: [], typeMismatch: [] }, seen = {};
+    const out = { otherDistrict: [], notPortal: [], badUln: [], dupUln: [], typeMismatch: [] }, seen = {}; let skipped = 0;
     for (const l of await DB.all('licensees')) for (const x of l.licences || []) {
       if ((x.status || 'active') !== 'active') continue;
       const u = TJ.ulnOf(x), tag = `${l.name || '—'} ${u || '(no ULN)'}`;
       if (!TJ.licBelongs(l, x)) { out.otherDistrict.push(tag); continue; }
+      if (TJ.skipLicence(l, x)) { skipped++; continue; }   // pf40: not counted → not cross-checked
       const m = u.match(/^([A-Z]{3})\/([A-Z0-9]+)\/(\d{6})\/(\d{5})$/);
       if (!m) out.badUln.push(tag); else if (normCode(m[2]) !== normCode(x.typeCode)) out.typeMismatch.push(`${tag} (type ${x.typeCode})`);
       if (!(typeof PM !== 'undefined' ? PM.licPortal(l, x) : /e-Prohibition/i.test(x.source || l.importedFrom || ''))) out.notPortal.push(tag);
       if (u) { if (seen[u]) out.dupUln.push(tag); seen[u] = 1; }
     }
-    out.count = Object.values(out).reduce((a, v) => a + (Array.isArray(v) ? v.length : 0), 0);
+    out.count = Object.values(out).reduce((a, v) => a + (Array.isArray(v) ? v.length : 0), 0); out.skipped = skipped;
     return out;
   },
   auditHtml(a) {
-    if (!a.count) return `<div class="card okbox">✓ ${esc(DIST.info.en)} licence list checked: every counted licence has a ${TJ.PREFIX[DIST.key]}/… ULN from e-Prohibition.</div>`;
+    const skipNote = `<div class="muted" style="font-size:12px;margin-top:4px">Not counted: hospitals, clinics, schools, colleges and other institutions; DS3, DS4, DSP2, DSP3, DSP4, DD2; RS2 other than factories/companies${a.skipped ? ' (' + a.skipped + ' licence(s) left out)' : ''}. Their inspections are kept.</div>`;
+    if (!a.count) return `<div class="card okbox">✓ ${esc(DIST.info.en)} licence list checked: every counted licence has a ${TJ.PREFIX[DIST.key]}/… ULN from e-Prohibition.${skipNote}</div>`;
     const sec = (t, l) => l.length ? `<details><summary>${esc(t)} (${l.length})</summary><div style="font-size:12px">${l.slice(0, 200).map(esc).join('<br>')}</div></details>` : '';
     return `<div class="card warnbox"><b>Licence cross-check with e-Prohibition – ${a.count} item(s) to check</b>
       ${sec(DISTRICTS[TJ.otherKey()].en + ' licences in this district (NOT counted)', a.otherDistrict)}${sec('Not pulled from e-Prohibition (counted – verify on portal)', a.notPortal)}
       ${sec('ULN not in portal format', a.badUln)}${sec('Licence type differs from ULN', a.typeMismatch)}${sec('Same ULN twice', a.dupUln)}
       ${a.dupUln.length || a.notPortal.length ? `<div class="muted">Fix: tap <b>Keep portal list &amp; merge duplicate ULNs</b> (e-Prohibition is the authority; inspections kept). Non-portal licences that have inspections stay listed here by design.</div>${typeof PM !== 'undefined' ? PM.button() : ''}` : ''}
-      <div class="muted">Re-import this district's e-Prohibition list (More › Import) to fill details. <i>Clean district data</i> is only for ${esc(DISTRICTS[TJ.otherKey()].en)} licensees put here by mistake.</div></div>`;
+      <div class="muted">Re-import this district's e-Prohibition list (More › Import) to fill details. <i>Clean district data</i> is only for ${esc(DISTRICTS[TJ.otherKey()].en)} licensees put here by mistake.</div>${skipNote}</div>`;
   },
   /* ---------- shared tour days ---------- */
   _dbs: {},
