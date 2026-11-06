@@ -139,7 +139,9 @@ IM.importPortal = async function (data, distKey) {
   const index = l => { (l.licences || []).forEach(x => { for (const k of [x.uln, x.licenceNo]) if (k) byUln[IM.ulnKey(k)] = l; }); for (const n of [l.name, ...(l.aka || [])]) if (n) byName[IM.nameKey(n)] ||= l; };
   lics.forEach(index);
   const changed = new Map(); let added = 0, updated = 0, licAdded = 0;
-  for (const src of data.licensees || []) {
+  const expire = x => { if (typeof TJ !== 'undefined' && TJ.isExpired(x)) { x.status = 'inactive'; x.inactiveReason ||= 'Validity ended ' + TJ.validEnd(x.validity); } return x; };
+  for (const original of data.licensees || []) {
+    const src = { ...original, licences: (original.licences || []).map(x => expire({ ...x })) };
     let rec = (src.licences || []).map(x => byUln[IM.ulnKey(x.uln || x.licenceNo)]).find(Boolean) || byName[IM.nameKey(src.name)];
     if (!rec) { rec = { ...src, id: uid(), licences: (src.licences || []).map(x => ({ ...x })), importedFrom: 'e-Prohibition' }; added++; licAdded += rec.licences.length; changed.set(rec.id, rec); index(rec); continue; }
     const before = JSON.stringify(rec);
@@ -148,12 +150,13 @@ IM.importPortal = async function (data, distKey) {
     for (const x of src.licences || []) {
       const u = IM.ulnKey(x.uln || x.licenceNo);
       const same = rec.licences.find(y => IM.ulnKey(y.uln) === u || IM.ulnKey(y.licenceNo) === u) || rec.licences.find(y => y.typeCode === x.typeCode && !y.uln && !y.licenceNo);
-      if (same) { for (const [k, v] of Object.entries(x)) if (v && !same[k]) same[k] = v; if (x.status === 'inactive' && same.status !== 'inactive') { same.status = 'inactive'; if (x.inactiveReason) same.inactiveReason = x.inactiveReason; } }
+      if (same) { for (const [k, v] of Object.entries(x)) if (v && !same[k]) same[k] = v; if (x.status === 'inactive' && same.status !== 'inactive') { same.status = 'inactive'; if (x.inactiveReason && !same.inactiveReason) same.inactiveReason = x.inactiveReason; } }
       else { rec.licences.push({ ...x }); licAdded++; }
     }
     if (src.name && IM.nameKey(src.name) !== IM.nameKey(rec.name) && !(rec.aka || []).some(a => IM.nameKey(a) === IM.nameKey(src.name))) rec.aka = [...(rec.aka || []), src.name];
     if (!PM_isP(rec.importedFrom)) rec.importedFrom = 'e-Prohibition';
     for (const x of rec.licences) if (!x.source && (src.licences || []).some(y => IM.ulnKey(y.uln || y.licenceNo) === IM.ulnKey(x.uln || x.licenceNo))) x.source = 'e-Prohibition';
+    rec.licences.forEach(expire);
     if (JSON.stringify(rec) !== before) { rec.portalSyncedAt = src.portalSyncedAt || data.createdAt; changed.set(rec.id, rec); updated++; }
     index(rec);
   }
@@ -164,5 +167,8 @@ IM.importPortal = async function (data, distKey) {
   return { added, updated, licAdded, merge, total: (await DB.all('licensees')).length };
 };
 
-const licInactive = l => (l?.licences || []).some(x => x.status === 'inactive');
-const inactivePill = l => licInactive(l) ? '<span class="pill bad" title="' + esc((l.licences || []).filter(x => x.status === 'inactive').map(x => x.typeCode + ': ' + (x.inactiveReason || 'inactive')).join('; ')) + '">Inactive' + ((l.licences || []).every(x => x.status === 'inactive') ? '' : ' (' + (l.licences || []).filter(x => x.status === 'inactive').map(x => x.typeCode).join(', ') + ')') + '</span>' : '';
+const licInactive = l => (l?.licences || []).some(x => TJ.isInactive(x));
+const inactivePill = l => {
+  const all = l?.licences || [], inactive = all.filter(x => TJ.isInactive(x));
+  return inactive.length ? '<span class="pill bad" title="' + esc(inactive.map(x => x.typeCode + ': ' + TJ.inactiveReason(x)).join('; ')) + '">Inactive' + (inactive.length === all.length ? '' : ' (' + inactive.map(x => esc(x.typeCode)).join(', ') + ')') + '</span>' : '';
+};

@@ -4,11 +4,11 @@ const DLIST_ROUTES = {
   async dlist(kind, qs) {
     const q = new URLSearchParams(qs || ''), t = todayStr(), per = DSH.periods(t)[q.get('per') || S.dPer || 'fy'], type = q.get('type') || '';
     const [lics, ins] = await Promise.all([DB.all('licensees'), DB.all('inspections')]), scoped = await TEAM.scopeLicensees(lics), lm = {}; lics.forEach(l => lm[l.id] = l);
-    const inPer = i => !i.excluded && i.date >= per.from && i.date <= per.to;
+    const inPer = i => !TJ.skipInspection(i, lm[i.licenseeId]) && !i.excluded && i.date >= per.from && i.date <= per.to;
     const done = new Set(ins.filter(inPer).map(i => i.licenseeId + '|' + normCode(i.typeCode)));
     const tOk = c => !type || DSH.typeGroup(c) === type;
-    const licRows = pred => { const out = []; for (const l of scoped) for (const lc of (l.licences || [])) { const c = normCode(lc.typeCode); if (tOk(c) && pred(l, lc, c)) out.push({ l, lc, c }); } return out.sort((a, b) => a.l.name.localeCompare(b.l.name)); };
-    const act = lc => (lc.status || 'active') === 'active';
+    const licRows = pred => { const out = []; for (const l of scoped) for (const lc of (l.licences || [])) { const c = normCode(lc.typeCode); if (tOk(c) && TJ.licBelongs(l, lc) && (kind === 'inactive' || !TJ.skipLicence(l, lc)) && pred(l, lc, c)) out.push({ l, lc, c }); } return out.sort((a, b) => a.l.name.localeCompare(b.l.name)); };
+    const act = lc => !TJ.isInactive(lc);
     const T = { done: 'Inspected licences', pending: 'Licences pending inspection', ins: 'Inspections', active: 'Active licences', inactive: 'Inactive licences' };
     let rows = [], html = '';
     const licLi = r => `<li onclick="go('#lic/${esc(r.l.id)}')"><div class="main"><div class="t">${esc(r.l.name)}</div><div class="s">${esc(r.c)} · ULN ${esc(r.lc.uln || r.lc.licenceNo || '–')}${r.l.area ? ' · ' + esc(r.l.area) : ''}</div></div>${act(r.lc) ? '' : `<span class="pill bad" title="${esc(r.lc.inactiveReason || '')}">Inactive</span>`}</li>`;

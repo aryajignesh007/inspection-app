@@ -38,18 +38,38 @@ const TJ = {
     if (c === 'RS2' && (TJ.RS2_GOVT_RE.test(name) || !TJ.FIRM_RE.test(name))) return 'RS2 not a factory / company';
     return '';
   },
+  // pf41: compare calendar dates in India, never the phone's timezone or UTC midnight.
+  todayIST(now = new Date()) {
+    const parts = new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Calcutta', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(now);
+    const v = k => parts.find(p => p.type === k).value;
+    return `${v('year')}-${v('month')}-${v('day')}`;
+  },
+  validEnd(value) {
+    const s = String(value || '').split(/\s+to\s+/i).pop().trim();
+    let m, y, mo, d;
+    if ((m = s.match(/^(\d{4})-(\d{2})-(\d{2})(?:T.*)?$/))) [, y, mo, d] = m;
+    else if ((m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/))) [, d, mo, y] = m;
+    else return null;
+    const date = new Date(Date.UTC(+y, +mo - 1, +d));
+    if (date.getUTCFullYear() !== +y || date.getUTCMonth() !== +mo - 1 || date.getUTCDate() !== +d) return null;
+    return `${y}-${String(mo).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+  },
+  isExpired(x, today = TJ.todayIST()) { const end = TJ.validEnd(x?.validity); return !!end && end < today; },
+  isInactive(x, today = TJ.todayIST()) { return x?.status === 'inactive' || TJ.isExpired(x, today); },
+  isValidToday(x, today = TJ.todayIST()) { return !TJ.isInactive(x, today); },
+  inactiveReason(x) { return x?.inactiveReason || (TJ.isExpired(x) ? 'Validity ended ' + TJ.validEnd(x.validity) : 'inactive'); },
   /** inspection → skip? (looks the licence up on the licensee; else by the inspection's own type / name) */
   skipInspection(i, lic) {
     const c = normCode(i?.typeCode);
     const x = (lic?.licences || []).find(y => normCode(y.typeCode) === c) || { typeCode: i?.typeCode };
-    return !!TJ.skipLicence(lic || { name: i?.licenseeName || i?.name || i?.firm || '' }, x);
+    return TJ.isInactive(x) || !!TJ.skipLicence(lic || { name: i?.licenseeName || i?.name || i?.firm || '' }, x);
   },
   /** {rowKey: [{name, uln, code}]} – active licences of this district per abstract row */
   async lists(rows) {
     rows ||= await L.abstractRows();
     const out = {}; rows.forEach(r => out[r.key] = []);
     for (const l of await DB.all('licensees')) for (const x of l.licences || []) {
-      if ((x.status || 'active') !== 'active' || !TJ.licBelongs(l, x) || TJ.skipLicence(l, x)) continue;
+      if (TJ.isInactive(x) || !TJ.licBelongs(l, x) || TJ.skipLicence(l, x)) continue;
       const c = normCode(x.typeCode);
       for (const r of rows) if (r.codes.includes(c)) out[r.key].push({ name: l.name || '', uln: TJ.ulnOf(x), code: x.typeCode || '', area: l.area || '' });
     }
@@ -60,7 +80,7 @@ const TJ = {
   async audit() {
     const out = { otherDistrict: [], notPortal: [], badUln: [], dupUln: [], typeMismatch: [] }, seen = {}; let skipped = 0;
     for (const l of await DB.all('licensees')) for (const x of l.licences || []) {
-      if ((x.status || 'active') !== 'active') continue;
+      if (TJ.isInactive(x)) continue;
       const u = TJ.ulnOf(x), tag = `${l.name || '—'} ${u || '(no ULN)'}`;
       if (!TJ.licBelongs(l, x)) { out.otherDistrict.push(tag); continue; }
       if (TJ.skipLicence(l, x)) { skipped++; continue; }   // pf40: not counted → not cross-checked
@@ -73,7 +93,7 @@ const TJ = {
     return out;
   },
   auditHtml(a) {
-    const skipNote = `<div class="muted" style="font-size:12px;margin-top:4px">Not counted: hospitals, clinics, schools, colleges and other institutions; DS3, DS4, DSP2, DSP3, DSP4, DD2; RS2 other than factories/companies${a.skipped ? ' (' + a.skipped + ' licence(s) left out)' : ''}. Their inspections are kept.</div>`;
+    const skipNote = `<div class="muted" style="font-size:12px;margin-top:4px">Not counted: inactive / expired licences; hospitals, clinics, schools, colleges and other institutions; DS3, DS4, DSP2, DSP3, DSP4, DD2; RS2 other than factories/companies${a.skipped ? ' (' + a.skipped + ' licence(s) left out)' : ''}. Their inspections are kept.</div>`;
     if (!a.count) return `<div class="card okbox">✓ ${esc(DIST.info.en)} licence list checked: every counted licence has a ${TJ.PREFIX[DIST.key]}/… ULN from e-Prohibition.${skipNote}</div>`;
     const sec = (t, l) => l.length ? `<details><summary>${esc(t)} (${l.length})</summary><div style="font-size:12px">${l.slice(0, 200).map(esc).join('<br>')}</div></details>` : '';
     return `<div class="card warnbox"><b>Licence cross-check with e-Prohibition – ${a.count} item(s) to check</b>

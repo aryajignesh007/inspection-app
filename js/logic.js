@@ -108,7 +108,7 @@ const L = {
     const days = await this.monthDays(ym, prof);
     const [y, m] = ym.split('-').map(Number);
     const lmap = await this.licenseeMap(), mineOnly = list => list.filter(i => !i.licenseeId || !lmap[i.licenseeId] || TJ.licenseeBelongs(lmap[i.licenseeId])), counted = list => list.filter(i => !TJ.skipInspection(i, i.licenseeId ? lmap[i.licenseeId] : null));   // pf40: hospitals/schools/excluded types not counted (records kept)   // v1.8.0: never count the other district's licensees
-    const ins = mineOnly(await this.inspectionsIn(`${ym}-01`, `${ym}-${pad(daysInMonth(y, m))}`));
+    const ins = counted(mineOnly(await this.inspectionsIn(`${ym}-01`, `${ym}-${pad(daysInMonth(y, m))}`)));
     const keyOf = i => i.licenseeId || i.reportNo || i.id;
     const monthSets = {}, unmapped = new Set();
     for (const i of counted(ins)) { const rs = this.rowsForCode(i.typeCode, rows); if (!rs.length) unmapped.add(i.typeCode || '(blank)'); rs.forEach(r => (monthSets[r.key] ||= new Set()).add(keyOf(i))); }
@@ -156,7 +156,7 @@ const L = {
     ins.filter(i => !i.excluded).forEach(i => this.rowsForCode(i.typeCode, rows).forEach(r => { const k = i.licenseeId + '|' + r.key; if (!last[k] || last[k] < i.date) last[k] = i.date; }));
     const today = todayStr(), out = [];
     for (const l of lics) for (const lc of (l.licences || [])) {
-      if ((lc.status || 'active') !== 'active') continue;
+      if (TJ.isInactive(lc) || !TJ.licBelongs(l, lc) || TJ.skipLicence(l, lc)) continue;
       const r = this.rowsForCode(lc.typeCode, rows)[0]; if (!r) continue;
       const months = STD_MONTHS[(r.std || '').trim()]; if (!months) continue;
       const lastDate = last[l.id + '|' + r.key];

@@ -58,7 +58,7 @@ const DSH = {
     const done = new Set(ins.filter(i => !i.excluded && i.date >= per.from && i.date <= per.to).map(i => i.licenseeId + '|' + normCode(i.typeCode)));
     const by = {}; let total = 0, insp = 0;
     for (const l of lics) for (const lc of (l.licences || [])) {
-      if ((lc.status || 'active') !== 'active') continue;
+      if (TJ.isInactive(lc) || !TJ.licBelongs(l, lc) || TJ.skipLicence(l, lc)) continue;
       const c = normCode(lc.typeCode), g = DSH.typeGroup(c), ok = done.has(l.id + '|' + c);
       const b = (by[g] ||= { type: g, total: 0, done: 0 }); b.total++; total++; if (ok) { b.done++; insp++; }
     }
@@ -118,7 +118,23 @@ const PFIG = {
   },
   validate(f) { if (!f || !f.asOf || !(f.eprohibition || f.esarkar || f.lems)) throw new Error('Not a portal-figures file (needs asOf and eprohibition / esarkar / lems)'); return f; },
   /** store new figures; previous kept for delta only when asOf changed */
-  accept(f) { const cur = PFIG.get('cur'); if (cur && cur.asOf !== f.asOf) PFIG.set('prev', cur); if (!cur || cur.asOf !== f.asOf || JSON.stringify(cur) !== JSON.stringify(f)) PFIG.set('cur', f); PFIG.set('err', null); return f; },
+  accept(f) { const cur = PFIG.get('cur'); if (cur && cur.asOf !== f.asOf) PFIG.set('prev', cur); if (!cur || cur.asOf !== f.asOf || JSON.stringify(cur) !== JSON.stringify(f)) PFIG.set('cur', f); PFIG.set('err', null); PFIG.syncDashboard(f); return f; },
+  // One per district/figures revision. Not a background alarm: runs on dashboard update/open.
+  SYNC_COOLDOWN: 3 * 60e3, _syncing: {},
+  async syncDashboard(f = PFIG.get('cur')) {
+    const district = DIST.key, key = DIST.ls('pf.driveSync');
+    if (!f || PFIG._syncing[district] || typeof SY === 'undefined') return;
+    PFIG._syncing[district] = true;
+    try {
+      if (!(await DB.getSetting('sync.enabled', false)) || !SY.token() || DIST.key !== district) return;
+      const revision = JSON.stringify(f), last = JSON.parse(localStorage.getItem(key) || 'null');
+      if (last?.revision === revision || (last?.attempt && Date.now() - last.attempt < PFIG.SYNC_COOLDOWN)) return;
+      localStorage.setItem(key, JSON.stringify({ ...last, attempt: Date.now() }));
+      const result = await SY.auto('dashboard-update');
+      if (result?.at && !result.error && !result.offline && !result.needsSignIn) localStorage.setItem(key, JSON.stringify({ revision, attempt: Date.now() }));
+    } catch (e) { /* dashboard must stay usable offline / signed out */ }
+    finally { delete PFIG._syncing[district]; }
+  },
   async fetchNow() {
     try { let r = null, le = null; for (const u of PFIG.URLS) { try { r = await fetch(u + '?t=' + Date.now(), { cache: 'no-store' }); if (r.ok) break; le = new Error('HTTP ' + r.status); } catch (e) { le = e; } r = null; } if (!r) throw le || new Error('fetch failed');
       const f = PFIG.pick(await r.json(), DIST.key); if (!f) { PFIG.set('err', 'not fetched yet'); return null; } return PFIG.accept(PFIG.validate(f));
@@ -148,7 +164,7 @@ const PFIG = {
       <div class="pfsec"><div class="pn">LEMS – Liquor and Excise Management System${le.asOf ? ` <small class="muted">${PFIG.when(le.asOf)}</small>` : ''}</div>
         <div class="pgrid4"><div class="pcard" style="cursor:pointer" onclick="go('#pendency/lems')"><div class="pn">IP verif. New</div><b>${V(le.ipVerificationNew)}</b>${PFIG.delta(le.ipVerificationNew, pl.ipVerificationNew)}</div><div class="pcard" style="cursor:pointer" onclick="go('#pendency/lems')"><div class="pn">IP verif. Extend</div><b>${V(le.ipVerificationExtend)}</b>${PFIG.n(le.ipVerificationExtend) === null ? '<div class="muted">not checked yet</div>' : PFIG.delta(le.ipVerificationExtend, pl.ipVerificationExtend)}</div></div><div>${other(le.other)} ${le.healthPermit && le.healthPermit.registered != null ? `<span class="chip sm">Health Permit registered: ${esc(le.healthPermit.registered)}</span>` : '<span class="chip sm">Health Permit registered: not read yet</span>'}</div></div>
       <div class="btns"><button class="btn sec sm" data-pf="refresh">↻ Refresh</button><button class="btn sec sm" data-pf="import">⬆ Import figures</button></div>
-      <div class="muted">Pull down on the Dashboard to refresh. ▲▼ = change since previous figures.</div></div>`;
+      <div class="muted">Drive syncs when dashboard figures update (if connected). Pull down on the Dashboard to refresh. ▲▼ = change since previous figures.</div></div>`;
   },
   bind(rerender) {
     $$('[data-pf="refresh"]').forEach(b => b.onclick = async () => { b.disabled = true; b.textContent = '…'; await PFIG.fetchNow(); rerender(); });
@@ -191,7 +207,7 @@ const DASH_ROUTES = {
     <div class="card span2"><h3>📊 Licence inspection status <small class="gu">પરવાના તપાસણી સ્થિતિ</small></h3>
       <div class="donuts">${['fy', 'q', 'm'].map(k => `<button class="dn ${S.dPer === k ? 'on' : ''}" data-per="${k}">${DSH.svgDonut(st[k].done, st[k].total)}<div><b>${st[k].done}</b> / ${st[k].total}</div><small>${esc(per[k].en)}<br><span class="gu">${per[k].gu}</span></small></button>`).join('')}</div>
       <div class="legend"><span><i style="background:#2e7d32"></i>Inspected / તપાસેલ</span><span><i style="background:#ffb74d"></i>Pending / બાકી</span> <span class="muted">${esc(per[S.dPer].en)}: ${dmy(per[S.dPer].from)} – ${dmy(per[S.dPer].to > t ? t : per[S.dPer].to)}</span></div>
-      <div class="btns dtiles">${(() => { const P = S.dPer, s = st[P], nIns = ins.filter(i => !i.excluded && i.date >= per[P].from && i.date <= per[P].to).length, nAct = scoped.reduce((a, l) => a + (l.licences || []).filter(x => (x.status || 'active') === 'active').length, 0), nIna = scoped.reduce((a, l) => a + (l.licences || []).filter(x => (x.status || 'active') !== 'active').length, 0);
+      <div class="btns dtiles">${(() => { const P = S.dPer, s = st[P], nIns = ins.filter(i => !TJ.skipInspection(i, lics.find(l => l.id === i.licenseeId)) && !i.excluded && i.date >= per[P].from && i.date <= per[P].to).length, nAct = scoped.reduce((a, l) => a + (l.licences || []).filter(x => !TJ.isInactive(x) && TJ.licBelongs(l, x) && !TJ.skipLicence(l, x)).length, 0), nIna = scoped.reduce((a, l) => a + (l.licences || []).filter(x => TJ.isInactive(x)).length, 0);
         return `<button class="btn sm" onclick="go('#dlist/done?per=${P}')">✓ Inspected ${s.done} ›</button><button class="btn sec sm" onclick="go('#dlist/pending?per=${P}')">⏳ Pending ${s.pending} ›</button><button class="btn sec sm" onclick="go('#dlist/ins?per=${P}')">📝 Inspections ${nIns} ›</button><button class="btn sec sm" onclick="go('#dlist/active')">Active licences ${nAct} ›</button><button class="btn sec sm" onclick="go('#dlist/inactive')">⛔ Inactive ${nIna} ›</button>`; })()}</div>
       ${DSH.svgBars(st[S.dPer].rows)}
       <div class="chips dchips">${st[S.dPer].rows.map(r => `<button class="chip" onclick="go('#dlist/pending?per=${S.dPer}&type=${encodeURIComponent(r.type)}')">${esc(r.type)} ${r.done}/${r.total} ›</button>`).join('')}</div>
@@ -203,7 +219,7 @@ const DASH_ROUTES = {
     ${role === 'admin' ? `<div class="card span2"><div class="btns" style="margin:0"><button class="btn" onclick="go('#monitor')">📈 Monitoring board</button><button class="btn sec" onclick="go('#staff')">👮 Staff register</button><button class="btn sec" onclick="go('#team')">💬 Team chat</button></div></div>` : ''}
     </div>`;
     PFIG.bind(() => DASH_ROUTES.home()); PFIG.ptr(() => DASH_ROUTES.home());
-    if (!DASH_ROUTES._pfOpened) { DASH_ROUTES._pfOpened = true; PFIG.fetchNow().then(f => { if (f && (location.hash || '#home').startsWith('#home')) DASH_ROUTES.home(); }); }
+    if (!DASH_ROUTES._pfFetched || Date.now() - DASH_ROUTES._pfFetched > 3 * 60e3) { DASH_ROUTES._pfFetched = Date.now(); PFIG.fetchNow().then(f => { if (!f) PFIG.syncDashboard(); if (f && (location.hash || '#home').startsWith('#home')) DASH_ROUTES.home(); }); } else PFIG.syncDashboard();
     $$('#quick .chip').forEach(b => b.onclick = async () => { await saveDayQuick(t, b.dataset.w, b.dataset.k); DASH_ROUTES.home(); });
     $$('[data-per]').forEach(b => b.onclick = () => { S.dPer = b.dataset.per; DASH_ROUTES.home(); });
     $$('[data-rt]').forEach(b => b.onclick = async () => { const r = rems.find(x => x.id === b.dataset.rt); await DSH_ACT.toggleDone(r, r.repeat || r.date >= t ? t : r.date); DASH_ROUTES.home(); });
