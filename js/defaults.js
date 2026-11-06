@@ -47,3 +47,8 @@ const SUMMARY_ROWS = [
   { key: 'subOffices', sr: '5', label: 'માસ દરમ્યાન તપાસેલ તાબાની કચેરીની સંખ્યા', xlRow: 81, extra: true },
   { key: 'publicity', sr: '6', label: 'પ્રચારની કામેગીરી', xlRow: 82, extra: true }
 ];
+/* v1.8.0 district defaults (a Valsad diary must never print Surat) */
+const DISTRICT_PROFILE = {
+  surat: { placeGu: 'સુરત', fromCode: 'SRT', officeLat: 21.1702, officeLng: 72.8311 },
+  valsad: { placeGu: 'વલસાડ', fromCode: 'VLS', officeLat: 20.6100, officeLng: 72.9342 }
+};

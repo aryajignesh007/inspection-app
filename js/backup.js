@@ -8,7 +8,7 @@
    5. "Last backup" indicator + 7-day reminder.        6. Validated restore with record counts. */
 const BK = {
   DIR: (typeof DIST !== 'undefined' ? DIST.info.bkDir : 'InspectionApp/backups'), KEEP: 30, KEEP_SAFETY: 10, DEBOUNCE_MS: 8000, REMIND_DAYS: 7,
-  APP_VERSION: '1.7.9', _timer: null, _suspend: 0, _running: null,
+  APP_VERSION: '1.8.0', _timer: null, _suspend: 0, _running: null,
   isNative: () => !!(window.Capacitor && Capacitor.isNativePlatform && Capacitor.isNativePlatform()),
   fs: () => window.Capacitor?.Plugins?.Filesystem,
   stamp(d = new Date()) { const p = n => String(n).padStart(2, '0'); return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}_${p(d.getHours())}${p(d.getMinutes())}`; },

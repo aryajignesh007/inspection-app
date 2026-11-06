@@ -1,0 +1,219 @@
+{
+ "generated": "2026-11-06T21:10+05:30",
+ "from": "2026-04",
+ "source": "Saved twice-daily portal readings (e-Prohibition, LEMS, e-Sarkar). A month without readings is marked noData – no figure is estimated.",
+ "districts": {
+  "surat": {
+   "2026-04": {
+    "noData": true
+   },
+   "2026-05": {
+    "noData": true
+   },
+   "2026-06": {
+    "noData": true
+   },
+   "2026-07": {
+    "noData": true
+   },
+   "2026-08": {
+    "noData": true
+   },
+   "2026-09": {
+    "noData": true
+   },
+   "2026-10": {
+    "readings": 6,
+    "firstAt": "2026-10-24T18:40:00+05:30",
+    "lastAt": "2026-10-30T10:20:00+05:30",
+    "eprohibition": {
+     "start": {
+      "newApplications": 105,
+      "pending": 54,
+      "approved": 43,
+      "rejected": 8
+     },
+     "end": {
+      "newApplications": 105,
+      "pending": 54,
+      "approved": 43,
+      "rejected": 8
+     }
+    },
+    "lems": {
+     "end": {
+      "ipNew": 1,
+      "ipExtend": 0,
+      "ipAwaiting": 0,
+      "healthPending": null,
+      "healthDisposed": null
+     },
+     "avgIpAwaiting": 2.5,
+     "peakIpAwaiting": 7,
+     "avgIpNew": 1.5,
+     "healthRecorded": false
+    },
+    "esarkar": {
+     "end": {
+      "files": 5,
+      "eTappal": 3,
+      "rti": 0
+     },
+     "avgFiles": 1.8,
+     "peakFiles": 5,
+     "avgTappal": 0.7,
+     "peakTappal": 3
+    }
+   },
+   "2026-11": {
+    "readings": 10,
+    "firstAt": "2026-11-01T10:11:00+05:30",
+    "lastAt": "2026-11-06T10:24:00+05:30",
+    "eprohibition": {
+     "start": {
+      "newApplications": 105,
+      "pending": 54,
+      "approved": 43,
+      "rejected": 8
+     },
+     "end": {
+      "newApplications": 105,
+      "pending": 54,
+      "approved": 43,
+      "rejected": 8
+     }
+    },
+    "lems": {
+     "end": {
+      "ipNew": 1,
+      "ipExtend": 0,
+      "ipAwaiting": 1,
+      "healthPending": null,
+      "healthDisposed": null
+     },
+     "avgIpAwaiting": 1.2,
+     "peakIpAwaiting": 3,
+     "avgIpNew": 1.1,
+     "healthRecorded": false
+    },
+    "esarkar": {
+     "end": {
+      "files": 0,
+      "eTappal": 0,
+      "rti": 0
+     },
+     "avgFiles": 0.2,
+     "peakFiles": 2,
+     "avgTappal": 0.3,
+     "peakTappal": 2
+    }
+   }
+  },
+  "valsad": {
+   "2026-04": {
+    "noData": true
+   },
+   "2026-05": {
+    "noData": true
+   },
+   "2026-06": {
+    "noData": true
+   },
+   "2026-07": {
+    "noData": true
+   },
+   "2026-08": {
+    "noData": true
+   },
+   "2026-09": {
+    "noData": true
+   },
+   "2026-10": {
+    "readings": 6,
+    "firstAt": "2026-10-24T18:40:00+05:30",
+    "lastAt": "2026-10-30T10:09:00+05:30",
+    "eprohibition": {
+     "start": {
+      "newApplications": 43,
+      "pending": 19,
+      "approved": 14,
+      "rejected": 10
+     },
+     "end": {
+      "newApplications": 44,
+      "pending": 20,
+      "approved": 14,
+      "rejected": 10
+     }
+    },
+    "lems": {
+     "end": {
+      "ipNew": 0,
+      "ipExtend": 0,
+      "ipAwaiting": 0,
+      "healthPending": null,
+      "healthDisposed": null
+     },
+     "avgIpAwaiting": 0.0,
+     "peakIpAwaiting": 0,
+     "avgIpNew": 0.0,
+     "healthRecorded": false
+    },
+    "esarkar": {
+     "end": {
+      "files": 3,
+      "eTappal": 3,
+      "rti": 0
+     },
+     "avgFiles": 1.2,
+     "peakFiles": 3,
+     "avgTappal": 0.5,
+     "peakTappal": 3
+    }
+   },
+   "2026-11": {
+    "readings": 10,
+    "firstAt": "2026-11-01T10:19:00+05:30",
+    "lastAt": "2026-11-06T10:27:00+05:30",
+    "eprohibition": {
+     "start": {
+      "newApplications": 44,
+      "pending": 20,
+      "approved": 14,
+      "rejected": 10
+     },
+     "end": {
+      "newApplications": 44,
+      "pending": 20,
+      "approved": 14,
+      "rejected": 10
+     }
+    },
+    "lems": {
+     "end": {
+      "ipNew": 0,
+      "ipExtend": 0,
+      "ipAwaiting": 0,
+      "healthPending": null,
+      "healthDisposed": null
+     },
+     "avgIpAwaiting": 0.0,
+     "peakIpAwaiting": 0,
+     "avgIpNew": 0.0,
+     "healthRecorded": false
+    },
+    "esarkar": {
+     "end": {
+      "files": 2,
+      "eTappal": 0,
+      "rti": 0
+     },
+     "avgFiles": 1.5,
+     "peakFiles": 7,
+     "avgTappal": 0.7,
+     "peakTappal": 2
+    }
+   }
+  }
+ }
+}

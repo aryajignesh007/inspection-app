@@ -1,7 +1,10 @@
 'use strict';
 /* Business logic: day log defaults, inspections, monthly diary maths, due list. */
 const L = {
-  async profile() { const p = Object.assign({}, DEFAULT_PROFILE, await DB.getSetting('profile', {})); Object.defineProperty(p, '_hol', { value: await HOL.map(), enumerable: false, writable: true }); return p; },
+  async profile() { const saved = await DB.getSetting('profile', {}), dd = (typeof DISTRICT_PROFILE !== 'undefined' && DISTRICT_PROFILE[DIST.key]) || {};
+    const p = Object.assign({}, DEFAULT_PROFILE, dd, saved);
+    // v1.8.0: a Surat profile restored/imported into Valsad (or vice versa) printed the wrong district in the diary/taarij
+    for (const [k, other] of Object.entries(DISTRICT_PROFILE || {})) if (k !== DIST.key) for (const f of ['placeGu', 'fromCode']) if (saved[f] && saved[f] === other[f] && dd[f]) p[f] = dd[f]; Object.defineProperty(p, '_hol', { value: await HOL.map(), enumerable: false, writable: true }); return p; },
   async saveProfile(p) { const c = { ...p }; delete c._hol; await DB.setSetting('profile', c); },
   /* Government holiday on this date (built-in GAD list / imported list), plus optional holidays you marked as taken */
   holidayOf(dateStr, prof) {
@@ -15,7 +18,12 @@ const L = {
   async saveAbstractCfg(c) { await DB.setSetting('abstract', c); },
   async abstractRows() {
     const c = await this.abstractCfg();
-    return ABSTRACT_ROWS.map(r => ({ ...r, std: c.std[r.key] ?? r.std, total: Number(c.totals[r.key] ?? 0), codes: [...r.codes, ...(c.extraCodes[r.key] || [])].map(normCode) }));
+    const rows = ABSTRACT_ROWS.map(r => ({ ...r, std: c.std[r.key] ?? r.std, codes: [...r.codes, ...(c.extraCodes[r.key] || [])].map(normCode) }));
+    // v1.8.0: totals counted live from THIS district's e-Prohibition licensees (typed totals only when manualTotals is on)
+    const lists = await TJ.lists(rows);
+    rows.forEach(r => { r.liveTotal = lists[r.key].length; r.total = c.manualTotals ? Number(c.totals[r.key] ?? 0) : r.liveTotal; });
+    Object.defineProperty(rows, 'lists', { value: lists, enumerable: false });
+    return rows;
   },
   isAutoHoliday(dateStr, prof) {
     const d = parseYmd(dateStr), wd = d.getDay();
@@ -82,7 +90,7 @@ const L = {
       if (!cur || cur.auto || cur.kind === 'office') {
         const lic = ins.licenseeId ? await DB.get('licensees', ins.licenseeId) : null;
         const place = ins.to || lic?.area || lic?.address || '';
-        await DB.put('days', { date: ins.date, kind: 'tour', from: prof.fromCode || 'SRT', to: (cur && !cur.auto && cur.to && cur.to !== '-') ? cur.to : place, vehicle: ins.vehicleCode || prof.vehicleCode || 'G', work: 'કચેરી+ તપાસણી', km: ins.distanceKm || '', fromInspection: true });
+        await DB.put('days', { date: ins.date, kind: 'tour', from: prof.fromCode || (DIST.key === 'valsad' ? 'VLS' : 'SRT'), to: (cur && !cur.auto && cur.to && cur.to !== '-') ? cur.to : place, vehicle: ins.vehicleCode || prof.vehicleCode || 'G', work: 'કચેરી+ તપાસણી', km: ins.distanceKm || '', fromInspection: true });
       }
     }
     return ins;
@@ -99,7 +107,8 @@ const L = {
     const prof = await this.profile(), cfg = await this.abstractCfg(), rows = await this.abstractRows();
     const days = await this.monthDays(ym, prof);
     const [y, m] = ym.split('-').map(Number);
-    const ins = await this.inspectionsIn(`${ym}-01`, `${ym}-${pad(daysInMonth(y, m))}`);
+    const lmap = await this.licenseeMap(), mineOnly = list => list.filter(i => !i.licenseeId || !lmap[i.licenseeId] || TJ.licenseeBelongs(lmap[i.licenseeId]));   // v1.8.0: never count the other district's licensees
+    const ins = mineOnly(await this.inspectionsIn(`${ym}-01`, `${ym}-${pad(daysInMonth(y, m))}`));
     const keyOf = i => i.licenseeId || i.reportNo || i.id;
     const monthSets = {}, unmapped = new Set();
     for (const i of ins) { const rs = this.rowsForCode(i.typeCode, rows); if (!rs.length) unmapped.add(i.typeCode || '(blank)'); rs.forEach(r => (monthSets[r.key] ||= new Set()).add(keyOf(i))); }
@@ -107,7 +116,7 @@ const L = {
     const fy = fyStartYm(ym); let base = {}, from = fy;
     const b = cfg.baseline;
     if (b && b.month && fyStartYm(b.month) === fy && b.month <= ym) { base = b.values || {}; from = addMonths(b.month, 1); }
-    const progIns = from <= ym ? await this.inspectionsIn(`${from}-01`, `${ym}-31`) : [];
+    const progIns = from <= ym ? mineOnly(await this.inspectionsIn(`${from}-01`, `${ym}-31`)) : [];
     const progSets = {};
     for (const i of progIns) this.rowsForCode(i.typeCode, rows).forEach(r => (progSets[r.key] ||= new Set()).add(keyOf(i)));
     const abstract = rows.map(r => {
@@ -123,13 +132,13 @@ const L = {
       defects: new Set(ins.filter(i => /^y/i.test(i.violations || '')).map(keyOf)).size, subOffices: '-', publicity: '-'
     };
     const km = days.reduce((s, d) => s + (Number(d.km) || 0), 0);
-    return { ym, prof, days, ins, abstract, summary, unmapped: [...unmapped], km };
+    return { ym, prof, days, ins, abstract, summary, unmapped: [...unmapped], km, lists: rows.lists, district: DIST.key };
   },
   /** Merge saved overrides (from the preview screen) into the computed month. */
   async monthForExport(ym) {
-    const c = await this.computeMonth(ym), o = (await DB.get('diaries', ym)) || {};
+    const c = await this.computeMonth(ym), o = (await DB.get('diaries', ym)) || {}; c.manual = !!(await this.abstractCfg()).manualTotals;
     const summary = { ...c.summary, ...(o.summary || {}) };
-    const abstract = c.abstract.map(r => { const ov = (o.abstract || {})[r.key] || {}; const x = { ...r, ...ov }; x.remaining = ov.remaining ?? Math.max(0, Number(x.total) - Number(x.progressive)); return x; });
+    const abstract = c.abstract.map(r => { const ov = { ...((o.abstract || {})[r.key] || {}) }; if (!c.manual) delete ov.total; const x = { ...r, ...ov }; x.remaining = ov.remaining ?? Math.max(0, Number(x.total) - Number(x.progressive)); return x; });
     const year = Number(ym.slice(0, 4)) + (ym.endsWith('-12') ? 1 : 0);
     return { ...c, summary, abstract, refNo: o.refNo ?? (c.prof.refPrefix || '').replace('{YEAR}', guNum(year)), letterDate: o.letterDate ?? `તારીખ:    /     /${guNum(year)}`,
       showRoute: o.showRoute ?? c.prof.showRouteCols, showExtra: o.showExtra ?? c.prof.showExtraSummary };

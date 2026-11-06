@@ -4,7 +4,7 @@
 const PORTALS = {
   eprohibition: { en: 'e-Prohibition', gu: 'ઈ-પ્રોહિબિશન', cats: ['New licence applications / નવી અરજી', 'Renewals / રીન્યુ', 'Permits / પરમિટ', 'Transport passes / પાસ', 'Other / અન્ય'] },
   esarkar: { en: 'e-Sarkar', gu: 'ઈ-સરકાર', cats: ['Inward tapal / આવક ટપાલ', 'Files pending / પડતર ફાઇલ', 'Replies due / જવાબ બાકી'] },
-  lems: { en: 'LEMS – Liquor and Excise Management System', short: 'LEMS', gu: 'LEMS – લિકર એન્ડ એક્સાઇઝ મેનેજમેન્ટ સિસ્ટમ', cats: ['IP verification – New', 'IP verification – Extend', 'Other / અન્ય'] }
+  lems: { en: 'LEMS – Liquor and Excise Management System', short: 'LEMS', gu: 'LEMS – લિકર એન્ડ એક્સાઇઝ મેનેજમેન્ટ સિસ્ટમ', cats: ['IP verification – New', 'IP verification – Extend', 'Health Permit – pending / હેલ્થ પરમિટ', 'Other / અન્ય'] }
 };
 const REPEATS = { '': 'Once / એકવાર', daily: 'Daily / દરરોજ', weekly: 'Weekly / દર અઠવાડિયે', monthly: 'Monthly / દર મહિને' };
 const DSH = {
@@ -146,7 +146,7 @@ const PFIG = {
       <div class="pfsec"><div class="pn">e-Sarkar <small class="gu">ઈ-સરકાર</small>${es.asOf ? ` <small class="muted">${PFIG.when(es.asOf)}</small>` : ''}</div>
         <div class="pgrid4"><div class="pcard" style="cursor:pointer" onclick="go('#pendency/esarkar')"><div class="pn">Files</div><b>${V(es.files)}</b>${PFIG.delta(es.files, ps.files)}</div></div><div>${other(es.other)}</div></div>
       <div class="pfsec"><div class="pn">LEMS – Liquor and Excise Management System${le.asOf ? ` <small class="muted">${PFIG.when(le.asOf)}</small>` : ''}</div>
-        <div class="pgrid4"><div class="pcard" style="cursor:pointer" onclick="go('#pendency/lems')"><div class="pn">IP verif. New</div><b>${V(le.ipVerificationNew)}</b>${PFIG.delta(le.ipVerificationNew, pl.ipVerificationNew)}</div><div class="pcard" style="cursor:pointer" onclick="go('#pendency/lems')"><div class="pn">IP verif. Extend</div><b>${V(le.ipVerificationExtend)}</b>${PFIG.n(le.ipVerificationExtend) === null ? '<div class="muted">not checked yet</div>' : PFIG.delta(le.ipVerificationExtend, pl.ipVerificationExtend)}</div></div><div>${other(le.other)}</div></div>
+        <div class="pgrid4"><div class="pcard" style="cursor:pointer" onclick="go('#pendency/lems')"><div class="pn">IP verif. New</div><b>${V(le.ipVerificationNew)}</b>${PFIG.delta(le.ipVerificationNew, pl.ipVerificationNew)}</div><div class="pcard" style="cursor:pointer" onclick="go('#pendency/lems')"><div class="pn">IP verif. Extend</div><b>${V(le.ipVerificationExtend)}</b>${PFIG.n(le.ipVerificationExtend) === null ? '<div class="muted">not checked yet</div>' : PFIG.delta(le.ipVerificationExtend, pl.ipVerificationExtend)}</div></div><div>${other(le.other)} ${le.healthPermit ? `<span class="chip sm">Health Permit pending: ${esc(le.healthPermit.pending ?? '–')}${le.healthPermit.disposed != null ? ' · disposed ' + esc(le.healthPermit.disposed) : ''}</span>` : '<span class="chip sm">Health Permit: not read yet</span>'}</div></div>
       <div class="btns"><button class="btn sec sm" data-pf="refresh">↻ Refresh</button><button class="btn sec sm" data-pf="import">⬆ Import figures</button></div>
       <div class="muted">Pull down on the Dashboard to refresh. ▲▼ = change since previous figures.</div></div>`;
   },

@@ -49,6 +49,7 @@ const routes = {
   },
   /* ---------------- DIARY (calendar) ---------------- */
   async diary() {
+    try { const t = await TJ.reconcile(); if (t.copied) toast(t.copied + ' tour day(s) matched with ' + DISTRICTS[TJ.otherKey()].en); } catch (e) { console.warn('[tour sync]', e); }
     const ym = S.ym, prof = await L.profile(), days = await L.monthDays(ym, prof);
     setTop('Diary', 'ડાયરી – ' + monthLabelGu(ym), false, `<button onclick="go('#week')">Week</button>`);
     const [y, m] = ym.split('-').map(Number), first = new Date(y, m - 1, 1).getDay();
@@ -63,7 +64,10 @@ const routes = {
       <div class="btns"><button class="btn" id="plan">＋ Plan visit</button><button class="btn sec" onclick="go('#visits')">Planned visits</button></div></div>
       <div class="card"><h3>Monthly diary <small class="gu">માસિક ડાયરી</small></h3><div class="muted">Covering letter, day-wise table, તારીજ and licence abstract – same layout as your office diary.</div>
       <button class="btn block" onclick="go('#month/${ym}')">Preview &amp; export ${monthLabelEn(ym)}</button>
+      <button class="btn sec block" id="dsync">⟳ Sync diary details / ડાયરી sync</button>
+      <button class="btn sec block" onclick="go('#perf/${ym}')">Monthly performance report (portals) / માસિક કામગીરી</button>
       <button class="btn sec block" id="bulk">Fill several days at once…</button></div>`;
+    $('#dsync').onclick = e => busy(e.target, async () => { const r = await TJ.preExport(); toast(r.msg); routes.diary(); });
     $('#pm').onclick = () => { S.ym = addMonths(S.ym, -1); routes.diary(); };
     $('#nm').onclick = () => { S.ym = addMonths(S.ym, 1); routes.diary(); };
     $$('.day[data-d]').forEach(el => el.onclick = () => go('#day/' + el.dataset.d));
@@ -124,9 +128,9 @@ const routes = {
     $('#pw').onclick = () => { S.weekStart = ymd(new Date(parseYmd(from).setDate(parseYmd(from).getDate() - 7))); routes.week(); };
     $('#nw').onclick = () => { S.weekStart = ymd(new Date(parseYmd(from).setDate(parseYmd(from).getDate() + 7))); routes.week(); };
     const nm = `Weekly-Diary-${from}-to-${to}`;
-    $('#wp').onclick = e => busy(e.target, async () => saveFile(await X.pagesToPdf([...await X.weekPages(w), ...PH.pages(await PH.inRange(from, to))]), nm + '.pdf'));
-    $('#ww').onclick = e => busy(e.target, async () => saveFile(await X.weekDocx(w), nm + '.docx'));
-    $('#wx').onclick = e => busy(e.target, async () => saveFile(X.weekXlsx(w), nm + '.xlsx'));
+    $('#wp').onclick = e => busy(e.target, async () => (await TJ.gate()) && saveFile(await X.pagesToPdf([...await X.weekPages(w), ...PH.pages(await PH.inRange(from, to))]), nm + '.pdf'));
+    $('#ww').onclick = e => busy(e.target, async () => (await TJ.gate()) && saveFile(await X.weekDocx(w), nm + '.docx'));
+    $('#wx').onclick = e => busy(e.target, async () => (await TJ.gate()) && saveFile(X.weekXlsx(w), nm + '.xlsx'));
     $('#wpr').onclick = async () => X.printPages([...await X.weekPages(w), ...PH.pages(await PH.inRange(from, to))]);
   },
   /* ---------------- MONTHLY DIARY PREVIEW / EXPORT ---------------- */
@@ -138,7 +142,10 @@ const routes = {
     view().innerHTML = `
     ${m.prof.officerNameGu === '(નામ)' ? '<div class="card warnbox">Your name for the signature is not set yet – <a href="#settings">open Settings</a>.</div>' : ''}
     ${m.unmapped.length ? `<div class="card warnbox">Inspections with licence type <b>${m.unmapped.map(esc).join(', ')}</b> are not linked to any abstract row. Link them under <a href="#abstract">Licence types &amp; abstract</a>.</div>` : ''}
-    <div class="card"><h3>Export <small>(${esc(monthLabelEn(ym))})</small></h3>
+    ${TJ.auditHtml(await TJ.audit())}
+    <div class="card"><h3>Export <small>(${esc(monthLabelEn(ym))} · ${esc(DIST.info.en)})</small></h3>
+      <button class="btn sec block" id="psync" style="margin-bottom:8px">⟳ Sync diary first / પહેલાં sync કરો</button><div class="muted" id="psyncMsg"></div>
+      <label style="display:flex;gap:8px;align-items:center;color:var(--txt)"><input type="checkbox" id="annex" style="width:auto"> Add licence list (ULN) page to PDF / Print</label>
       <div class="btns"><button class="btn" id="ex">Excel</button><button class="btn" id="wd">Word</button><button class="btn" id="pdf">PDF</button><button class="btn sec" id="pr">Print</button></div>
       <div class="muted" style="margin-top:8px">Excel uses your office's own diary workbook layout (fonts, colours, Gujarati digits, page breaks).</div></div>
     <div class="card gu"><h3>Covering letter</h3><label>ક્રમાંક</label><input id="ref" value="${esc(m.refNo)}"><label>તારીખ line</label><input id="ldate" value="${esc(m.letterDate)}">
@@ -148,7 +155,7 @@ const routes = {
       <table class="t">${SUMMARY_ROWS.map(r => `<tr><td class="l">${esc(r.label)}</td><td style="width:90px"><input data-s="${r.key}" value="${esc(m.summary[r.key])}"></td></tr>`).join('')}</table>
       <div class="muted" style="margin-top:6px">Auto: working = days − holidays − leave; tour days = yellow days; licences = column 5 total; defects = inspections with violations. Total km logged: ${m.km}.</div></div>
     <div class="card gu"><h3>માસિક ડાયરીનું એબ્સ્ટ્રેક્ટ</h3><div class="scroll-x"><table class="t"><tr><th>ક્રમ</th><th>પ્રકાર</th><th>કુલ (4)</th><th>માસ (5)</th><th>બાકી (6)</th><th>પ્રોગ્રેસીવ (7)</th></tr>
-      ${['imp', 'main', 'minor', 'gen'].map(k => `<tr class="cat"><td colspan="6">${CATS[k]}</td></tr>` + m.abstract.filter(r => r.cat === k).map(r => `<tr data-k="${r.key}"><td>${esc(r.sr)}</td><td class="l">${esc(r.label)}</td><td><input data-a="total" inputmode="numeric" value="${r.total}"></td><td><input data-a="inspected" inputmode="numeric" value="${r.inspected}"></td><td><input data-a="remaining" inputmode="numeric" value="${r.remaining}"></td><td><input data-a="progressive" inputmode="numeric" value="${r.progressive}"></td></tr>`).join('')).join('')}</table></div>
+      ${['imp', 'main', 'minor', 'gen'].map(k => `<tr class="cat"><td colspan="6">${CATS[k]}</td></tr>` + m.abstract.filter(r => r.cat === k).map(r => `<tr data-k="${r.key}"><td>${esc(r.sr)}</td><td class="l">${esc(r.label)}</td><td><input data-a="total" inputmode="numeric" value="${r.total}" ${m.manual ? '' : 'readonly'} title="${esc(DIST.info.en)} e-Prohibition count"></td><td><input data-a="inspected" inputmode="numeric" value="${r.inspected}"></td><td><input data-a="remaining" inputmode="numeric" value="${r.remaining}"></td><td><input data-a="progressive" inputmode="numeric" value="${r.progressive}"></td></tr>`).join('')).join('')}</table></div>
       <div class="muted" style="margin-top:6px">બાકી = કુલ − પ્રોગ્રેસીવ (as in your Excel). Progressive counts licences inspected since 1 April${m.prof && (await L.abstractCfg()).baseline ? ' (or since the carry-forward month set under Licence types & abstract)' : ''}.</div>
       <div class="btns"><button class="btn sec" id="saveEd">Save edits</button><button class="btn danger" id="resetEd">Recalculate (clear edits)</button></div></div>
     <div class="card"><h3>Inspections this month (${m.ins.length})</h3><ul class="list">${m.ins.map(i => `<li onclick="go('#insp/${i.id}')"><div class="main"><div class="t">${esc(lm[i.licenseeId]?.name || '-')}</div><div class="s">${dmy(i.date)} · ${esc(i.typeCode)}</div></div>${/^y/i.test(i.violations) ? '<span class="pill bad">violation</span>' : ''}</li>`).join('') || '<li class="muted">None</li>'}</ul></div>`;
@@ -163,10 +170,12 @@ const routes = {
     $('#saveEd').onclick = async () => { await collect(); toast('Edits saved for ' + monthLabelEn(ym)); };
     $('#resetEd').onclick = async () => { if (confirm('Clear your edits and recalculate this month?')) { await DB.del('diaries', ym); routes.month(ym); } };
     const fname = `Diary-${EN_MONTHS[+ym.slice(5) - 1]}-${ym.slice(0, 4)}`;
-    $('#ex').onclick = e => busy(e.target, async () => { await collect(); saveFile(await X.diaryXlsx(await L.monthForExport(ym)), fname + '.xlsx'); });
-    $('#wd').onclick = e => busy(e.target, async () => { await collect(); saveFile(await X.diaryDocx(await L.monthForExport(ym)), fname + '.docx'); });
-    $('#pdf').onclick = e => busy(e.target, async () => { await collect(); saveFile(await X.pagesToPdf([...await X.diaryPages(await L.monthForExport(ym)), ...PH.pages(await PH.inRange(ym + '-01', ym + '-31'))]), fname + '.pdf'); });
-    $('#pr').onclick = async () => { await collect(); X.printPages([...await X.diaryPages(await L.monthForExport(ym)), ...PH.pages(await PH.inRange(ym + '-01', ym + '-31'))]); };
+    $('#ex').onclick = e => busy(e.target, async () => { if (!(await TJ.gate())) return; await collect(); saveFile(await X.diaryXlsx(await L.monthForExport(ym)), fname + '.xlsx'); });
+    $('#wd').onclick = e => busy(e.target, async () => { if (!(await TJ.gate())) return; await collect(); saveFile(await X.diaryDocx(await L.monthForExport(ym)), fname + '.docx'); });
+    $('#pdf').onclick = e => busy(e.target, async () => { if (!(await TJ.gate())) return; await collect(); const mm = await L.monthForExport(ym); saveFile(await X.pagesToPdf([...await X.diaryPages(mm), ...await annex(mm), ...PH.pages(await PH.inRange(ym + '-01', ym + '-31'))]), fname + '.pdf'); });
+    $('#psync').onclick = e => busy(e.target, async () => { const r = await TJ.preExport(); $('#psyncMsg').textContent = r.msg; toast(r.msg); });
+    const annex = async mm => $('#annex').checked ? TJ.annexPages(mm) : [];
+    $('#pr').onclick = async () => { if (!(await TJ.gate())) return; await collect(); const mm = await L.monthForExport(ym); X.printPages([...await X.diaryPages(mm), ...await annex(mm), ...PH.pages(await PH.inRange(ym + '-01', ym + '-31'))]); };
   },
   /* ---------------- INSPECTION FORM ---------------- */
   async inspect(arg, qs) {
@@ -323,6 +332,7 @@ const routes = {
       ${i.flags?.length ? `<div class="warnbox" style="margin-top:8px">Imported record flagged: ${i.flags.map(esc).join('; ')}</div>` : ''}</div>
       ${f.length ? `<div class="card"><h3>Form details (${f.length})</h3><div class="kv">${f.map(x => `<div>${esc(x.label)}</div><div>${/^data:image\//.test(x.value) ? `<img src="${esc(x.value)}" style="max-width:100%;border-radius:8px">` : esc(x.value)}</div>`).join('')}</div></div>` : ''}
       <div class="card"><h3>Inspection report</h3><div class="btns"><button class="btn" id="ip">PDF</button><button class="btn" id="iw">Word</button><button class="btn" id="ix">Excel</button><button class="btn sec" id="ipr">Print</button></div>
+      </div><div class="card"><h3>Lapse notice <small class="gu">ક્ષતિ અંગે નોટીસ</small></h3><div class="muted">Draft a Gujarati show-cause notice for a lapse found in this inspection (Word / PDF).</div><button class="btn ${/^y/i.test(i.violations) ? '' : 'sec'} block" onclick="go('#notice/${id}')">📝 Prepare notice</button>
       <button class="btn danger block" id="del">Delete inspection</button></div>`;
     const lm = { [i.licenseeId]: lic }, nm = 'Inspection-' + (i.reportNo || i.id).replace(/[\/\\\s]+/g, '_');
     const page = async () => [X.inspectionPage(i, lic, (await X.letterheadJpeg(prof)).dataUrl, prof)];
@@ -409,16 +419,17 @@ const routes = {
       ['#abstract', '🏷', 'Licence types & abstract', 'Totals, ધોરણ, code mapping, carry-forward'], ['#templates', '🧾', 'Inspection forms', 'M-A / F.L. form templates'], ['#keywords', '🏷', 'Keywords / કીવર્ડ્સ', 'Your own quick words for diary & forms'],
       ['#import', '⬇️', 'Import data', 'Existing data, Excel lists, old diaries'], ['#sync', '🔄', 'Sync with Google Drive', 'Google Drive સાથે સિંક · Android ⇄ iPhone'], ['#distclean', '🧹', 'Clean district data', 'Remove the other district’s licensees put here by mistake'], ['#backup', '💾', 'Backup & restore', 'બેકઅપ · auto-backup, share, restore'], ['#settings', '⚙️', 'Settings', 'Name, letterhead, holidays, office']];
     view().innerHTML = `<div class="card"><ul class="list">${items.map(([h, i, t, s]) => `<li onclick="go('${h}')"><span style="font-size:22px">${i}</span><div class="main"><div class="t">${t}</div><div class="s">${s}</div></div>›</li>`).join('')}</ul></div>
-      <div class="card muted">Inspection App v1.7.9 · Data is stored on this phone; if you switch on Google Drive sync, a copy is kept in a hidden app folder of your own Google Drive (no other server). Automatic backups: More › Backup & restore.</div>`;
+      <div class="card muted">Inspection App v1.8.0 · Data is stored on this phone; if you switch on Google Drive sync, a copy is kept in a hidden app folder of your own Google Drive (no other server). Automatic backups: More › Backup & restore.</div>`;
   },
   async abstract() {
     const cfg = await L.abstractCfg(), rows = await L.abstractRows();
     setTop('Licence types & abstract', 'એબ્સ્ટ્રેક્ટ', true);
     const known = new Set(rows.flatMap(r => r.codes)), used = new Set([...(await DB.all('inspections')).map(i => normCode(i.typeCode)), ...(await DB.all('licensees')).flatMap(l => (l.licences || []).map(x => x.typeCode))]);
     const unk = [...used].filter(c => c && !known.has(c));
-    view().innerHTML = `<div class="card gu"><h3>Rows of the abstract</h3><div class="muted">Total = પરવાનાની કુલ સંખ્યા. Codes = which licence types count in that row (comma separated).</div>
+    view().innerHTML = `<div class="card gu"><h3>Rows of the abstract</h3><div class="muted">Total = પરવાનાની કુલ સંખ્યા, counted automatically from ${esc(DIST.info.en)} district's e-Prohibition licensee list (only ${TJ.PREFIX[DIST.key]}/… ULNs; ${esc(DISTRICTS[TJ.otherKey()].en)} licences are never counted). Codes = which licence types count in that row (comma separated).</div>
+      <label class="te-chk"><input type="checkbox" id="manT" ${cfg.manualTotals ? 'checked' : ''}> Use typed totals instead of the e-Prohibition count</label>
       <div class="scroll-x"><table class="t"><tr><th>ક્રમ</th><th>પ્રકાર</th><th>ધોરણ</th><th>કુલ</th><th>Codes</th></tr>
-      ${rows.map(r => `<tr data-k="${r.key}"><td>${esc(r.sr)}</td><td class="l">${esc(r.label)}</td><td><select data-x="std">${['દર માસે', 'દર બે માસે', 'દર ત્રણ માસે', 'દર ચાર માસે', 'દર છ માસે', 'વર્ષે એક વખત', '-', '-\u00a0'].map(s => `<option ${s === r.std ? 'selected' : ''} value="${s}">${s.trim()}</option>`).join('')}</select></td><td><input data-x="total" inputmode="numeric" value="${r.total}"></td><td><input data-x="codes" value="${esc(r.codes.join(','))}" style="min-width:120px"></td></tr>`).join('')}</table></div>
+      ${rows.map(r => `<tr data-k="${r.key}"><td>${esc(r.sr)}</td><td class="l">${esc(r.label)}</td><td><select data-x="std">${['દર માસે', 'દર બે માસે', 'દર ત્રણ માસે', 'દર ચાર માસે', 'દર છ માસે', 'વર્ષે એક વખત', '-', '-\u00a0'].map(s => `<option ${s === r.std ? 'selected' : ''} value="${s}">${s.trim()}</option>`).join('')}</select></td><td><input data-x="total" inputmode="numeric" value="${r.total}" ${cfg.manualTotals ? '' : 'readonly'} title="e-Prohibition count: ${r.liveTotal}"></td><td><input data-x="codes" value="${esc(r.codes.join(','))}" style="min-width:120px"></td></tr>`).join('')}</table></div>
       ${unk.length ? `<div class="warnbox" style="margin-top:8px">Codes in your data not linked to any row: <b>${unk.map(esc).join(', ')}</b></div>` : ''}</div>
       <div class="card"><h3>Carry-forward of progressive (col. 7)</h3><div class="muted">Progressive counts licences inspected since 1 April. If your earlier months were done outside this app, enter the progressive as printed in a past diary; later months in the same year add to it.</div>
       <label>As of month</label><input type="month" id="bm" value="${esc(cfg.baseline?.month || '')}">
@@ -426,9 +437,10 @@ const routes = {
       <button class="btn block" id="save">Save</button>`;
     $('#save').onclick = async () => {
       $$('tr[data-k]').forEach(tr => { const k = tr.dataset.k, base = ABSTRACT_ROWS.find(r => r.key === k);
-        cfg.std[k] = $('[data-x=std]', tr).value; cfg.totals[k] = Number($('[data-x=total]', tr).value) || 0;
+        cfg.std[k] = $('[data-x=std]', tr).value; if ($('#manT').checked) cfg.totals[k] = Number($('[data-x=total]', tr).value) || 0;
         cfg.extraCodes[k] = $('[data-x=codes]', tr).value.split(',').map(normCode).filter(c => c && !base.codes.includes(c)); });
       const vals = {}; $$('[data-b]').forEach(i => { if (i.value !== '') vals[i.dataset.b] = Number(i.value); });
+      cfg.manualTotals = $('#manT').checked;
       cfg.baseline = $('#bm').value ? { month: $('#bm').value, values: vals } : null;
       await L.saveAbstractCfg(cfg); toast('Saved'); };
   },
@@ -633,9 +645,11 @@ async function router() {
   try { await fn(arg, qs); } catch (e) { console.error(e); view().innerHTML = `<div class="card warnbox">Error: ${esc(e.message)}</div>`; }
 }
 window.addEventListener('hashchange', router);
+routes.notice = (id) => NT.route(id);
+routes.perf = (ym) => PR.route(ym);
 (async function init() {
   try { DEFAULT_TEMPLATES = await (await fetch('assets/form-templates.json')).json(); } catch (e) { DEFAULT_TEMPLATES = {}; }
-  await SY.init(); try { await KW.seed(); } catch (e) { console.warn('kw seed', e); } try { await TEAM.init(); } catch (e) { console.warn('team init', e); } distBadge(); const bki = await BK.init(); V.initNotifications();
+  await SY.init(); try { TJ.install(); } catch (e) { console.warn('tour share', e); } try { await KW.seed(); } catch (e) { console.warn('kw seed', e); } try { await TEAM.init(); } catch (e) { console.warn('team init', e); } distBadge(); const bki = await BK.init(); V.initNotifications();
   if ('serviceWorker' in navigator && location.protocol.startsWith('http') && !window.Capacitor) { const hadCtl = !!navigator.serviceWorker.controller; navigator.serviceWorker.register('sw.js').catch(() => {}); navigator.serviceWorker.addEventListener('controllerchange', () => { if (hadCtl && !window.__swReloaded) { window.__swReloaded = true; location.reload(); } }); }
   await router();
   REM.resyncAll().catch(() => {}); try { const LN = V.isNative() && V.plugin('LocalNotifications'); LN && LN.addListener('localNotificationActionPerformed', a => { const id = a?.notification?.extra?.reminderId; if (id) go('#reminder/' + id); }); } catch (e) {}

@@ -39,6 +39,8 @@ IM.importPrivate = async function (data, { skipSuspect = true } = {}) {
       distanceKm: i.distanceKm || '', violations: i.violations, violationNotes: i.violationNotes, rules: i.rules, remarks: i.remarks, staff: i.staff, fields: i.fields || [], flags: i.suspect || [] });
   }
   await DB.putMany('inspections', ins);   // imported inspections do not overwrite the day diary (old data has no route info)
+  // v1.8.0: the old Windows-app file is Surat's – never copy its profile / abstract totals into another district
+  if (typeof DIST !== 'undefined' && DIST.key !== 'surat') return { licensees: toPut.length, inspections: ins.length };
   const prof = await L.profile(), pp = data.profile || {};
   for (const k of ['officerNameGu', 'designationGu', 'deptGu', 'placeGu', 'officerNameEn', 'phone', 'officeLat', 'officeLng', 'letterhead']) if (pp[k]) prof[k] = pp[k];
   if (pp.vehicles?.length) prof.vehicles = [...new Set([...(prof.vehicles || []), ...pp.vehicles])];
