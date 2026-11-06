@@ -112,11 +112,17 @@ const L = {
     const keyOf = i => i.licenseeId || i.reportNo || i.id;
     const monthSets = {}, unmapped = new Set();
     for (const i of ins) { const rs = this.rowsForCode(i.typeCode, rows); if (!rs.length) unmapped.add(i.typeCode || '(blank)'); rs.forEach(r => (monthSets[r.key] ||= new Set()).add(keyOf(i))); }
-    // progressive: from FY start (or from the carry-forward baseline) up to this month
-    const fy = fyStartYm(ym); let base = {}, from = fy;
+    // progressive: from FY start (or carry-forward baseline) up to this month.
+    // Valsad additional charge began 30 Sept 2026 — do not count earlier officers' checks.
+    const fy = fyStartYm(ym); let base = {}, fromDate = `${fy}-01`;
+    const charge = (DISTRICT_PROFILE[DIST.key] || {}).chargeFrom;
+    if (charge && charge >= fromDate && charge.slice(0, 7) <= ym) fromDate = charge;
     const b = cfg.baseline;
-    if (b && b.month && fyStartYm(b.month) === fy && b.month <= ym) { base = b.values || {}; from = addMonths(b.month, 1); }
-    const progIns = from <= ym ? mineOnly(await this.inspectionsIn(`${from}-01`, `${ym}-31`)) : [];
+    if (b && b.month && fyStartYm(b.month) === fy && b.month <= ym && (!charge || (b.month + '-31') >= charge)) {
+      base = b.values || {}; fromDate = addMonths(b.month, 1) + '-01';
+      if (charge && charge > fromDate) fromDate = charge;
+    }
+    const progIns = fromDate.slice(0, 7) <= ym ? mineOnly(await this.inspectionsIn(fromDate, `${ym}-31`)) : [];
     const progSets = {};
     for (const i of progIns) this.rowsForCode(i.typeCode, rows).forEach(r => (progSets[r.key] ||= new Set()).add(keyOf(i)));
     const abstract = rows.map(r => {

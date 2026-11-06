@@ -50,5 +50,5 @@ const SUMMARY_ROWS = [
 /* v1.8.0 district defaults (a Valsad diary must never print Surat) */
 const DISTRICT_PROFILE = {
   surat: { placeGu: 'સુરત', fromCode: 'SRT', officeLat: 21.1702, officeLng: 72.8311 },
-  valsad: { placeGu: 'વલસાડ', fromCode: 'VLS', officeLat: 20.6100, officeLng: 72.9342 }
+  valsad: { placeGu: 'વલસાડ', fromCode: 'VLS', officeLat: 20.6100, officeLng: 72.9342, chargeFrom: '2026-09-30' }
 };
