@@ -17,8 +17,8 @@ const PR = {
   async manual() { const o = {}; (await DB.all('pendency')).filter(p => p.portal === 'monthly').forEach(p => o[p.ym] = p); return o; },
   n: v => v === '' || v == null || isNaN(v) ? null : Number(v),
   pct: (d, r) => (d == null || r == null || r === 0) ? null : Math.round(1000 * d / r) / 10,
-  calc(man) {
-    const c = man?.counts || {}, N = k => PR.n(c[k]);
+  calc(man, h) {
+    const hp = h?.healthPermitMonth || {}, c = { hpRecv: hp.received, hpDisp: hp.disposed, ...(man?.counts || {}) }, N = k => PR.n(c[k]);
     const lemsR = [N('ipRecv'), N('hpRecv')], lemsD = [N('ipDisp'), N('hpDisp')], sum = a => a.some(x => x != null) ? a.reduce((s, x) => s + (x || 0), 0) : null;
     const row = { ep: { r: N('epRecv'), d: N('epDisp') }, lems: { r: sum(lemsR), d: sum(lemsD), hpR: N('hpRecv'), hpD: N('hpDisp') }, es: { r: N('esRecv'), d: N('esDisp') } };
     for (const k of ['ep', 'lems', 'es']) row[k].eff = PR.pct(row[k].d, row[k].r);
@@ -38,7 +38,7 @@ const PR = {
   },
   async data(to) {
     const months = PR.months(to), hist = await PR.history(), H = hist?.districts?.[DIST.key] || {}, man = await PR.manual();
-    return { months, H, man, rows: months.map(m => ({ ym: m, h: H[m] || { noData: true }, c: PR.calc(man[m]) })), hist };
+    return { months, H, man, rows: months.map(m => ({ ym: m, h: H[m] || { noData: true }, c: PR.calc(man[m], H[m]) })), hist };
   },
   html(D, forPdf) {
     const { months, rows } = D, ser = (f) => rows.map(f), dash = v => v == null ? '–' : v;
@@ -50,7 +50,7 @@ const PR = {
       ${rows.map((r, i) => { const p = rows[i - 1]?.c, c = r.c, f = (x, k) => x.r == null && x.d == null ? '<span class="muted">not entered</span>' : `${dash(x.d)}/${dash(x.r)}${x.eff != null ? ' (' + x.eff + '%' + (p ? mom(x.eff, p[k].eff) : '') + ')' : ''}`;
         const h = r.h.noData ? '<span class="muted">no saved reading</span>' : `${r.h.readings} readings · pending at end ${dash(r.h.eprohibition?.end?.pending)} · LEMS awaiting ${dash(r.h.lems?.end?.ipAwaiting)} · e-Sarkar files ${dash(r.h.esarkar?.end?.files)}${r.h.lems?.healthRecorded ? '' : ' · Health Permit not read yet'}`;
         return `<tr><td>${esc(monthLabelEn(r.ym))}</td><td>${f(c.ep, 'ep')}</td><td>${f(c.lems, 'lems')}</td><td>${c.lems.hpR == null && c.lems.hpD == null ? '<span class="muted">not entered</span>' : dash(c.lems.hpD) + '/' + dash(c.lems.hpR)}</td><td>${f(c.es, 'es')}</td><td>${c.all.eff == null ? '–' : c.all.eff + '%' + (p ? mom(c.all.eff, p.all.eff) : '')}</td><td style="font-size:11px">${h}</td></tr>`; }).join('')}</table>`;
-    const noData = rows.filter(r => r.h.noData && r.c.all.r == null).map(r => monthLabelEn(r.ym));
+    const noData = rows.filter(r => r.h.noData && !r.h.healthPermitMonth && r.c.all.r == null).map(r => monthLabelEn(r.ym));
     return `<h3>${esc(DIST.info.en)} – Monthly efficiency &amp; performance (portal disposal) <small class="gu">માસિક કામગીરી અહેવાલ</small></h3>
       <div class="muted">Efficiency = disposed ÷ received in the month (from the portal's monthly figures entered below). LEMS includes Health Permits. Months with no figures show "–"; nothing is estimated.</div>
       ${noData.length ? `<div class="warnbox" style="margin:6px 0">No portal data saved for: ${noData.map(esc).join(', ')}. Enter them from the portal's monthly report to fill the charts.</div>` : ''}
