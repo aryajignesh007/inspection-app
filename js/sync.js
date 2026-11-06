@@ -8,7 +8,7 @@ const LSK = k => (typeof DIST !== 'undefined' ? DIST.ls(k) : k);   // v1.7.0 per
 const SYM = (() => {   // pure merge logic (no I/O) – unit-tested in node
   const SYNC_STORES = ['licensees', 'inspections', 'days', 'diaries', 'templates', 'licenceTypes', 'visits', 'settings', 'keywords', 'reminders', 'meetings', 'offices', 'pendency', 'staff', 'messages', 'receipts'];
   const KEYS = { settings: 'key', licensees: 'id', inspections: 'id', days: 'date', diaries: 'ym', templates: 'code', licenceTypes: 'code', visits: 'id', keywords: 'id', reminders: 'id', meetings: 'id', offices: 'id', pendency: 'id', staff: 'id', messages: 'id', receipts: 'id' };
-  const LOCAL_SETTING = /^(bk\.|sync\.|team\.|visitNid$|lastBackup$)/;   // device bookkeeping – never synced
+  const LOCAL_SETTING = /^(bk\.|sync\.|team\.|visitNid$|lastBackup$|cleanup\.)/;   // device bookkeeping – never synced
   const BASE_TS = '2000-01-01T00:00:00.000Z';                     // migrated (old) records: any real edit is newer
   const TOMB_DAYS = 365;
   const SEP = '|';
@@ -33,8 +33,8 @@ const SYM = (() => {   // pure merge logic (no I/O) – unit-tested in node
   }
   function docState(doc) {
     const st = {};
-    for (const [id, r] of Object.entries(doc?.records || {})) st[id] = { r, u: r._u || BASE_TS, d: r._d || '' };
-    for (const [id, t] of Object.entries(doc?.tombs || {})) { const e = { t: 1, u: t.u, d: t.d || '' }; if (!st[id] || newer(e, st[id])) st[id] = e; }
+    for (const [id, r] of Object.entries(doc?.records || {})) if (syncable(split(id)[0], r)) st[id] = { r, u: r._u || BASE_TS, d: r._d || '' };
+    for (const [id, t] of Object.entries(doc?.tombs || {})) { const [store, key] = split(id); if (!syncable(store, key)) continue; const e = { t: 1, u: t.u, d: t.d || '' }; if (!st[id] || newer(e, st[id])) st[id] = e; }
     return st;
   }
   /** Merge local + remote. since = ISO of this device's last successful sync ('' = never).
@@ -87,10 +87,10 @@ const GDRIVE = {
   },
   async find(token, name) {
     const q = encodeURIComponent(`name='${name}' and trashed=false`);
-    const r = await GDRIVE.call(token, `https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&q=${q}&fields=files(id,modifiedTime,headRevisionId,size)&orderBy=modifiedTime desc`);
+    const r = await GDRIVE.call(token, `https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&q=${q}&fields=files(id,name,modifiedTime,headRevisionId,size)&orderBy=modifiedTime desc`);
     return ((await r.json()).files || [])[0] || null;
   },
-  async meta(token, id) { return (await GDRIVE.call(token, `https://www.googleapis.com/drive/v3/files/${id}?fields=id,modifiedTime,headRevisionId,size`)).json(); },
+  async meta(token, id) { return (await GDRIVE.call(token, `https://www.googleapis.com/drive/v3/files/${id}?fields=id,name,modifiedTime,headRevisionId,size`)).json(); },
   async download(token, id) { return (await GDRIVE.call(token, `https://www.googleapis.com/drive/v3/files/${id}?alt=media`)).json(); },
   async create(token, name, obj) {
     const b = 'insp' + Math.random().toString(36).slice(2);
@@ -189,6 +189,12 @@ const SY = {
   },
   async dumpRaw() { const o = {}; for (const s of SYM.SYNC_STORES) o[s] = await (SY.raw || DB).all(s); return o; },
   /** Full sync. Returns a summary; never leaves the DB half-applied for one record. */
+  validateDistrict(doc, filename, key = DIST.key) {
+    const expected = DISTRICTS[key].syncFile;
+    if (filename !== expected || (doc?.district && doc.district !== key) || (doc?.syncFile && doc.syncFile !== expected)) throw new Error('District mismatch — Drive file not applied. Open the correct district / office Drive.');
+    // Legacy unstamped files are accepted ONLY under the exact district-specific filename.
+    return true;
+  },
   async run(reason = 'manual') {
     if (SY._running) return SY._running;
     SY._running = (async () => {
@@ -197,6 +203,7 @@ const SY = {
       if (typeof navigator !== 'undefined' && navigator.onLine === false) { SY.setStatus({ state: 'offline' }); return { offline: true }; }
       SY.setStatus({ state: 'syncing' });
       try {
+        if (typeof DC !== 'undefined') await DC.auto(true);
         await SY.migrateLocal();
         const c = SY.cfg(), dev = await SY.deviceId(), last = await DB.getSetting('sync.last', null);
         if (!last && typeof BK !== 'undefined') { try { await BK.safety('first-sync'); } catch (e) { console.warn('safety', e); } }
@@ -205,11 +212,14 @@ const SY = {
         for (let attempt = 0; attempt < 3; attempt++) {
           const file = await GDRIVE.find(token, c.SYNC_FILE_NAME);
           const remote = file ? await GDRIVE.download(token, file.id) : null;
+          SY.validateDistrict(remote, file ? file.name : c.SYNC_FILE_NAME);
           if (remote && remote.kind !== 'inspection-app-sync') throw new Error('Unexpected file in Drive app folder');
           const local = SYM.localState(await SY.dumpRaw(), await SY.raw.all('tombstones'));
           const m = SYM.merge(local, remote, { since: last?.at || '', deviceId: dev, deviceName: SY.deviceName() });
+          m.doc.district = DIST.key; m.doc.syncFile = c.SYNC_FILE_NAME;
+          if (!remote?.district || !remote?.syncFile) m.upload = true;
           if (m.upload) {
-            if (file) { const now = await GDRIVE.meta(token, file.id); if (now.headRevisionId && file.headRevisionId && now.headRevisionId !== file.headRevisionId) continue; await GDRIVE.update(token, file.id, m.doc); }
+            if (file) { const now = await GDRIVE.meta(token, file.id); SY.validateDistrict(remote, now.name); if (now.headRevisionId && file.headRevisionId && now.headRevisionId !== file.headRevisionId) continue; await GDRIVE.update(token, file.id, m.doc); }
             else await GDRIVE.create(token, c.SYNC_FILE_NAME, m.doc);
           }
           await SY.applyLocal(m.apply);
@@ -220,6 +230,8 @@ const SY = {
         if (!result) throw new Error('Drive file kept changing – will retry');
         await SY.rawPut('settings', { key: 'sync.last', value: result });
         await SY.rawPut('settings', { key: 'sync.dirty', value: false }); SY._dirty = false;
+        if (typeof DC !== 'undefined') await DC.auto(true);
+        if (typeof TJ !== 'undefined') await TJ.reconcile();
         SY.setStatus({ state: 'ok', last: result });
         if (result.received && typeof router === 'function' && !SY._quietRefresh) try { router(); } catch (e) {}
         return result;

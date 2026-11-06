@@ -17,7 +17,7 @@ const TJ = {
     for (const [kk, info] of Object.entries(DISTRICTS)) if (d.includes(kk) || (info.gu && d.includes(info.gu))) return kk === k;
     return true;   // unknown → it is in this district's own database
   },
-  licenseeBelongs(l, k = DIST.key) { const ls = l?.licences || []; return !ls.length || ls.some(x => TJ.licBelongs(l, x, k)); },
+  licenseeBelongs(l, k = DIST.key) { const ls = l?.licences || []; return ls.length ? ls.some(x => TJ.licBelongs(l, x, k)) : TJ.licBelongs(l, {}, k); },
   /* v1.8.0-pf40 Sir's standing "do not count" rules (both districts): DS3, DS4, DSP2, DSP3, DSP4, DD2 types; hospitals, clinics,
      schools, colleges, universities and other institutions; RS2 only for factories / companies (Dodel Analytical kept).
      Inspection records are never touched – skipped licences are only left out of totals, inspected and progressive counts. */
@@ -62,7 +62,7 @@ const TJ = {
   skipInspection(i, lic) {
     const c = normCode(i?.typeCode);
     const x = (lic?.licences || []).find(y => normCode(y.typeCode) === c) || { typeCode: i?.typeCode };
-    return TJ.isInactive(x) || !!TJ.skipLicence(lic || { name: i?.licenseeName || i?.name || i?.firm || '' }, x);
+    return !!i?.excluded || !TJ.licBelongs(lic, i) || !TJ.licBelongs(lic, x) || (lic && !TJ.licenseeBelongs(lic)) || TJ.isInactive(x) || !!TJ.skipLicence(lic || { name: i?.licenseeName || i?.name || i?.firm || '' }, x);
   },
   /** {rowKey: [{name, uln, code}]} – active licences of this district per abstract row */
   async lists(rows) {
@@ -75,6 +75,23 @@ const TJ = {
     }
     for (const k in out) out[k].sort((a, b) => a.uln.localeCompare(b.uln));
     return out;
+  },
+  inspectionKey: i => i.licenseeId || i.reportNo || i.id,
+  /** Same per-abstract-row unique-licensee semantics used by taarij and dashboard. */
+  rowCounts(lics, ins, rows, per) {
+    const lm = Object.fromEntries(lics.map(l => [l.id, l])), by = {};
+    for (const r of rows) {
+      const entries = [];
+      for (const l of lics) for (const lc of l.licences || []) if (TJ.isValidToday(lc) && TJ.licBelongs(l, lc) && !TJ.skipLicence(l, lc) && r.codes.includes(normCode(lc.typeCode))) entries.push({ l, lc, c: normCode(lc.typeCode), row: r });
+      const seen = new Set(), done = [];
+      for (const i of ins) if (i.date >= per.from && i.date <= per.to && !TJ.skipInspection(i, lm[i.licenseeId]) && r.codes.includes(normCode(i.typeCode))) {
+        const key = TJ.inspectionKey(i); if (!seen.has(key)) { seen.add(key); done.push({ i, l: lm[i.licenseeId], lc: lm[i.licenseeId]?.licences?.find(x => normCode(x.typeCode) === normCode(i.typeCode)), c: normCode(i.typeCode), row: r }); }
+      }
+      const pending = entries.slice();
+      for (const d of done) { const n = pending.findIndex(e => e.l.id === d.i.licenseeId); if (n >= 0) pending.splice(n, 1); }
+      by[r.key] = { total: entries.length, done: done.length, pending: Math.max(0, entries.length - done.length), entries, inspected: done, remaining: pending };
+    }
+    return by;
   },
   /** cross-check of this district's licence list before printing the taarij (flags, never silently fixes) */
   async audit() {
@@ -145,21 +162,17 @@ const TJ = {
   },
   /** "Sync diary first": Drive sync of this district + tour-day merge with the other district (+ Drive sync again). */
   async preExport() {
-    const msgs = []; let ok = true;
-    try { const r = await SY.auto('pre-export'); msgs.push(r ? 'Drive synced' : 'Drive sync off / not signed in'); } catch (e) { ok = false; msgs.push('Drive sync failed: ' + e.message); }
-    try { const t = await TJ.reconcile(); msgs.push(t.shared ? `tour days matched with ${DISTRICTS[TJ.otherKey()].en}${t.copied ? ' (' + t.copied + ' updated)' : ''}` : 'other district not on this phone'); if (t.copied) { try { await SY.auto('pre-export'); } catch (e) {} } } catch (e) { ok = false; msgs.push('tour-day sync failed: ' + e.message); }
-    await DB.setSetting('diary.lastSync', { at: new Date().toISOString(), msgs });
+    const msgs = []; let ok = true; const quiet = SY._quietRefresh; SY._quietRefresh = true;
+    try { const r = await SY.auto('pre-export'); if (!r || r.needsSignIn || r.offline || r.error) { ok = false; msgs.push((r?.error || 'Drive unavailable / signed out') + ' — using local data'); } else msgs.push('Drive synced'); } catch (e) { ok = false; msgs.push('Drive sync failed: ' + e.message); }
+    try { const t = await TJ.reconcile(); msgs.push(t.shared ? `tour days matched with ${DISTRICTS[TJ.otherKey()].en}${t.copied ? ' (' + t.copied + ' updated)' : ''}` : 'other district not on this phone'); if (t.copied) { try { const r = await SY.auto('pre-export'); if (r?.error || r?.offline) { ok = false; msgs.push('Calendar upload pending — using local data'); } } catch (e) { ok = false; } } } catch (e) { ok = false; msgs.push('tour-day sync failed: ' + e.message); }
+    try { await DB.setSetting('diary.lastSync', { at: new Date().toISOString(), msgs }); } finally { SY._quietRefresh = quiet; }
     return { ok, msg: msgs.join(' · ') };
   },
-  /** ask before export; returns false to cancel */
+  /** Every generation attempts sync; offline/sign-out is a local-data fallback, never a prompt. */
   async gate() {
-    const au = await TJ.audit();
-    if (au.count && !confirm(`Licence cross-check with ${DIST.info.en} e-Prohibition list found ${au.count} item(s) to check (see the box on the diary screen).\n${au.otherDistrict.length ? au.otherDistrict.length + ' other-district licence(s) are NOT counted.\n' : ''}Continue?`)) return false;
-    const last = await DB.getSetting('diary.lastSync', null), fresh = last && Date.now() - Date.parse(last.at) < 5 * 60e3;
-    if (fresh) return true;
-    if (!confirm('Sync diary details before export?\nડાયરીની વિગતો export પહેલાં sync કરવી?\n\nOK = Sync first, then export\nCancel = choose again')) return confirm('Export WITHOUT syncing?');
-    toast('Syncing diary…'); const r = await TJ.preExport(); toast(r.msg);
-    return r.ok || confirm(r.msg + '\n\nExport anyway?');
+    toast('Syncing diary, taarij & calendar…');
+    const r = await TJ.preExport(); toast(r.msg);
+    return true;
   },
   annexPages(m) {
     if (!m.lists) return [];

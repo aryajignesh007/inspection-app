@@ -46,24 +46,26 @@ const DSH = {
     const y = +today.slice(0, 4), m = +today.slice(5, 7), fy = m >= 4 ? y : y - 1;
     const qStartM = m >= 4 ? 4 + 3 * Math.floor((m - 4) / 3) : 1, qy = y;
     const qs = `${qy}-${pad(qStartM)}-01`, qe = ymd(new Date(qy, qStartM - 1 + 3, 0));
-    return {
+    const periods = {
       fy: { key: 'fy', en: `FY ${fy}-${String(fy + 1).slice(2)}`, gu: 'નાણાકીય વર્ષ', from: `${fy}-04-01`, to: `${fy + 1}-03-31` },
       q: { key: 'q', en: 'This quarter', gu: 'આ ત્રિમાસિક', from: qs, to: qe },
       m: { key: 'm', en: 'This month', gu: 'આ મહિનો', from: today.slice(0, 7) + '-01', to: today.slice(0, 7) + '-31' }
     };
+    const charge = (DISTRICT_PROFILE[DIST.key] || {}).chargeFrom || '';
+    for (const p of Object.values(periods)) { if (charge > p.from) p.from = charge; if (p.to > today) p.to = today; }
+    return periods;
   },
   typeGroup: code => { const c = normCode(code); if (/^MA[12]$|^MA12$/.test(c)) return c; const g = /^([A-Z]+)/.exec(c); return g ? g[1] : c || '?'; },
   /** active licences, inspected (any inspection of that licensee + type in the period) vs pending, per type group */
-  licStats(lics, ins, per) {
-    const done = new Set(ins.filter(i => !i.excluded && i.date >= per.from && i.date <= per.to).map(i => i.licenseeId + '|' + normCode(i.typeCode)));
-    const by = {}; let total = 0, insp = 0;
-    for (const l of lics) for (const lc of (l.licences || [])) {
-      if (TJ.isInactive(lc) || !TJ.licBelongs(l, lc) || TJ.skipLicence(l, lc)) continue;
-      const c = normCode(lc.typeCode), g = DSH.typeGroup(c), ok = done.has(l.id + '|' + c);
-      const b = (by[g] ||= { type: g, total: 0, done: 0 }); b.total++; total++; if (ok) { b.done++; insp++; }
+  licStats(lics, ins, per, rows = ABSTRACT_ROWS) {
+    const counts = TJ.rowCounts(lics, ins, rows, per), by = {}; let total = 0, insp = 0;
+    for (const r of rows) {
+      const s = counts[r.key], g = DSH.typeGroup(r.codes[0]);
+      if (!s.total && !s.done) continue;
+      const b = (by[g] ||= { type: g, total: 0, done: 0, pending: 0 });
+      b.total += s.total; b.done += s.done; b.pending += s.pending; total += s.total; insp += s.done;
     }
-    const rows = Object.values(by).map(b => ({ ...b, pending: b.total - b.done })).sort((a, b) => b.total - a.total);
-    return { total, done: insp, pending: total - insp, rows };
+    return { total, done: insp, pending: Object.values(by).reduce((a, r) => a + r.pending, 0), rows: Object.values(by).sort((a,b) => b.total-a.total) };
   },
   /* ---- portal pendency ---- */
   pendTotal: e => Object.values(e.counts || {}).reduce((s, v) => s + (Number(v) || 0), 0),
@@ -187,12 +189,12 @@ const DASH_ROUTES = {
     const day = (await DB.get('days', t)) || L.defaultDay(t, prof), bst = await BK.status();
     const todayR = DSH.remindersFor(rems, t), lateR = DSH.overdueReminders(rems, t), todayM = DSH.meetingsOn(meets, t), upM = DSH.upcomingMeetings(meets, t, 4);
     const od = DSH.officesDue(offs, t), per = DSH.periods(t); S.dPer ||= 'fy';
-    const scoped = await TEAM.scopeLicensees(lics), st = { fy: DSH.licStats(scoped, ins, per.fy), q: DSH.licStats(scoped, ins, per.q), m: DSH.licStats(scoped, ins, per.m) };
+    const scoped = await TEAM.scopeLicensees(lics), abstractRows = await L.abstractRows(), st = { fy: DSH.licStats(scoped, ins, per.fy, abstractRows), q: DSH.licStats(scoped, ins, per.q, abstractRows), m: DSH.licStats(scoped, ins, per.m, abstractRows) };
     const inbox = await TEAM.inboxForMe();
     const remLi = r => `<li><button class="tick ${r.doneToday ? 'on' : ''}" data-rt="${esc(r.id)}" aria-label="Done">${r.doneToday ? '✓' : ''}</button><div class="main" onclick="go('#reminder/${esc(r.id)}')"><div class="t ${r.doneToday ? 'strike' : ''}">${esc(r.title)}</div><div class="s">${esc(r.time || '')}${r.repeat ? ' · 🔁 ' + esc(REPEATS[r.repeat].split(' / ')[0]) : ''}${r.date < t && !r.repeat ? ' · <span class="bad">from ' + dmy(r.date) + '</span>' : ''}</div></div></li>`;
     const meetLi = m => `<li onclick="go('#meeting/${esc(m.id)}')"><div style="width:52px;text-align:center"><b>${esc(m.time || '–')}</b><div class="muted">${m.date === t ? 'today' : dmy(m.date).slice(0, 5)}</div></div><div class="main"><div class="t">${esc(m.title)}</div><div class="s">${esc(m.place || '')}${m.meetLink ? ' · 🎥 Google Meet' : ''}</div></div>${m.meetLink ? `<a class="btn sm" href="${esc(m.meetLink)}" target="_blank" onclick="event.stopPropagation()">Join</a>` : ''}</li>`;
     view().innerHTML = `<div class="dash">
-    <div class="card span2 hello"><div class="row"><div><h3 style="margin:0">${new Date().getHours() < 12 ? 'Good morning' : new Date().getHours() < 17 ? 'Good afternoon' : 'Good evening'}, ${role === 'admin' ? 'Sir' : esc((await TEAM.me())?.name || 'Sir')}</h3>
+    <div class="card span2 hello"><div class="district-eyebrow">${esc(DIST.info.en)} FIELD OFFICE · ક્ષેત્ર કચેરી</div><div class="row"><div><h3 style="margin:0">${new Date().getHours() < 12 ? 'Good morning' : new Date().getHours() < 17 ? 'Good afternoon' : 'Good evening'}, ${role === 'admin' ? 'Sir' : esc((await TEAM.me())?.name || 'Sir')}</h3>
       <div class="gu" style="margin-top:4px">📅 ${esc(day.work)} ${kindPill(day.kind)}</div></div><button class="btn sec sm" style="flex:0" onclick="go('#day/${t}')">Diary</button></div>
       <div class="chips gu" id="quick">${(await KW.list('work')).slice(0, 6).map(k => `<button class="chip" data-w="${esc(k.text)}" data-k="${k.kind || 'office'}">${esc(k.text)}</button>`).join('')}</div>
       <div class="muted" style="margin-top:6px;cursor:pointer" onclick="go('#backup')">${bst.needsReminder ? '⚠️' : '💾'} Last backup: ${esc(BK.fmt(BK.isNative() ? bst.lastAt : bst.offAt))}</div></div>
@@ -205,9 +207,9 @@ const DASH_ROUTES = {
       ${upM.length ? `<div class="sec-title">Upcoming</div><ul class="list">${upM.map(meetLi).join('')}</ul>` : ''}
       <div class="btns"><button class="btn sm" onclick="go('#meeting/new')">＋ Meeting</button>${role === 'admin' ? `<button class="btn acc sm" onclick="go('#meetnow')">🎥 Team meeting</button>` : ''}<button class="btn sec sm" onclick="go('#meetings')">All</button></div></div>
     <div class="card span2"><h3>📊 Licence inspection status <small class="gu">પરવાના તપાસણી સ્થિતિ</small></h3>
-      <div class="donuts">${['fy', 'q', 'm'].map(k => `<button class="dn ${S.dPer === k ? 'on' : ''}" data-per="${k}">${DSH.svgDonut(st[k].done, st[k].total)}<div><b>${st[k].done}</b> / ${st[k].total}</div><small>${esc(per[k].en)}<br><span class="gu">${per[k].gu}</span></small></button>`).join('')}</div>
+      <div class="muted">Same automatic counting rules as taarij · Portal figures are separate below.</div><div class="donuts">${['fy', 'q', 'm'].map(k => `<button class="dn ${S.dPer === k ? 'on' : ''}" data-per="${k}">${DSH.svgDonut(st[k].done, st[k].total)}<div><b>${st[k].done}</b> / ${st[k].total}</div><small>${esc(per[k].en)}<br><span class="gu">${per[k].gu}</span></small></button>`).join('')}</div>
       <div class="legend"><span><i style="background:#2e7d32"></i>Inspected / તપાસેલ</span><span><i style="background:#ffb74d"></i>Pending / બાકી</span> <span class="muted">${esc(per[S.dPer].en)}: ${dmy(per[S.dPer].from)} – ${dmy(per[S.dPer].to > t ? t : per[S.dPer].to)}</span></div>
-      <div class="btns dtiles">${(() => { const P = S.dPer, s = st[P], nIns = ins.filter(i => !TJ.skipInspection(i, lics.find(l => l.id === i.licenseeId)) && !i.excluded && i.date >= per[P].from && i.date <= per[P].to).length, nAct = scoped.reduce((a, l) => a + (l.licences || []).filter(x => !TJ.isInactive(x) && TJ.licBelongs(l, x) && !TJ.skipLicence(l, x)).length, 0), nIna = scoped.reduce((a, l) => a + (l.licences || []).filter(x => TJ.isInactive(x)).length, 0);
+      <div class="btns dtiles">${(() => { const P = S.dPer, s = st[P], nIns = ins.filter(i => (!i.licenseeId || scoped.some(l => l.id === i.licenseeId)) && !TJ.skipInspection(i, lics.find(l => l.id === i.licenseeId)) && !i.excluded && i.date >= per[P].from && i.date <= per[P].to).length, nAct = scoped.reduce((a, l) => a + (l.licences || []).filter(x => !TJ.isInactive(x) && TJ.licBelongs(l, x) && !TJ.skipLicence(l, x)).length, 0), nIna = scoped.reduce((a, l) => a + (l.licences || []).filter(x => TJ.licBelongs(l, x) && TJ.isInactive(x)).length, 0);
         return `<button class="btn sm" onclick="go('#dlist/done?per=${P}')">✓ Inspected ${s.done} ›</button><button class="btn sec sm" onclick="go('#dlist/pending?per=${P}')">⏳ Pending ${s.pending} ›</button><button class="btn sec sm" onclick="go('#dlist/ins?per=${P}')">📝 Inspections ${nIns} ›</button><button class="btn sec sm" onclick="go('#dlist/active')">Active licences ${nAct} ›</button><button class="btn sec sm" onclick="go('#dlist/inactive')">⛔ Inactive ${nIna} ›</button>`; })()}</div>
       ${DSH.svgBars(st[S.dPer].rows)}
       <div class="chips dchips">${st[S.dPer].rows.map(r => `<button class="chip" onclick="go('#dlist/pending?per=${S.dPer}&type=${encodeURIComponent(r.type)}')">${esc(r.type)} ${r.done}/${r.total} ›</button>`).join('')}</div>

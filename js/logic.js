@@ -108,15 +108,16 @@ const L = {
     const days = await this.monthDays(ym, prof);
     const [y, m] = ym.split('-').map(Number);
     const lmap = await this.licenseeMap(), mineOnly = list => list.filter(i => !i.licenseeId || !lmap[i.licenseeId] || TJ.licenseeBelongs(lmap[i.licenseeId])), counted = list => list.filter(i => !TJ.skipInspection(i, i.licenseeId ? lmap[i.licenseeId] : null));   // pf40: hospitals/schools/excluded types not counted (records kept)   // v1.8.0: never count the other district's licensees
-    const ins = counted(mineOnly(await this.inspectionsIn(`${ym}-01`, `${ym}-${pad(daysInMonth(y, m))}`)));
-    const keyOf = i => i.licenseeId || i.reportNo || i.id;
+    const chargeFrom = (DISTRICT_PROFILE[DIST.key] || {}).chargeFrom || '';
+    const ins = counted(mineOnly(await this.inspectionsIn(chargeFrom > `${ym}-01` ? chargeFrom : `${ym}-01`, `${ym}-${pad(daysInMonth(y, m))}`)));
+    const keyOf = TJ.inspectionKey;
     const monthSets = {}, unmapped = new Set();
     for (const i of counted(ins)) { const rs = this.rowsForCode(i.typeCode, rows); if (!rs.length) unmapped.add(i.typeCode || '(blank)'); rs.forEach(r => (monthSets[r.key] ||= new Set()).add(keyOf(i))); }
     // progressive: from FY start (or carry-forward baseline) up to this month.
     // Valsad additional charge began 30 Sept 2026 — do not count earlier officers' checks.
     const fy = fyStartYm(ym); let base = {}, fromDate = `${fy}-01`;
     const charge = (DISTRICT_PROFILE[DIST.key] || {}).chargeFrom;
-    if (charge && charge >= fromDate && charge.slice(0, 7) <= ym) fromDate = charge;
+    if (charge && charge >= fromDate) fromDate = charge;
     const b = cfg.baseline;
     if (b && b.month && fyStartYm(b.month) === fy && b.month <= ym && (!charge || (b.month + '-31') >= charge)) {
       base = b.values || {}; fromDate = addMonths(b.month, 1) + '-01';
@@ -142,6 +143,7 @@ const L = {
   },
   /** Merge saved overrides (from the preview screen) into the computed month. */
   async monthForExport(ym) {
+    await TJ.gate(); // Always sync BEFORE reading diary overrides, days, licences and inspections.
     const c = await this.computeMonth(ym), o = (await DB.get('diaries', ym)) || {}; c.manual = !!(await this.abstractCfg()).manualTotals;
     const summary = { ...c.summary, ...(o.summary || {}) };
     const abstract = c.abstract.map(r => { const ov = { ...((o.abstract || {})[r.key] || {}) }; if (!c.manual) delete ov.total; const x = { ...r, ...ov }; x.remaining = ov.remaining ?? Math.max(0, Number(x.total) - Number(x.progressive)); return x; });

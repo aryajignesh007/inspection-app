@@ -11,43 +11,53 @@ const DC = {
     walk(l, 0); return parts.join(' ').toLowerCase(); },
   hits(txt, d) { return DC.WORDS[d].filter(w => new RegExp('(^|[^a-z])' + w + '([^a-z]|$)').test(txt)); },
   other: () => DIST.key === 'valsad' ? 'surat' : 'valsad',
-  /** read-only copy of the other district's licensees (same phone) for ID matching; never written */
-  async otherLics() {
-    const name = DISTRICTS[DC.other()].db;
-    try { if (indexedDB.databases && !(await indexedDB.databases()).some(d => d.name === name)) return null; } catch (e) {}
-    return new Promise(ok => { const r = indexedDB.open(name); r.onupgradeneeded = () => { r.transaction.abort(); ok(null); };
-      r.onsuccess = () => { const d = r.result; if (!d.objectStoreNames.contains('licensees')) { d.close(); return ok(null); } const q = d.transaction('licensees').objectStore('licensees').getAll(); q.onsuccess = () => { d.close(); ok(q.result); }; q.onerror = () => { d.close(); ok(null); }; };
-      r.onerror = () => ok(null); });
-  },
+  // Cleanup never opens the other district's private stores; ULN / explicit district is sufficient.
+  async otherLics() { return null; },
   /** classify every licensee of this district */
   async scan() {
-    const me = DIST.key, ot = DC.other(), lics = await DB.all('licensees'), oth = await DC.otherLics(), ids = new Set((oth || []).map(x => x.id));
-    const key = l => (l.name || '').trim().toLowerCase() + '|' + (l.licences || []).map(x => x.licenceNo || '').sort().join(',');
-    const keys = new Set((oth || []).map(key));
-    const out = [];
-    for (const l of lics) {
-      const t = DC.text(l), ho = DC.hits(t, ot), hm = DC.hits(t, me), why = [], lic = (l.licences || []).map(x => x.licenceNo || '').join(' ');
-      const idm = ids.has(l.id), km = keys.has(key(l)), df = String(l.district || '').toLowerCase(), dfo = df.includes(ot), dfm = df.includes(me), lo = DC.LIC[ot].test(lic), lm = DC.LIC[me].test(lic);
-      if (idm) why.push('same record (ID) as in ' + DISTRICTS[ot].en); else if (km) why.push('same name & licence no. as in ' + DISTRICTS[ot].en);
-      if (dfo) why.push('district: ' + l.district); if (ho.length) why.push('place: ' + ho.join(', ')); if (lo) why.push('licence no. pattern');
-      if (!why.length) continue;
-      const mine = hm.length || dfm || lm;
-      const sure = !mine && (idm || km || dfo || ho.length > 0);
-      out.push({ l, why: why.join(' · ') + (mine ? ` · but also ${DISTRICTS[me].en}: ${[...hm, dfm ? 'district field' : '', lm ? 'licence no.' : ''].filter(Boolean).join(', ')}` : ''), sure });
-    }
-    return { list: out.sort((a, b) => (b.sure - a.sure) || (a.l.name || '').localeCompare(b.l.name || '')), total: lics.length, otherChecked: !!oth };
+    const lics = await DB.all('licensees');
+    const list = lics.filter(l => !TJ.licenseeBelongs(l)).map(l => ({ l, sure: true, why: 'Foreign ULN / explicit other-district field' }));
+    const mixed = lics.filter(l => TJ.licenseeBelongs(l) && (l.licences || []).some(x => !TJ.licBelongs(l, x))).map(l => ({ before: l, after: { ...l, licences: l.licences.filter(x => TJ.licBelongs(l, x)) } }));
+    return { list, mixed, total: lics.length, otherChecked: false };
+  },
+  /** Deterministic cleanup in THIS open DB only; never use names/addresses/inspection presence as authority. */
+  async auto(force = false) {
+    if (DC._running) return DC._running;
+    DC._running = (async () => {
+      const flag = 'cleanup.foreignDistrict.v1';
+      if (!force && await DB.getSetting(flag, false)) return { skipped: 'already checked' };
+      const r = await DC.scan();
+      if (r.list.length && r.list.length === r.total) {
+        console.warn('District cleanup stopped: no in-district records remain. Restore the correct district list first.');
+        return { blocked: 'would empty district' };
+      }
+      const result = r.list.length || r.mixed.length ? await DC.remove(r.list.map(x => x.l.id), { withRecords: true, patches: r.mixed }) : { licensees: 0 };
+      await DB.setSetting(flag, { at: new Date().toISOString(), removed: result.licensees });
+      return result;
+    })();
+    try { return await DC._running; } finally { DC._running = null; }
   },
   UNDO: () => 'bk.cleanUndo',
-  async remove(ids, { withRecords }) {
+  async remove(ids, { withRecords, patches = [] }) {
     const set = new Set(ids), lics = (await DB.all('licensees')).filter(l => set.has(l.id));
-    const ins = withRecords ? (await DB.all('inspections')).filter(i => set.has(i.licenseeId)) : [];
-    const vis = (await DB.all('visits')).filter(v => (v.licIds || []).some(x => set.has(x)));
+    if (lics.length && lics.length === (await DB.all('licensees')).length) throw new Error('Refusing to empty this district. Import the correct district list first.');
+    const ins = withRecords ? (await DB.all('inspections')).filter(i => {
+      if (set.has(i.licenseeId) || !TJ.licBelongs(null, i)) return true;
+      const patch = patches.find(p => p.before.id === i.licenseeId), code = normCode(i.typeCode);
+      return patch && !patch.after.licences.some(x => normCode(x.typeCode) === code) && patch.before.licences.some(x => normCode(x.typeCode) === code && !TJ.licBelongs(patch.before, x));
+    }) : [];
+    const vis = (await DB.all('visits')).filter(v => set.has(v.licenseeId) || [...(v.licIds || []), ...(v.doneLics || [])].some(x => set.has(x)));
     const saf = await BK.safety('clean-district');
-    await DB.setSetting(DC.UNDO(), { at: new Date().toISOString(), district: DIST.key, licensees: lics, inspections: ins, visits: vis });   // local only (bk.* is never synced)
+    await DB.setSetting(DC.UNDO(), { at: new Date().toISOString(), district: DIST.key, licensees: [...lics, ...patches.map(p => p.before)], inspections: ins, visits: vis });   // local only (bk.* is never synced)
     for (const l of lics) await DB.del('licensees', l.id);
+    for (const p of patches) await DB.put('licensees', p.after);
     for (const i of ins) await DB.del('inspections', i.id);
-    for (const v of vis) { const left = (v.licIds || []).filter(x => !set.has(x)); if (withRecords && !left.length) await DB.del('visits', v.id); else await DB.put('visits', { ...v, licIds: left }); }
-    return { licensees: lics.length, inspections: ins.length, visits: vis.length, safety: saf };
+    for (const v of vis) {
+      const left = (v.licIds || []).filter(x => !set.has(x)), doneLics = (v.doneLics || []).filter(x => !set.has(x));
+      if (withRecords && !left.length && !doneLics.length) await DB.del('visits', v.id);
+      else await DB.put('visits', { ...v, licIds: left, doneLics, ...(set.has(v.licenseeId) ? { licenseeId: null } : {}) });
+    }
+    return { licensees: lics.length, mixedRecords: patches.length, inspections: ins.length, visits: vis.length, safety: saf };
   },
   async undo() {
     const u = await DB.getSetting(DC.UNDO(), null); if (!u) throw new Error('Nothing to undo');

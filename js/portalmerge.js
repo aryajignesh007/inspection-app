@@ -2,7 +2,7 @@
 /* v1.8.0-pf39 "Keep portal list & merge duplicate ULNs" (Surat and Valsad alike – works on THIS district's database only).
    (1) Same ULN on two records → one record (portal copy kept, empty fields filled from the other, other name → aka);
        inspections / visits of the removed copy are moved to the kept record. Different ULNs of one company are never merged.
-   (2) e-Prohibition is the authority: licensees NOT from the portal and with NO inspection / visit are removed.
+   (2) e-Prohibition is the authority for ULN deduplication; in-district non-portal history is kept (pf42).
        Non-portal licensees linked to an inspection are KEPT. Inspections, diary days and figures are never deleted.
    Deletes go through DB.del → Drive-sync tombstones, so other phones are cleaned too. A safety backup is made first. */
 const PM = {
@@ -62,7 +62,7 @@ const PM = {
     for (const l of kept) {
       if (PM.lPortal(l)) continue;
       const linked = used.has(l.id) || (l.licences || []).some(x => PM.uln(x) && insUln.has(PM.uln(x)));
-      if (linked) keptNonPortal.push(l); else if (anyPortal) removeIds.push(l.id);   // never empty a list that was never imported from the portal
+      keptNonPortal.push(l); // pf42: missing portal provenance is never authority to delete local history.   // never empty a list that was never imported from the portal
     }
     return { put: kept.filter(l => changed.has(l.id) && !removeIds.includes(l.id)), merged: [...del], remap, removeIds, keptNonPortal, dupLicences, anyPortal,
       dupUlns: Object.values(groups).filter(g => g.length > 1).length };
@@ -71,7 +71,7 @@ const PM = {
   async run(reason = 'portal-merge') {
     const p = await PM.preview();
     if (!p.merged.length && !p.removeIds.length && !p.put.length) return { ...p, done: 0 };
-    let saf = null; try { saf = await BK.safety(reason); } catch (e) { console.warn('safety', e); }
+    const saf = await BK.safety(reason); // Refuse destructive merge when safety backup fails.
     if (p.put.length) await DB.putMany('licensees', p.put);
     const t = id => p.remap[id] || id;
     for (const i of await DB.all('inspections')) if (p.remap[i.licenseeId]) await DB.put('inspections', { ...i, licenseeId: t(i.licenseeId) });
@@ -94,7 +94,7 @@ const PM = {
     if (r.done) toast(`${DIST.info.en}: ${r.merged.length + r.dupLicences} duplicate(s) merged, ${r.removeIds.length} unused non-portal removed, ${r.keptNonPortal.length} inspection-linked kept`);
     return r;
   },
-  summary: p => `${p.dupUlns} duplicate ULN group(s) → ${p.merged.length} extra record(s) merged${p.dupLicences ? ` + ${p.dupLicences} repeated licence row(s)` : ''} · ${p.removeIds.length} non-portal licensee(s) with no inspection removed · ${p.keptNonPortal.length} non-portal kept (inspection-linked)`,
+  summary: p => `${p.dupUlns} duplicate ULN group(s) → ${p.merged.length} extra record(s) merged${p.dupLicences ? ` + ${p.dupLicences} repeated licence row(s)` : ''} · ${p.removeIds.length} non-portal licensee(s) with no inspection removed · ${p.keptNonPortal.length} non-portal kept (local history preserved)`,
   async ask(btn) {
     const p = await PM.preview();
     if (!p.merged.length && !p.removeIds.length && !p.dupLicences) return toast('Nothing to merge – list already matches e-Prohibition');

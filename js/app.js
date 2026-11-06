@@ -49,7 +49,7 @@ const routes = {
   },
   /* ---------------- DIARY (calendar) ---------------- */
   async diary() {
-    try { const t = await TJ.reconcile(); if (t.copied) toast(t.copied + ' tour day(s) matched with ' + DISTRICTS[TJ.otherKey()].en); } catch (e) { console.warn('[tour sync]', e); }
+    await TJ.gate(); // Calendar, diary and taarij all use the refreshed current-district stores.
     const ym = S.ym, prof = await L.profile(), days = await L.monthDays(ym, prof);
     setTop('Diary', 'ડાયરી – ' + monthLabelGu(ym), false, `<button onclick="go('#week')">Week</button>`);
     const [y, m] = ym.split('-').map(Number), first = new Date(y, m - 1, 1).getDay();
@@ -60,7 +60,7 @@ const routes = {
     view().innerHTML = `<div class="card"><div class="month-nav"><button id="pm">‹</button><b>${monthLabelEn(ym)}</b><button id="nm">›</button></div>
       <div class="days">${['S','M','T','W','T','F','S'].map(d => `<div class="dh">${d}</div>`).join('')}${'<div></div>'.repeat(first)}
       ${days.map(d => `<div class="day ${DAY_KINDS[d.kind]?.cls} ${d.date === t ? 'today' : ''} ${planned[d.date] ? 'planned' : ''}" data-d="${d.date}">${insDates.has(d.date) ? '<i class="dot"></i>' : ''}${xd[d.date] ? `<i class="xdot" title="${esc(xd[d.date].map(x => x.dEn + ': ' + x.name).join('; '))}"></i>` : ''}${planned[d.date] ? `<i class="pdot">${planned[d.date].length > 1 ? planned[d.date].length : ''}</i>` : ''}<b>${+d.date.slice(8)}</b>${calLabel(d, prof)}</div>`).join('')}</div>
-      <div class="legend"><span><i style="background:#fff"></i>Office</span><span><i style="background:var(--yel)"></i>Tour</span><span><i style="background:var(--org)"></i>Holiday</span><span><i style="background:var(--blu)"></i>Leave</span><span><i style="background:var(--acc);border-radius:50%"></i>Inspection</span><span><i style="background:#7b1fa2;border-radius:50%"></i>${esc(xdName)} district</span><span><i style="background:#fff;border:2px dashed #1565c0"></i>Planned visit</span><span><i style="background:#fff;border-color:#7b1fa2"></i><b style="color:#7b1fa2">name</b> = optional holiday</span></div>
+      <div class="legend"><span><i style="background:#fff"></i>Office</span><span><i style="background:var(--yel)"></i>Tour</span><span><i style="background:var(--org)"></i>Holiday</span><span><i style="background:var(--blu)"></i>Leave</span><span><i style="background:var(--acc);border-radius:50%"></i>Inspection</span><span><i style="background:#fff;border:2px dashed #1565c0"></i>Planned visit</span><span><i style="background:#fff;border-color:#7b1fa2"></i><b style="color:#7b1fa2">name</b> = optional holiday</span></div>
       <div class="btns"><button class="btn" id="plan">＋ Plan visit</button><button class="btn sec" onclick="go('#visits')">Planned visits</button></div></div>
       <div class="card"><h3>Monthly diary <small class="gu">માસિક ડાયરી</small></h3><div class="muted">Covering letter, day-wise table, તારીજ and licence abstract – same layout as your office diary.</div>
       <button class="btn block" onclick="go('#month/${ym}')">Preview &amp; export ${monthLabelEn(ym)}</button>
@@ -111,7 +111,7 @@ const routes = {
         $('#phx', c).onclick = closeSheet; $('#phdel', c).onclick = async () => { if (!confirm('Delete this photo?')) return; await DB.del('photos', p.id); closeSheet(); toast('Photo deleted'); phRender(); }; }); }); };
     await phRender();
     $('#phcap').onclick = e => busy(e.target, async () => { const r = await PH.capture(date); if (r) { toast(r.loc ? 'Photo saved' : 'Photo saved – location unavailable'); phRender(); } });
-    const dayPages = async () => X.dayPages(date);
+    const dayPages = async () => { await TJ.gate(); return X.dayPages(date); };
     $('#dpdf').onclick = e => busy(e.target, async () => saveFile(await X.pagesToPdf(await dayPages()), `Day-Diary-${date}.pdf`));
     $('#dpr').onclick = async () => X.printPages(await dayPages());
     $('#reset') && ($('#reset').onclick = async () => { await DB.del('days', date); toast('Reset'); routes.day(date); });
@@ -120,6 +120,7 @@ const routes = {
   async week() {
     if (!S.weekStart) { const d = new Date(); d.setDate(d.getDate() - ((d.getDay() + 6) % 7)); S.weekStart = ymd(d); }
     const from = S.weekStart, to = ymd(new Date(parseYmd(from).setDate(parseYmd(from).getDate() + 6)));
+    await TJ.gate();
     const w = await X.weekData(from, to);
     setTop('Weekly diary', 'સાપ્તાહિક ડાયરી', true);
     view().innerHTML = `<div class="card"><div class="month-nav"><button id="pw">‹</button><b>${dmy(from)} – ${dmy(to)}</b><button id="nw">›</button></div>
@@ -128,10 +129,10 @@ const routes = {
     $('#pw').onclick = () => { S.weekStart = ymd(new Date(parseYmd(from).setDate(parseYmd(from).getDate() - 7))); routes.week(); };
     $('#nw').onclick = () => { S.weekStart = ymd(new Date(parseYmd(from).setDate(parseYmd(from).getDate() + 7))); routes.week(); };
     const nm = `Weekly-Diary-${from}-to-${to}`;
-    $('#wp').onclick = e => busy(e.target, async () => (await TJ.gate()) && saveFile(await X.pagesToPdf([...await X.weekPages(w), ...PH.pages(await PH.inRange(from, to))]), nm + '.pdf'));
-    $('#ww').onclick = e => busy(e.target, async () => (await TJ.gate()) && saveFile(await X.weekDocx(w), nm + '.docx'));
-    $('#wx').onclick = e => busy(e.target, async () => (await TJ.gate()) && saveFile(X.weekXlsx(w), nm + '.xlsx'));
-    $('#wpr').onclick = async () => X.printPages([...await X.weekPages(w), ...PH.pages(await PH.inRange(from, to))]);
+    $('#wp').onclick = e => busy(e.target, async () => (await TJ.gate()) && saveFile(await X.pagesToPdf([...await X.weekPages(await X.weekData(from, to)), ...PH.pages(await PH.inRange(from, to))]), nm + '.pdf'));
+    $('#ww').onclick = e => busy(e.target, async () => (await TJ.gate()) && saveFile(await X.weekDocx(await X.weekData(from, to)), nm + '.docx'));
+    $('#wx').onclick = e => busy(e.target, async () => (await TJ.gate()) && saveFile(X.weekXlsx(await X.weekData(from, to)), nm + '.xlsx'));
+    $('#wpr').onclick = async () => (await TJ.gate()) && X.printPages([...await X.weekPages(await X.weekData(from, to)), ...PH.pages(await PH.inRange(from, to))]);
   },
   /* ---------------- MONTHLY DIARY PREVIEW / EXPORT ---------------- */
   async month(ym) {
@@ -160,22 +161,27 @@ const routes = {
       <div class="btns"><button class="btn sec" id="saveEd">Save edits</button><button class="btn danger" id="resetEd">Recalculate (clear edits)</button></div></div>
     <div class="card"><h3>Inspections this month (${m.ins.length})</h3><ul class="list">${m.ins.map(i => `<li onclick="go('#insp/${i.id}')"><div class="main"><div class="t">${esc(lm[i.licenseeId]?.name || '-')}</div><div class="s">${dmy(i.date)} · ${esc(i.typeCode)}</div></div>${/^y/i.test(i.violations) ? '<span class="pill bad">violation</span>' : ''}</li>`).join('') || '<li class="muted">None</li>'}</ul></div>`;
     const collect = async () => {
-      const auto = await L.computeMonth(ym), o = { ym, summary: {}, abstract: {}, refNo: $('#ref').value, letterDate: $('#ldate').value, showRoute: $('#route').checked, showExtra: $('#extra').checked };
-      $$('[data-s]').forEach(i => { if (String(auto.summary[i.dataset.s]) !== i.value) o.summary[i.dataset.s] = i.value; });
-      $$('tr[data-k]').forEach(tr => { const k = tr.dataset.k, a = auto.abstract.find(r => r.key === k), ov = {};
-        $$('[data-a]', tr).forEach(i => { const v = i.value === '' ? '' : Number(i.value); const autoV = i.dataset.a === 'remaining' ? Math.max(0, Number($('[data-a=total]', tr).value) - Number($('[data-a=progressive]', tr).value)) : a[i.dataset.a]; if (v !== autoV) ov[i.dataset.a] = v; });
-        if (Object.keys(ov).length) o.abstract[k] = ov; });
-      await DB.put('diaries', o); return o;
+      // Only user-changed controls are saved. Never turn a stale preview into manual totals after Drive updates.
+      const o = (await DB.get('diaries', ym)) || { ym }; o.summary ||= {}; o.abstract ||= {}; let dirty = false;
+      for (const [id, field] of [['ref','refNo'],['ldate','letterDate'],['route','showRoute'],['extra','showExtra']]) {
+        const el = $('#' + id), value = el.type === 'checkbox' ? el.checked : el.value;
+        if (value !== m[field]) { o[field] = value; dirty = true; }
+      }
+      $$('[data-s]').forEach(i => { if (String(m.summary[i.dataset.s]) !== i.value) { o.summary[i.dataset.s] = i.value; dirty = true; } });
+      $$('tr[data-k]').forEach(tr => { const k = tr.dataset.k, original = m.abstract.find(r => r.key === k);
+        $$('[data-a]', tr).forEach(i => { const v = i.value === '' ? '' : Number(i.value); if (!i.readOnly && String(v) !== String(original[i.dataset.a])) { (o.abstract[k] ||= {})[i.dataset.a] = v; dirty = true; } });
+      });
+      if (dirty) await DB.put('diaries', o); return o;
     };
     $('#saveEd').onclick = async () => { await collect(); toast('Edits saved for ' + monthLabelEn(ym)); };
     $('#resetEd').onclick = async () => { if (confirm('Clear your edits and recalculate this month?')) { await DB.del('diaries', ym); routes.month(ym); } };
     const fname = `Diary-${EN_MONTHS[+ym.slice(5) - 1]}-${ym.slice(0, 4)}`;
-    $('#ex').onclick = e => busy(e.target, async () => { if (!(await TJ.gate())) return; await collect(); saveFile(await X.diaryXlsx(await L.monthForExport(ym)), fname + '.xlsx'); });
-    $('#wd').onclick = e => busy(e.target, async () => { if (!(await TJ.gate())) return; await collect(); saveFile(await X.diaryDocx(await L.monthForExport(ym)), fname + '.docx'); });
-    $('#pdf').onclick = e => busy(e.target, async () => { if (!(await TJ.gate())) return; await collect(); const mm = await L.monthForExport(ym); saveFile(await X.pagesToPdf([...await X.diaryPages(mm), ...await annex(mm), ...PH.pages(await PH.inRange(ym + '-01', ym + '-31'))]), fname + '.pdf'); });
-    $('#psync').onclick = e => busy(e.target, async () => { const r = await TJ.preExport(); $('#psyncMsg').textContent = r.msg; toast(r.msg); });
+    $('#ex').onclick = e => busy(e.target, async () => { await collect(); saveFile(await X.diaryXlsx(await L.monthForExport(ym)), fname + '.xlsx'); });
+    $('#wd').onclick = e => busy(e.target, async () => { await collect(); saveFile(await X.diaryDocx(await L.monthForExport(ym)), fname + '.docx'); });
+    $('#pdf').onclick = e => busy(e.target, async () => { await collect(); const mm = await L.monthForExport(ym); saveFile(await X.pagesToPdf([...await X.diaryPages(mm), ...await annex(mm), ...PH.pages(await PH.inRange(ym + '-01', ym + '-31'))]), fname + '.pdf'); });
+    $('#psync').onclick = e => busy(e.target, async () => { const r = await TJ.preExport(); toast(r.msg); routes.month(ym); });
     const annex = async mm => $('#annex').checked ? TJ.annexPages(mm) : [];
-    $('#pr').onclick = async () => { if (!(await TJ.gate())) return; await collect(); const mm = await L.monthForExport(ym); X.printPages([...await X.diaryPages(mm), ...await annex(mm), ...PH.pages(await PH.inRange(ym + '-01', ym + '-31'))]); };
+    $('#pr').onclick = async () => { await collect(); const mm = await L.monthForExport(ym); X.printPages([...await X.diaryPages(mm), ...await annex(mm), ...PH.pages(await PH.inRange(ym + '-01', ym + '-31'))]); };
   },
   /* ---------------- INSPECTION FORM ---------------- */
   async inspect(arg, qs) {
@@ -598,7 +604,7 @@ routes.sync = async function () {
       ${email ? `<div class="muted">Google account: ${esc(email)}</div>` : ''}${dirty ? '<div class="muted">Changes on this phone are waiting to be synced. / ફેરફારો સિંક બાકી.</div>' : ''}
       <button class="btn block" id="sNow" style="margin-top:8px" ${c.GOOGLE_CLIENT_ID ? '' : 'disabled'}>${tok ? '🔄 Sync now / હમણાં સિંક કરો' : '🔑 Sign in with Google &amp; sync / Google સાથે જોડો'}</button>
       ${en ? `<button class="btn sec block" id="sOff">Turn sync off on this phone / આ ફોન પર સિંક બંધ</button>` : ''}</div>
-    <div class="card"><h3>How it works / કેવી રીતે</h3><div class="muted">Your Android phone and iPhone each keep their own copy and work offline. When online they exchange changes through <b>one hidden file in your own Google Drive</b> (app folder – the app cannot see your other Drive files). Each district (Surat / Valsad) has its own sync file and syncs while that district is open. Sign in with the <b>same Google account</b> for a district on both phones. Sync runs when the app opens, a few seconds after you save or delete an inspection, visit or diary day, and when you press Sync now. If the same record was changed on both phones, the newer change wins and the other is kept in the conflict list below. A safety backup is taken before the first sync.</div></div>
+    <div class="card"><h3>How it works / કેવી રીતે</h3><div class="muted">Your Android phone and iPhone each keep their own copy and work offline. When online they exchange changes through <b>one hidden file in your own Google Drive</b> (app folder – the app cannot see your other Drive files). Each district (Surat / Valsad) has its own sync file and syncs while that district is open. Keep Surat signed into <b>sp.pne.sur@gmail.com</b> and Valsad into <b>sp.pne.val@gmail.com</b> — their separate office Drives are preferred. Use the same account for that district on both phones. If one account is used for both districts, separate filenames and district stamps prevent mixing. A mismatched file is refused, never applied. Diary, taarij and calendar sync before every generation; offline exports use local data. Sync runs when the app opens, a few seconds after you save or delete an inspection, visit or diary day, and when you press Sync now. If the same record was changed on both phones, the newer change wins and the other is kept in the conflict list below. A safety backup is taken before the first sync.</div></div>
     <div class="card"><h3>⚖️ Conflicts / અથડામણ (${conf.length})</h3>${conf.length ? `<ul class="list">${conf.slice(0, 30).map(x => `<li><div class="main"><div class="t">${esc(x.id.replace('|', ' › '))}</div><div class="s">${esc(SY.fmt(x.at))} · kept ${x.kept.deleted ? 'delete' : 'version'} of ${esc(SY.fmt(x.kept.u))}; older ${x.lost.deleted ? 'delete' : 'version'} of ${esc(SY.fmt(x.lost.u))} saved here</div></div></li>`).join('')}</ul><button class="btn sec block" id="cExp">Download conflict list (JSON)</button>` : '<div class="muted">None. 👍</div>'}</div>
     <div class="card"><h3>⚙️ Setup / સેટઅપ</h3><div class="muted">From GOOGLE-SETUP-GUIDE.pdf. Stored only on this phone.</div>
       <label>Google client ID in use (built in, read-only)</label><input readonly value="${esc(c.GOOGLE_CLIENT_ID || '(none)')}" style="font-size:12px;background:#f3f4f8">
@@ -650,7 +656,7 @@ routes.notice = (id) => NT.route(id);
 routes.perf = (ym) => PR.route(ym);
 (async function init() {
   try { DEFAULT_TEMPLATES = await (await fetch('assets/form-templates.json')).json(); } catch (e) { DEFAULT_TEMPLATES = {}; }
-  await SY.init(); try { TJ.install(); } catch (e) { console.warn('tour share', e); } try { await KW.seed(); } catch (e) { console.warn('kw seed', e); } try { await TEAM.init(); } catch (e) { console.warn('team init', e); } distBadge(); const bki = await BK.init(); V.initNotifications();
+  await SY.init(); try { TJ.install(); } catch (e) { console.warn('tour share', e); } try { await KW.seed(); } catch (e) { console.warn('kw seed', e); } try { await TEAM.init(); } catch (e) { console.warn('team init', e); } distBadge(); const bki = await BK.init(); try { await DC.auto(); } catch (e) { console.warn('district cleanup', e); } V.initNotifications();
   if ('serviceWorker' in navigator && location.protocol.startsWith('http') && !window.Capacitor) { const hadCtl = !!navigator.serviceWorker.controller; navigator.serviceWorker.register('sw.js').catch(() => {}); navigator.serviceWorker.addEventListener('controllerchange', () => { if (hadCtl && !window.__swReloaded) { window.__swReloaded = true; location.reload(); } }); }
   await router();
   setTimeout(() => PM.autoOnce().then(r => { if (r && r.done) router(); }).catch(e => console.warn('portal merge', e)), 1500);

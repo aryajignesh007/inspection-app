@@ -35,7 +35,7 @@ const TEAML = {   // pure logic (unit-tested in node)
       ins: (ins || []).filter(i => !i.excluded).map(i => ({ id: i.id, date: i.date, licenseeId: i.licenseeId, typeCode: i.typeCode, violations: i.violations || '' })) };
   },
   fileName: (kind, email) => kind + (email ? '-' + TEAML.norm(email) : '') + '.json',
-  officerLicFile: (lics, st) => ({ kind: 'inspection-app-team-lic', email: TEAML.norm(st.email), types: st.types || [], place: st.place || '', licensees: TEAML.scope(lics, st).map(({ _u, _d, ...l }) => l) }),
+  officerLicFile: (lics, st) => ({ kind: 'inspection-app-team-lic', district: DIST.key, email: TEAML.norm(st.email), types: st.types || [], place: st.place || '', licensees: TEAML.scope(lics, st).map(({ _u, _d, ...l }) => l) }),
   meetEvent({ title, start, minutes = 45, emails, requestId, tz = 'Asia/Kolkata' }) {
     const end = new Date(start.getTime() + minutes * 60000), f = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}:00`;
     return { summary: title, description: 'Team meeting – Inspection App / ટીમ મીટીંગ', start: { dateTime: f(start), timeZone: tz }, end: { dateTime: f(end), timeZone: tz },
@@ -46,7 +46,7 @@ const GAPI = {   // Google Drive (team folder, drive.file) + Calendar
   async call(url, opt) { const t = SY.token(); if (!t) { const e = new Error('Please sign in with Google first (More › Sync). / પહેલા Google સાઇન-ઇન કરો'); e.auth = true; throw e; } return GDRIVE.call(t, url, opt); },
   async json(url, opt) { return (await GAPI.call(url, opt)).json(); },
   q: s => encodeURIComponent(s),
-  async createFolder(name) { return GAPI.json('https://www.googleapis.com/drive/v3/files?fields=id,name,webViewLink', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, mimeType: 'application/vnd.google-apps.folder' }) }); },
+  async createFolder(name) { return GAPI.json('https://www.googleapis.com/drive/v3/files?fields=id,name,webViewLink', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, mimeType: 'application/vnd.google-apps.folder', appProperties: { district: DIST.key } }) }); },
   async share(folderId, email) { return GAPI.json(`https://www.googleapis.com/drive/v3/files/${folderId}/permissions?sendNotificationEmail=true&emailMessage=${GAPI.q('Inspection App team folder – open the Inspection App and join with this code: ' + folderId)}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ role: 'writer', type: 'user', emailAddress: email }) }); },
   async list(folderId) { return (await GAPI.json(`https://www.googleapis.com/drive/v3/files?q=${GAPI.q(`'${folderId}' in parents and trashed=false`)}&fields=files(id,name,modifiedTime,owners(emailAddress))&pageSize=200&supportsAllDrives=true&includeItemsFromAllDrives=true`)).files || []; },
   async get(id) { return GAPI.json(`https://www.googleapis.com/drive/v3/files/${id}?alt=media`); },
@@ -88,7 +88,12 @@ const TEAM = {
     TEAM._running = (async () => {
       const me = await TEAM.me(); if (!me.email) await SY.fetchEmail(SY.token());
       const email = await TEAM.myEmail(), role = await TEAM.role();
+      // Check folder identity BEFORE listing member data or uploading anything.
+      const meta = await GAPI.json(`https://www.googleapis.com/drive/v3/files/${folder}?fields=id,name,appProperties`);
+      if (meta.appProperties?.district ? meta.appProperties.district !== DIST.key : meta.name !== `Inspection App – ${DIST.info.en} team`) throw new Error('Wrong-district team folder. Open this district’s own team folder.');
       const files = await GAPI.list(folder);
+      const rosterFile = files.find(f => f.name === 'roster.json');
+      if (rosterFile) { const roster = await GAPI.get(rosterFile.id); if (roster.district !== DIST.key) throw new Error('Team roster belongs to another district. No data sent.'); }
       const [msgs, rec, ins, staff, lics] = await Promise.all(['messages', 'receipts', 'inspections', 'staff', 'licensees'].map(s => DB.all(s)));
       await GAPI.put(folder, files, TEAML.fileName('member', email), TEAML.memberFile({ district: DIST.key, email, name: me.name, role, messages: msgs, receipts: rec, ins, at: new Date().toISOString() }));
       if (role === 'admin') {
@@ -98,14 +103,14 @@ const TEAM = {
       let got = 0; const put = async (store, rec2) => { const cur = await DB.get(store, rec2[DB.STORES[store]]); if (cur && SYM.same(cur, rec2)) return; await DB.put(store, rec2); got++; };
       for (const f of files) {
         if (/^member-/.test(f.name) && f.name !== TEAML.fileName('member', email)) {
-          const d = await GAPI.get(f.id); if (d?.kind !== 'inspection-app-team' || (d.district && d.district !== DIST.key)) continue;
+          const d = await GAPI.get(f.id); if (d?.kind !== 'inspection-app-team' || d.district !== DIST.key) continue;
           for (const m of d.messages || []) await put('messages', m); for (const r of d.receipts || []) await put('receipts', r);
           if (role === 'admin') await SY.raw.put('teamdata', { id: d.email, name: d.name, at: d.at, ins: d.ins || [] });
         } else if (role !== 'admin' && f.name === 'roster.json') {
           const d = await GAPI.get(f.id); if (d?.kind === 'inspection-app-team-roster' && d.district === DIST.key) { for (const s of d.staff || []) await put('staff', s); await DB.setSetting('team.admin', d.admin); }
         } else if (role !== 'admin' && f.name === TEAML.fileName('lic', email)) {
           const d = await GAPI.get(f.id), h = JSON.stringify(d.licensees || []).length + ':' + (d.types || []).join(',') + ':' + d.place;
-          if (d?.kind === 'inspection-app-team-lic' && h !== await DB.getSetting('team.licHash', '')) { await DB.clear('licensees'); await DB.putMany('licensees', d.licensees || []); await DB.setSetting('team.licHash', h); got++; }
+          if (d?.kind === 'inspection-app-team-lic' && d.district === DIST.key && (d.licensees || []).every(l => TJ.licenseeBelongs(l)) && h !== await DB.getSetting('team.licHash', '')) { await DB.clear('licensees'); await DB.putMany('licensees', d.licensees || []); await DB.setSetting('team.licHash', h); got++; }
         }
       }
       // meetings posted to the team chat appear in everyone's Meetings list
@@ -128,7 +133,7 @@ const TEAM = {
 };
 /* ---------- district switcher (top bar) ---------- */
 function distBadge() { const b = document.getElementById('distBtn'); if (!b) return; b.textContent = '📍 ' + DIST.info.gu + ' ▾'; b.onclick = () => {
-  openSheet(`<h3>District / જિલ્લો</h3><div class="muted">Each district has its own data, Google account, staff and chat. Nothing is shared between them.</div><ul class="list">${Object.values(DISTRICTS).map(d => `<li data-d="${d.key}" class="${DIST.canSwitch(d.key) ? '' : 'disabled'}"><span style="font-size:22px">${d.key === DIST.key ? '✅' : '📍'}</span><div class="main"><div class="t">${d.en} / <span class="gu">${d.gu}</span></div><div class="s">${esc(d.admin)}${DIST.canSwitch(d.key) ? '' : ' · 🔒 this phone joined ' + esc(DISTRICTS[DIST.locked()].en)}</div></div></li>`).join('')}</ul>`, c => {
+  openSheet(`<h3>District / જિલ્લો</h3><div class="muted">Each district has its own licence/inspection data, office Drive, backups, staff and chat. Only calendar tour days are shared on this phone.</div><ul class="list">${Object.values(DISTRICTS).map(d => `<li data-d="${d.key}" class="${DIST.canSwitch(d.key) ? '' : 'disabled'}"><span style="font-size:22px">${d.key === DIST.key ? '✅' : '📍'}</span><div class="main"><div class="t">${d.en} / <span class="gu">${d.gu}</span></div><div class="s">${esc(d.admin)}${DIST.canSwitch(d.key) ? '' : ' · 🔒 this phone joined ' + esc(DISTRICTS[DIST.locked()].en)}</div></div></li>`).join('')}</ul>`, c => {
     $$('li[data-d]', c).forEach(li => li.onclick = async () => { const k = li.dataset.d; if (k === DIST.key) return closeSheet(); try { if (BK.run) await BK.run('switch').catch(() => {}); DIST.switchTo(k); toast('Opening ' + DISTRICTS[k].en + '…'); location.hash = '#home'; setTimeout(() => location.reload(), 300); } catch (e) { alert(e.message); } }); }); }; }
 /* ---------- screens ---------- */
 const typeChips = (all, sel, attr = 'data-ty') => all.map(t => `<button type="button" class="chip ${sel.includes(t) ? 'on' : ''}" ${attr}="${esc(t)}">${esc(t)}</button>`).join('');

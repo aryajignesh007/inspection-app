@@ -8,6 +8,7 @@ IM.previewPrivate = data => {
 };
 IM.importPrivate = async function (data, { skipSuspect = true } = {}) {
   IM.previewPrivate(data);
+  if (DIST.key !== 'surat') throw new Error('The old Windows data is Surat only. Switch to Surat first.');
   const lics = (await DB.all('licensees')), byName = {}; lics.forEach(l => byName[l.name.trim().toLowerCase()] = l);
   // (a) duplicates that the new file merges (same firm written differently): fold the copy on this phone into the main record
   const allIns = await DB.all('inspections'), allVis = await DB.all('visits');
@@ -68,6 +69,7 @@ IM.readSheet = async (file, opts = {}) => { const wb = XLSX.read(await readFile(
 IM.importLicenseesExcel = async function (file) {
   const wb = await IM.readSheet(file), rows = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { defval: '' });
   const g = (r, ...ks) => { for (const k of ks) for (const rk of Object.keys(r)) if (rk.trim().toLowerCase().replace(/\s+/g, '_') === k && String(r[rk]).trim()) return String(r[rk]).trim(); return ''; };
+  for (const r of rows) { const no = g(r, 'license_number', 'licence_number', 'license_no', 'uln', 'પરવાના_નંબર'), district = g(r, 'district', 'જિલ્લો'); if (!TJ.licBelongs({ district }, { licenceNo: no })) throw new Error('Excel includes another district. Nothing imported.'); }
   const lics = await DB.all('licensees'), byName = {}; lics.forEach(l => byName[l.name.trim().toLowerCase()] = l);
   let n = 0;
   for (const r of rows) {
@@ -111,13 +113,20 @@ IM.importDiaryExcel = async function (file) {
 };
 IM.backup = async function () {
   const data = await DB.dump();
-  return new Blob([JSON.stringify({ kind: 'batti-mobile-backup', version: 1, createdAt: new Date().toISOString(), data })], { type: 'application/json' });
+  return new Blob([JSON.stringify({ kind: 'batti-mobile-backup', version: 2, district: DIST.key, createdAt: new Date().toISOString(), data })], { type: 'application/json' });
+};
+IM.assertDistrict = function (obj) {
+  const key = obj?.district;
+  if (key && key !== DIST.key) throw new Error('Backup belongs to ' + key + '. Switch district first.');
+  const ls = obj?.data?.licensees || obj?.licensees || [];
+  if (ls.some(l => !TJ.licenseeBelongs(l) || (l.licences || []).some(x => !TJ.licBelongs(l, x)))) throw new Error('File contains foreign-district licensees. Use a district-specific backup/import.');
 };
 IM.restore = async function (obj) {
+  IM.assertDistrict(obj);
   if (!obj || obj.kind !== 'batti-mobile-backup') throw new Error('Not an Inspection App backup file');
   // device-local bookkeeping (sync.* / bk.*) and sync tombstones are kept – they are not part of a backup
-  const keep = (await DB.all('settings')).filter(r => /^(sync|bk)\./.test(String(r.key)));
-  for (const s of Object.keys(DB.STORES)) { if (s === 'tombstones') continue; if (['keywords', 'reminders', 'meetings', 'offices', 'pendency', 'staff', 'messages', 'receipts', 'teamdata', 'photos'].includes(s) && !Array.isArray(obj.data[s])) continue;   /* older backup: keep these stores as they are */ await DB.clear(s); const a = (obj.data[s] || []).filter(r => s !== 'settings' || !/^(sync|bk)\./.test(String(r.key))); if (a.length) await DB.putMany(s, a); }
+  const keep = (await DB.all('settings')).filter(r => /^(sync|bk|cleanup)\./.test(String(r.key)));
+  for (const s of Object.keys(DB.STORES)) { if (s === 'tombstones') continue; if (['keywords', 'reminders', 'meetings', 'offices', 'pendency', 'staff', 'messages', 'receipts', 'teamdata', 'photos'].includes(s) && !Array.isArray(obj.data[s])) continue;   /* older backup: keep these stores as they are */ await DB.clear(s); const a = (obj.data[s] || []).filter(r => s !== 'settings' || !/^(sync|bk|cleanup)\./.test(String(r.key))); if (a.length) await DB.putMany(s, a); }
   if (keep.length) await DB.putMany('settings', keep);
   if (typeof KW !== 'undefined') KW.invalidate();
 };
@@ -135,6 +144,7 @@ const PM_isP = s => /e-Prohibition/i.test(String(s || ''));
 IM.importPortal = async function (data, distKey) {
   const pv = IM.previewPortal(data, distKey);
   if (pv.wrongDistrict) throw new Error('This file is for ' + data.district + ' district. Switch to that district first.');
+  IM.assertDistrict(data);
   const lics = await DB.all('licensees'), byUln = {}, byName = {};
   const index = l => { (l.licences || []).forEach(x => { for (const k of [x.uln, x.licenceNo]) if (k) byUln[IM.ulnKey(k)] = l; }); for (const n of [l.name, ...(l.aka || [])]) if (n) byName[IM.nameKey(n)] ||= l; };
   lics.forEach(index);

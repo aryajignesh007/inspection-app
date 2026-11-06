@@ -15,7 +15,7 @@ const DIST = (() => {
     locked: () => { try { return localStorage.getItem('district.locked') || ''; } catch (e) { return ''; } },   // officer phone: joined one district
     lock(k) { localStorage.setItem('district.locked', k); },
     canSwitch(k) { const l = DIST.locked(); return !l || l === k; },
-    switchTo(k) { if (!DISTRICTS[k]) throw new Error('Unknown district'); if (!DIST.canSwitch(k)) throw new Error('This phone has joined ' + DISTRICTS[DIST.locked()].en + ' district only.'); localStorage.setItem('district', k); cur = k; },
+    switchTo(k) { if (!DISTRICTS[k]) throw new Error('Unknown district'); if (!DIST.canSwitch(k)) throw new Error('This phone has joined ' + DISTRICTS[DIST.locked()].en + ' district only.'); localStorage.setItem('district', k); /* Keep runtime identity tied to the open DB until reload. */ },
     _set(k) { cur = k; }   // tests
   };
 })();

@@ -38,7 +38,8 @@ const BK = {
     const FS = BK.fs(); await FS.writeFile({ path: `${BK.DIR}/${name}`, data: text, directory: 'DOCUMENTS', encoding: 'utf8', recursive: true });
     const r = await FS.getUri({ path: `${BK.DIR}/${name}`, directory: 'DOCUMENTS' }).catch(() => ({})); return r.uri;
   },
-  async writeMirror(text) { await BK.fs().writeFile({ path: 'backups/latest.json', data: text, directory: 'DATA', encoding: 'utf8', recursive: true }); },
+  mirrorPath: () => DIST.key === 'valsad' ? 'backups-valsad/latest.json' : 'backups/latest.json',
+  async writeMirror(text) { await BK.fs().writeFile({ path: BK.mirrorPath(), data: text, directory: 'DATA', encoding: 'utf8', recursive: true }); },
   async listDocs() {
     try { const r = await BK.fs().readdir({ path: BK.DIR, directory: 'DOCUMENTS' });
       return (r.files || []).map(f => typeof f === 'string' ? { name: f } : f).filter(f => /^Inspection-App-.*\.json$/.test(f.name)).sort((a, b) => b.name.localeCompare(a.name));
@@ -86,7 +87,7 @@ const BK = {
   },
   /* ---------- restore ---------- */
   async restore(obj, { safety = true } = {}) {
-    BK.validate(obj);
+    BK.validate(obj); IM.assertDistrict(obj);
     const saf = safety ? await BK.safety('restore') : null;
     BK._suspend++; try { await IM.restore(obj); } finally { BK._suspend--; }
     await DB.setSetting('bk.restoredFrom', { at: new Date().toISOString(), createdAt: obj.createdAt, counts: BK.counts(obj.data) });
@@ -97,12 +98,12 @@ const BK = {
   async findLatest() {
     const cands = [];
     if (BK.isNative()) {
-      try { cands.push({ src: 'App storage (latest.json)', obj: JSON.parse(await BK.readText('backups/latest.json', 'DATA')) }); } catch (e) {}
+      try { cands.push({ src: 'App storage (latest.json)', obj: JSON.parse(await BK.readText(BK.mirrorPath(), 'DATA')) }); } catch (e) {}
       for (const f of (await BK.listDocs()).slice(0, 5)) { try { cands.push({ src: `Documents/${BK.DIR}/${f.name}`, obj: JSON.parse(await BK.readText(`${BK.DIR}/${f.name}`, 'DOCUMENTS')) }); } catch (e) {} }
     } else {
       for (const k of [(typeof DIST !== 'undefined' ? DIST.ls('bk.mirror') : 'bk.mirror'), (typeof DIST !== 'undefined' ? DIST.ls('bk.safety') : 'bk.safety')]) { try { const t = localStorage.getItem(k); if (t) cands.push({ src: 'Browser copy', obj: JSON.parse(t) }); } catch (e) {} }
     }
-    const good = cands.map(c => { try { return { ...c, info: BK.validate(c.obj) }; } catch (e) { return null; } }).filter(c => c && !BK.isEmptyData(c.info.counts));
+    const good = cands.map(c => { try { IM.assertDistrict(c.obj); return { ...c, info: BK.validate(c.obj) }; } catch (e) { return null; } }).filter(c => c && !BK.isEmptyData(c.info.counts));
     good.sort((a, b) => String(b.info.createdAt).localeCompare(String(a.info.createdAt)));
     return good[0] || null;
   },
