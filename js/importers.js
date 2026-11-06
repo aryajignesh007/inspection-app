@@ -131,6 +131,7 @@ IM.previewPortal = (data, distKey) => {
   const codes = {}; (data.licensees || []).forEach(l => (l.licences || []).forEach(x => codes[x.typeCode] = (codes[x.typeCode] || 0) + 1));
   return { district: data.district, wrongDistrict: !!distKey && data.district !== distKey, licensees: (data.licensees || []).length, licences: Object.values(codes).reduce((a, b) => a + b, 0), codes, source: data.source || '' };
 };
+const PM_isP = s => /e-Prohibition/i.test(String(s || ''));
 IM.importPortal = async function (data, distKey) {
   const pv = IM.previewPortal(data, distKey);
   if (pv.wrongDistrict) throw new Error('This file is for ' + data.district + ' district. Switch to that district first.');
@@ -151,11 +152,14 @@ IM.importPortal = async function (data, distKey) {
       else { rec.licences.push({ ...x }); licAdded++; }
     }
     if (src.name && IM.nameKey(src.name) !== IM.nameKey(rec.name) && !(rec.aka || []).some(a => IM.nameKey(a) === IM.nameKey(src.name))) rec.aka = [...(rec.aka || []), src.name];
+    if (!PM_isP(rec.importedFrom)) rec.importedFrom = 'e-Prohibition';
+    for (const x of rec.licences) if (!x.source && (src.licences || []).some(y => IM.ulnKey(y.uln || y.licenceNo) === IM.ulnKey(x.uln || x.licenceNo))) x.source = 'e-Prohibition';
     if (JSON.stringify(rec) !== before) { rec.portalSyncedAt = src.portalSyncedAt || data.createdAt; changed.set(rec.id, rec); updated++; }
     index(rec);
   }
   if (changed.size) await DB.putMany('licensees', [...changed.values()]);
-  return { added, updated, licAdded, total: (await DB.all('licensees')).length };
+  let merge = null; if (typeof PM !== 'undefined') { try { merge = await PM.run('after-portal-import'); await DB.setSetting(PM.FLAG, { at: new Date().toISOString(), via: 'import' }); } catch (e) { console.warn('portal merge', e); } }
+  return { added, updated, licAdded, merge, total: (await DB.all('licensees')).length };
 };
 
 const licInactive = l => (l?.licences || []).some(x => x.status === 'inactive');

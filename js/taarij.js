@@ -39,7 +39,7 @@ const TJ = {
       if (!TJ.licBelongs(l, x)) { out.otherDistrict.push(tag); continue; }
       const m = u.match(/^([A-Z]{3})\/([A-Z0-9]+)\/(\d{6})\/(\d{5})$/);
       if (!m) out.badUln.push(tag); else if (normCode(m[2]) !== normCode(x.typeCode)) out.typeMismatch.push(`${tag} (type ${x.typeCode})`);
-      if (!/e-Prohibition/i.test(x.source || l.importedFrom || '')) out.notPortal.push(tag);
+      if (!(typeof PM !== 'undefined' ? PM.licPortal(l, x) : /e-Prohibition/i.test(x.source || l.importedFrom || ''))) out.notPortal.push(tag);
       if (u) { if (seen[u]) out.dupUln.push(tag); seen[u] = 1; }
     }
     out.count = Object.values(out).reduce((a, v) => a + (Array.isArray(v) ? v.length : 0), 0);
@@ -51,7 +51,8 @@ const TJ = {
     return `<div class="card warnbox"><b>Licence cross-check with e-Prohibition – ${a.count} item(s) to check</b>
       ${sec(DISTRICTS[TJ.otherKey()].en + ' licences in this district (NOT counted)', a.otherDistrict)}${sec('Not pulled from e-Prohibition (counted – verify on portal)', a.notPortal)}
       ${sec('ULN not in portal format', a.badUln)}${sec('Licence type differs from ULN', a.typeMismatch)}${sec('Same ULN twice', a.dupUln)}
-      <div class="muted">Re-import this district's e-Prohibition list (More › Import) and use Clean district data to fix.</div></div>`;
+      ${a.dupUln.length || a.notPortal.length ? `<div class="muted">Fix: tap <b>Keep portal list &amp; merge duplicate ULNs</b> (e-Prohibition is the authority; inspections kept). Non-portal licences that have inspections stay listed here by design.</div>${typeof PM !== 'undefined' ? PM.button() : ''}` : ''}
+      <div class="muted">Re-import this district's e-Prohibition list (More › Import) to fill details. <i>Clean district data</i> is only for ${esc(DISTRICTS[TJ.otherKey()].en)} licensees put here by mistake.</div></div>`;
   },
   /* ---------- shared tour days ---------- */
   _dbs: {},
