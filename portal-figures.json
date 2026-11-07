@@ -1,12 +1,12 @@
 {
- "asOf": "2026-11-07T10:06:00+05:30",
+ "asOf": "2026-11-07T17:12:00+05:30",
  "note": "Pendency counts read from the portals by Grok Bot; e-Prohibition officer-wise list shown with Sir's approval. null = not checked.",
  "districts": {
   "surat": {
-   "asOf": "2026-11-07T10:06:00+05:30",
+   "asOf": "2026-11-07T17:12:00+05:30",
    "district": "surat",
    "eprohibition": {
-    "asOf": "2026-11-07T10:06:00+05:30",
+    "asOf": "2026-11-07T17:04:00+05:30",
     "newApplications": 106,
     "pending": 54,
     "approved": 44,
@@ -53,7 +53,7 @@
        "counts": {
         "New Application": 0,
         "Amendment Application": 1,
-        "Renewal Application": 1,
+        "Renewal Application": 0,
         "Surrender Application": 0
        }
       },
@@ -79,7 +79,7 @@
     }
    },
    "esarkar": {
-    "asOf": "2026-11-06T21:50:53+05:30",
+    "asOf": "2026-11-07T17:07:04+05:30",
     "files": 0,
     "other": {
      "e-Tappal": 0,
@@ -87,28 +87,62 @@
      "RTI": 0,
      "Workdesk": 0,
      "MP-MLA": 0,
+     "New MP-MLA": 0,
      "Special Files": 0,
-     "Inquiry Files": 0,
-     "Files Marked Await": 0
+     "e-Meeting": 0,
+     "GOI/PMO": 0,
+     "CMO/CS": 0,
+     "Office Note": 0,
+     "Audit Paras": 0,
+     "New GOI/PMO": 0,
+     "PG Portal": 0,
+     "Files Marked Await": 0,
+     "Inquiry Files": 0
     },
-    "note": "Pending on Workdesk tiles. Received/disposed totals by type are not shown on any e-Sarkar tab opened: Dispatch Register, Branch Dispatch Register, File Register (needs per-branch search) and Reports (opened an empty Dispatch Register). Not counted."
+    "received": null,
+    "disposed": null,
+    "note": "Pending Work Items tiles (fully loaded; year dropdown ignored). Received/disposed e-Tappal, file and RTI totals were not found: the desk/Workdesk view shows pendency only, and Reports › Report Dashboard reports (General Performance, Office/Branch-wise Pendency, eTappal Pendency Detail, MIS reports) returned no received/disposed totals. Not assumed zero."
    },
    "lems": {
-    "asOf": "2026-11-06T23:50:55+05:30",
-    "ipVerificationNew": 1,
+    "asOf": "2026-11-07T17:06:06+05:30",
+    "ipVerificationNew": 2,
     "ipVerificationExtend": 0,
     "other": {
      "Overtime Verification": 0,
      "IP report: Submitted (awaiting)": 0,
-     "IP report: ReSubmitted (awaiting)": 1,
-     "IP awaiting action – total": 1
+     "IP report: ReSubmitted (awaiting)": 2,
+     "IP awaiting action – total": 2
     },
     "healthPermit": {
-     "asOf": "2026-11-06T23:50:55+05:30",
+     "asOf": "2026-11-07T17:06:06+05:30",
      "source": "LEMS FL2 Process",
      "tab": "FL2 Process › Apply For Permit (status Verified, Health Permit types)",
-     "registered": 156,
+     "registered": 161,
      "byMonth": {
+      "2021-12": {
+       "registered": 1
+      },
+      "2023-11": {
+       "registered": 1
+      },
+      "2023-12": {
+       "registered": 1
+      },
+      "2024-12": {
+       "registered": 1
+      },
+      "2025-03": {
+       "registered": 2
+      },
+      "2025-08": {
+       "registered": 1
+      },
+      "2025-09": {
+       "registered": 1
+      },
+      "2025-12": {
+       "registered": 1
+      },
       "2026-07": {
        "registered": 1
       },
@@ -119,17 +153,17 @@
        "registered": 30
       },
       "2026-11": {
-       "registered": 62
+       "registered": 67
       }
      }
     }
    }
   },
   "valsad": {
-   "asOf": "2026-11-07T10:06:00+05:30",
+   "asOf": "2026-11-07T17:12:00+05:30",
    "district": "valsad",
    "eprohibition": {
-    "asOf": "2026-11-07T10:06:00+05:30",
+    "asOf": "2026-11-07T17:04:00+05:30",
     "newApplications": 44,
     "pending": 20,
     "approved": 14,
@@ -202,7 +236,7 @@
     }
    },
    "esarkar": {
-    "asOf": "2026-11-06T22:13:23+05:30",
+    "asOf": "2026-11-07T17:11:39+05:30",
     "files": 0,
     "other": {
      "e-Tappal": 0,
@@ -210,14 +244,24 @@
      "RTI": 0,
      "Workdesk": 0,
      "MP-MLA": 0,
+     "New MP-MLA": 0,
      "Special Files": 0,
-     "Inquiry Files": 0,
-     "Files Marked Await": 0
+     "e-Meeting": 0,
+     "GOI/PMO": 0,
+     "CMO/CS": 0,
+     "Office Note": 0,
+     "Audit Paras": 0,
+     "New GOI/PMO": 0,
+     "PG Portal": 0,
+     "Files Marked Await": 0,
+     "Inquiry Files": 0
     },
-    "note": "Pending on Workdesk tiles. Received/disposed totals by type are not shown on any e-Sarkar tab opened: Dispatch Register, Branch Dispatch Register, File Register (needs per-branch search) and Reports (opened an empty Dispatch Register). Not counted."
+    "received": null,
+    "disposed": null,
+    "note": "Pending Work Items tiles (fully loaded; year dropdown ignored). Received/disposed e-Tappal, file and RTI totals were not found: the desk/Workdesk view shows pendency only, and Reports › Report Dashboard reports (General Performance, Office/Branch-wise Pendency, eTappal Pendency Detail, MIS reports) returned no received/disposed totals. Not assumed zero. Reports › General Performance Report (Productivity Report, e-File, default period) showed 5 e-Files in the 0–7 days column across 2 users; it does not give received/disposed totals."
    },
    "lems": {
-    "asOf": "2026-11-06T23:54:04+05:30",
+    "asOf": "2026-11-07T17:09:22+05:30",
     "ipVerificationNew": 0,
     "ipVerificationExtend": 0,
     "other": {
@@ -227,7 +271,7 @@
      "IP awaiting action – total": 0
     },
     "healthPermit": {
-     "asOf": "2026-11-06T23:54:04+05:30",
+     "asOf": "2026-11-07T17:09:22+05:30",
      "source": "LEMS FL2 Process",
      "tab": "FL2 Process › Apply For Permit (status Verified, Health Permit types)",
      "registered": 34,
