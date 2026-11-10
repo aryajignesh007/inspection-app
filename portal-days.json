@@ -1,11 +1,11 @@
 {
- "generated": "2026-11-10T10:26+05:30",
- "method": "days = Approved date − Application Date per application in e-Prohibition › Approved License List (signed-in read, 10-Nov-2026 morning), grouped by month of approval. Counts and day statistics only; rejections, amendments and renewals are not in this list.",
+ "generated": "2026-11-10T17:46+05:30",
+ "method": "days = Approved date \u2212 Application Date per application in e-Prohibition \u203a Approved License List (signed-in read, 10-Nov-2026 evening), grouped by month of approval. Counts and day statistics only; rejections, amendments and renewals are not in this list.",
  "districts": {
   "surat": {
-   "asOf": "2026-11-10T10:04:00+05:30",
+   "asOf": "2026-11-10T17:03:00+05:30",
    "sources": [
-    "e-Prohibition › Approved License List (1511 rows read)"
+    "e-Prohibition \u203a Approved License List (1511 rows read)"
    ],
    "rejectedRead": false,
    "months": {
@@ -177,9 +177,9 @@
    }
   },
   "valsad": {
-   "asOf": "2026-11-10T10:07:00+05:30",
+   "asOf": "2026-11-10T17:03:00+05:30",
    "sources": [
-    "e-Prohibition › Approved License List (426 rows read)"
+    "e-Prohibition \u203a Approved License List (426 rows read)"
    ],
    "rejectedRead": false,
    "months": {
