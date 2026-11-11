@@ -1,12 +1,12 @@
 {
- "asOf": "2026-11-11T10:35:29+05:30",
+ "asOf": "2026-11-11T17:30:02+05:30",
  "note": "Pendency counts read from the portals by Grok Bot; e-Prohibition officer-wise list shown with Sir's approval. null = not checked.",
  "districts": {
   "surat": {
-   "asOf": "2026-11-11T10:35:29+05:30",
+   "asOf": "2026-11-11T17:30:02+05:30",
    "district": "surat",
    "eprohibition": {
-    "asOf": "2026-11-11T10:09:19+05:30",
+    "asOf": "2026-11-11T17:07:50+05:30",
     "newApplications": 106,
     "pending": 54,
     "approved": 44,
@@ -76,11 +76,11 @@
        }
       }
      ],
-     "asOf": "2026-11-11T10:09:19+05:30"
+     "asOf": "2026-11-11T17:07:50+05:30"
     }
    },
    "esarkar": {
-    "asOf": "2026-11-11T10:25:06+05:30",
+    "asOf": "2026-11-11T17:19:41+05:30",
     "files": 0,
     "other": {
      "Workdesk": 0,
@@ -105,7 +105,7 @@
     "note": "Pending Work Items tiles (fully loaded; year dropdown ignored). Received/disposed e-Tappal, file and RTI totals were not found: the desk/Workdesk view shows pendency only, and Reports › Report Dashboard reports (General Performance, Office/Branch-wise Pendency, eTappal Pendency Detail, MIS reports) returned no received/disposed totals this run (Generate produced empty tables). Not assumed zero."
    },
    "lems": {
-    "asOf": "2026-11-11T10:15:37+05:30",
+    "asOf": "2026-11-11T17:11:56+05:30",
     "ipVerificationNew": 2,
     "ipVerificationExtend": 0,
     "other": {
@@ -115,7 +115,7 @@
      "IP awaiting action – total": 2
     },
     "healthPermit": {
-     "asOf": "2026-11-11T10:15:58+05:30",
+     "asOf": "2026-11-11T17:12:17+05:30",
      "source": "LEMS FL2 Process",
      "tab": "FL2 Process › Apply For Permit (status Verified, Health Permit types)",
      "registered": 162,
@@ -161,10 +161,10 @@
    }
   },
   "valsad": {
-   "asOf": "2026-11-11T10:35:29+05:30",
+   "asOf": "2026-11-11T17:30:02+05:30",
    "district": "valsad",
    "eprohibition": {
-    "asOf": "2026-11-11T10:09:19+05:30",
+    "asOf": "2026-11-11T17:07:49+05:30",
     "newApplications": 44,
     "pending": 20,
     "approved": 14,
@@ -234,11 +234,11 @@
        }
       }
      ],
-     "asOf": "2026-11-11T10:09:19+05:30"
+     "asOf": "2026-11-11T17:07:50+05:30"
     }
    },
    "esarkar": {
-    "asOf": "2026-11-11T10:30:54+05:30",
+    "asOf": "2026-11-11T17:24:56+05:30",
     "files": 0,
     "other": {
      "Workdesk": 0,
@@ -263,7 +263,7 @@
     "note": "Pending Work Items tiles (fully loaded; year dropdown ignored). Received/disposed e-Tappal, file and RTI totals were not found: the desk/Workdesk view shows pendency only, and Reports › Report Dashboard reports (General Performance, Office/Branch-wise Pendency, eTappal Pendency Detail, MIS reports) returned no received/disposed totals this run (Generate produced empty tables). Not assumed zero."
    },
    "lems": {
-    "asOf": "2026-11-11T10:21:12+05:30",
+    "asOf": "2026-11-11T17:16:09+05:30",
     "ipVerificationNew": 0,
     "ipVerificationExtend": 0,
     "other": {
@@ -273,7 +273,7 @@
      "IP awaiting action – total": 0
     },
     "healthPermit": {
-     "asOf": "2026-11-11T10:21:32+05:30",
+     "asOf": "2026-11-11T17:16:28+05:30",
      "source": "LEMS FL2 Process",
      "tab": "FL2 Process › Apply For Permit (status Verified, Health Permit types)",
      "registered": 34,

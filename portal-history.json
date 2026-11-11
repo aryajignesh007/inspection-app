@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-11T10:35+05:30",
+ "generated": "2026-11-11T17:30+05:30",
  "from": "2026-04",
  "source": "Saved twice-daily portal readings (e-Prohibition, LEMS, e-Sarkar). A month without readings is marked noData – no figure is estimated.",
  "districts": {
@@ -74,9 +74,9 @@
     }
    },
    "2026-11": {
-    "readings": 20,
+    "readings": 21,
     "firstAt": "2026-11-01T10:11:00+05:30",
-    "lastAt": "2026-11-11T10:35:29+05:30",
+    "lastAt": "2026-11-11T17:30:02+05:30",
     "eprohibition": {
      "start": {
       "newApplications": 105,
@@ -98,7 +98,7 @@
       "ipAwaiting": 2,
       "healthRegistered": 162
      },
-     "avgIpAwaiting": 1.4,
+     "avgIpAwaiting": 1.5,
      "peakIpAwaiting": 3,
      "avgIpNew": 1.4,
      "healthRecorded": true
@@ -187,9 +187,9 @@
     }
    },
    "2026-11": {
-    "readings": 20,
+    "readings": 21,
     "firstAt": "2026-11-01T10:19:00+05:30",
-    "lastAt": "2026-11-11T10:35:29+05:30",
+    "lastAt": "2026-11-11T17:30:02+05:30",
     "eprohibition": {
      "start": {
       "newApplications": 44,
@@ -222,7 +222,7 @@
       "eTappal": 0,
       "rti": 0
      },
-     "avgFiles": 0.8,
+     "avgFiles": 0.7,
      "peakFiles": 7,
      "avgTappal": 0.3,
      "peakTappal": 2
