@@ -1,19 +1,19 @@
 {
- "asOf": "2026-11-10T17:33:00+05:30",
+ "asOf": "2026-11-11T10:35:29+05:30",
  "note": "Pendency counts read from the portals by Grok Bot; e-Prohibition officer-wise list shown with Sir's approval. null = not checked.",
  "districts": {
   "surat": {
-   "asOf": "2026-11-10T17:33:00+05:30",
+   "asOf": "2026-11-11T10:35:29+05:30",
    "district": "surat",
    "eprohibition": {
-    "asOf": "2026-11-10T17:02:26+05:30",
+    "asOf": "2026-11-11T10:09:19+05:30",
     "newApplications": 106,
     "pending": 54,
     "approved": 44,
     "rejected": 8,
     "officerPendency": {
      "title": "Office Pendancy As On Today",
-     "date": "2026-11-10",
+     "date": "2026-11-11",
      "columns": [
       "New Application",
       "Amendment Application",
@@ -76,11 +76,11 @@
        }
       }
      ],
-     "asOf": "2026-11-10T17:02:26+05:30"
+     "asOf": "2026-11-11T10:09:19+05:30"
     }
    },
    "esarkar": {
-    "asOf": "2026-11-10T17:22:51+05:30",
+    "asOf": "2026-11-11T10:25:06+05:30",
     "files": 0,
     "other": {
      "Workdesk": 0,
@@ -102,10 +102,10 @@
     },
     "received": null,
     "disposed": null,
-    "note": "Pending Work Items tiles (fully loaded; year dropdown ignored). Received/disposed e-Tappal, file and RTI totals were not found: the desk/Workdesk view shows pendency only, and Reports › Report Dashboard reports (General Performance, Office/Branch-wise Pendency, eTappal Pendency Detail, MIS reports) returned no received/disposed totals. Not assumed zero."
+    "note": "Pending Work Items tiles (fully loaded; year dropdown ignored). Received/disposed e-Tappal, file and RTI totals were not found: the desk/Workdesk view shows pendency only, and Reports › Report Dashboard reports (General Performance, Office/Branch-wise Pendency, eTappal Pendency Detail, MIS reports) returned no received/disposed totals this run (Generate produced empty tables). Not assumed zero."
    },
    "lems": {
-    "asOf": "2026-11-10T17:16:36+05:30",
+    "asOf": "2026-11-11T10:15:37+05:30",
     "ipVerificationNew": 2,
     "ipVerificationExtend": 0,
     "other": {
@@ -115,7 +115,7 @@
      "IP awaiting action – total": 2
     },
     "healthPermit": {
-     "asOf": "2026-11-10T17:17:54+05:30",
+     "asOf": "2026-11-11T10:15:58+05:30",
      "source": "LEMS FL2 Process",
      "tab": "FL2 Process › Apply For Permit (status Verified, Health Permit types)",
      "registered": 162,
@@ -161,17 +161,17 @@
    }
   },
   "valsad": {
-   "asOf": "2026-11-10T17:33:00+05:30",
+   "asOf": "2026-11-11T10:35:29+05:30",
    "district": "valsad",
    "eprohibition": {
-    "asOf": "2026-11-10T17:02:26+05:30",
+    "asOf": "2026-11-11T10:09:19+05:30",
     "newApplications": 44,
     "pending": 20,
     "approved": 14,
     "rejected": 10,
     "officerPendency": {
      "title": "Office Pendancy As On Today",
-     "date": "2026-11-10",
+     "date": "2026-11-11",
      "columns": [
       "New Application",
       "Amendment Application",
@@ -234,11 +234,11 @@
        }
       }
      ],
-     "asOf": "2026-11-10T17:02:26+05:30"
+     "asOf": "2026-11-11T10:09:19+05:30"
     }
    },
    "esarkar": {
-    "asOf": "2026-11-10T17:27:33+05:30",
+    "asOf": "2026-11-11T10:30:54+05:30",
     "files": 0,
     "other": {
      "Workdesk": 0,
@@ -263,7 +263,7 @@
     "note": "Pending Work Items tiles (fully loaded; year dropdown ignored). Received/disposed e-Tappal, file and RTI totals were not found: the desk/Workdesk view shows pendency only, and Reports › Report Dashboard reports (General Performance, Office/Branch-wise Pendency, eTappal Pendency Detail, MIS reports) returned no received/disposed totals this run (Generate produced empty tables). Not assumed zero."
    },
    "lems": {
-    "asOf": "2026-11-10T17:20:00+05:30",
+    "asOf": "2026-11-11T10:21:12+05:30",
     "ipVerificationNew": 0,
     "ipVerificationExtend": 0,
     "other": {
@@ -273,7 +273,7 @@
      "IP awaiting action – total": 0
     },
     "healthPermit": {
-     "asOf": "2026-11-10T17:21:27+05:30",
+     "asOf": "2026-11-11T10:21:32+05:30",
      "source": "LEMS FL2 Process",
      "tab": "FL2 Process › Apply For Permit (status Verified, Health Permit types)",
      "registered": 34,
