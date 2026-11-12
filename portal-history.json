@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-12T10:30+05:30",
+ "generated": "2026-11-12T17:24+05:30",
  "from": "2026-04",
  "source": "Saved twice-daily portal readings (e-Prohibition, LEMS, e-Sarkar). A month without readings is marked noData – no figure is estimated.",
  "districts": {
@@ -74,9 +74,9 @@
     }
    },
    "2026-11": {
-    "readings": 22,
+    "readings": 23,
     "firstAt": "2026-11-01T10:11:00+05:30",
-    "lastAt": "2026-11-12T10:30:48+05:30",
+    "lastAt": "2026-11-12T17:24:40+05:30",
     "eprohibition": {
      "start": {
       "newApplications": 105,
@@ -85,37 +85,37 @@
       "rejected": 8
      },
      "end": {
-      "newApplications": 106,
-      "pending": 54,
+      "newApplications": 107,
+      "pending": 55,
       "approved": 44,
       "rejected": 8
      }
     },
     "lems": {
      "end": {
-      "ipNew": 2,
+      "ipNew": 0,
       "ipExtend": 0,
-      "ipAwaiting": 2,
-      "healthRegistered": 162
+      "ipAwaiting": 1,
+      "healthRegistered": 164
      },
      "avgIpAwaiting": 1.5,
      "peakIpAwaiting": 3,
-     "avgIpNew": 1.5,
+     "avgIpNew": 1.4,
      "healthRecorded": true
     },
     "esarkar": {
      "end": {
-      "files": 0,
+      "files": 2,
       "eTappal": 0,
       "rti": 0
      },
-     "avgFiles": 0.1,
+     "avgFiles": 0.2,
      "peakFiles": 2,
      "avgTappal": 0.1,
      "peakTappal": 2
     },
     "healthPermitMonth": {
-     "registered": 68
+     "registered": 70
     }
    }
   },
@@ -187,9 +187,9 @@
     }
    },
    "2026-11": {
-    "readings": 22,
+    "readings": 23,
     "firstAt": "2026-11-01T10:19:00+05:30",
-    "lastAt": "2026-11-12T10:30:48+05:30",
+    "lastAt": "2026-11-12T17:24:40+05:30",
     "eprohibition": {
      "start": {
       "newApplications": 44,
