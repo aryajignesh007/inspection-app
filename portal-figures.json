@@ -1,19 +1,19 @@
 {
- "asOf": "2026-11-12T17:24:40+05:30",
+ "asOf": "2026-11-13T10:28:16+05:30",
  "note": "Pendency counts read from the portals by Grok Bot; e-Prohibition officer-wise list shown with Sir's approval. null = not checked.",
  "districts": {
   "surat": {
-   "asOf": "2026-11-12T17:24:40+05:30",
+   "asOf": "2026-11-13T10:28:16+05:30",
    "district": "surat",
    "eprohibition": {
-    "asOf": "2026-11-12T17:01:52+05:30",
+    "asOf": "2026-11-13T10:00:43+05:30",
     "newApplications": 107,
     "pending": 55,
     "approved": 44,
     "rejected": 8,
     "officerPendency": {
      "title": "Office Pendancy As On Today",
-     "date": "2026-11-12",
+     "date": "2026-11-13",
      "columns": [
       "New Application",
       "Amendment Application",
@@ -76,7 +76,7 @@
        }
       }
      ],
-     "asOf": "2026-11-12T17:01:52+05:30"
+     "asOf": "2026-11-13T10:00:43+05:30"
     }
    },
    "esarkar": {
@@ -161,17 +161,17 @@
    }
   },
   "valsad": {
-   "asOf": "2026-11-12T17:24:40+05:30",
+   "asOf": "2026-11-13T10:28:16+05:30",
    "district": "valsad",
    "eprohibition": {
-    "asOf": "2026-11-12T17:01:52+05:30",
+    "asOf": "2026-11-13T10:04:14+05:30",
     "newApplications": 44,
     "pending": 20,
     "approved": 14,
     "rejected": 10,
     "officerPendency": {
      "title": "Office Pendancy As On Today",
-     "date": "2026-11-12",
+     "date": "2026-11-13",
      "columns": [
       "New Application",
       "Amendment Application",
@@ -234,7 +234,7 @@
        }
       }
      ],
-     "asOf": "2026-11-12T17:01:52+05:30"
+     "asOf": "2026-11-13T10:04:14+05:30"
     }
    },
    "esarkar": {
