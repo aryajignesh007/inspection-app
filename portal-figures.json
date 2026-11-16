@@ -1,12 +1,12 @@
 {
- "asOf": "2026-11-16T10:29:12+05:30",
+ "asOf": "2026-11-16T17:37:56+05:30",
  "note": "Pendency counts read from the portals by Grok Bot; e-Prohibition officer-wise list shown with Sir's approval. null = not checked.",
  "districts": {
   "surat": {
-   "asOf": "2026-11-16T10:29:12+05:30",
+   "asOf": "2026-11-16T17:37:56+05:30",
    "district": "surat",
    "eprohibition": {
-    "asOf": "2026-11-16T10:07:32+05:30",
+    "asOf": "2026-11-16T17:10:18+05:30",
     "newApplications": 108,
     "pending": 56,
     "approved": 44,
@@ -33,7 +33,7 @@
       {
        "pendingWith": "Inspector Prohibition (Alkaben P Hirapara)",
        "counts": {
-        "New Application": 0,
+        "New Application": 1,
         "Amendment Application": 0,
         "Renewal Application": 1,
         "Surrender Application": 0
@@ -49,21 +49,12 @@
        }
       },
       {
-       "pendingWith": "Junior Clerk (M D RATHOD)",
-       "counts": {
-        "New Application": 1,
-        "Amendment Application": 0,
-        "Renewal Application": 0,
-        "Surrender Application": 0
-       }
-      },
-      {
        "pendingWith": "Senior Clerk (Sameer P Kapuriya)",
        "counts": {
         "New Application": 0,
         "Amendment Application": 3,
         "Renewal Application": 0,
-        "Surrender Application": 0
+        "Surrender Application": 1
        }
       },
       {
@@ -76,12 +67,12 @@
        }
       }
      ],
-     "asOf": "2026-11-16T10:07:32+05:30"
+     "asOf": "2026-11-16T17:10:18+05:30"
     }
    },
    "esarkar": {
-    "asOf": "2026-11-16T10:20:02+05:30",
-    "files": 0,
+    "asOf": "2026-11-16T17:25:02+05:30",
+    "files": 1,
     "other": {
      "Workdesk": 0,
      "e-Tappal": 0,
@@ -102,10 +93,10 @@
     },
     "received": null,
     "disposed": null,
-    "note": "Pending Work Items tiles (fully loaded; year dropdown ignored). Received/disposed e-Tappal, file and RTI totals were not found: the desk/Workdesk view shows pendency only, and Reports › Report Dashboard reports (General Performance, e-Meeting MIS, Government Document MIS, Knowledge Management MIS, Office/Branch-wise Pendency, eTappal Pendency Detail) returned no received/disposed totals this run (Generate produced empty or header-only tables). Not assumed zero."
+    "note": "Pending Work Items tiles (fully loaded; year dropdown ignored). Received/disposed e-Tappal, file and RTI totals were not found: the desk/Workdesk view shows pendency only, and a follow-up Reports › Report Dashboard pass hit a timed-out session (dashboard links=1). Not assumed zero."
    },
    "lems": {
-    "asOf": "2026-11-14T17:16:32+05:30",
+    "asOf": "2026-11-16T17:28:30+05:30",
     "ipVerificationNew": 0,
     "ipVerificationExtend": 0,
     "other": {
@@ -161,10 +152,10 @@
    }
   },
   "valsad": {
-   "asOf": "2026-11-16T10:29:12+05:30",
+   "asOf": "2026-11-16T17:37:56+05:30",
    "district": "valsad",
    "eprohibition": {
-    "asOf": "2026-11-16T10:10:28+05:30",
+    "asOf": "2026-11-16T17:16:18+05:30",
     "newApplications": 44,
     "pending": 20,
     "approved": 14,
@@ -183,7 +174,7 @@
        "pendingWith": "Inspector Prohibition (AKSHAYKUMAR S PATEL)",
        "counts": {
         "New Application": 1,
-        "Amendment Application": 4,
+        "Amendment Application": 13,
         "Renewal Application": 0,
         "Surrender Application": 0
        }
@@ -192,7 +183,7 @@
        "pendingWith": "Office Superintendent (DIPAK DEVJIBHAI VISANI)",
        "counts": {
         "New Application": 0,
-        "Amendment Application": 3,
+        "Amendment Application": 6,
         "Renewal Application": 0,
         "Surrender Application": 0
        }
@@ -200,8 +191,8 @@
       {
        "pendingWith": "Junior Clerk (HITESHBHAI GOVINDBHAI CHAUDHARI)",
        "counts": {
-        "New Application": 1,
-        "Amendment Application": 15,
+        "New Application": 0,
+        "Amendment Application": 5,
         "Renewal Application": 0,
         "Surrender Application": 0
        }
@@ -210,7 +201,7 @@
        "pendingWith": "Senior Clerk (Vishal M Minama)",
        "counts": {
         "New Application": 0,
-        "Amendment Application": 7,
+        "Amendment Application": 3,
         "Renewal Application": 0,
         "Surrender Application": 0
        }
@@ -227,18 +218,18 @@
       {
        "pendingWith": "Sub Inspector (NILESHKUMAR R VASAVE)",
        "counts": {
-        "New Application": 2,
-        "Amendment Application": 6,
+        "New Application": 1,
+        "Amendment Application": 8,
         "Renewal Application": 0,
         "Surrender Application": 0
        }
       }
      ],
-     "asOf": "2026-11-16T10:10:28+05:30"
+     "asOf": "2026-11-16T17:16:18+05:30"
     }
    },
    "esarkar": {
-    "asOf": "2026-11-16T10:14:26+05:30",
+    "asOf": "2026-11-16T17:19:24+05:30",
     "files": 0,
     "other": {
      "Workdesk": 0,
@@ -263,7 +254,7 @@
     "note": "Pending Work Items tiles (fully loaded; year dropdown ignored). Received/disposed e-Tappal, file and RTI totals were not found: the desk/Workdesk view shows pendency only, and Reports › Report Dashboard reports (General Performance, e-Meeting MIS, Government Document MIS, Knowledge Management MIS, Office/Branch-wise Pendency, eTappal Pendency Detail) returned no received/disposed totals this run (Generate produced empty or header-only tables). Not assumed zero."
    },
    "lems": {
-    "asOf": "2026-11-14T17:20:56+05:30",
+    "asOf": "2026-11-16T17:34:14+05:30",
     "ipVerificationNew": 0,
     "ipVerificationExtend": 0,
     "other": {
