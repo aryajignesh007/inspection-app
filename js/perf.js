@@ -14,6 +14,7 @@ const PR = {
   ],
   months(to) { const out = []; for (let m = PR.START; m <= to; m = addMonths(m, 1)) out.push(m); return out; },
   async history() { for (const u of [PR.URL, 'https://aryajignesh007.github.io/inspection-app/portal-history.json']) try { const r = await fetch(u + '?t=' + Date.now(), { cache: 'no-store' }); if (r.ok) { const j = await r.json(); localStorage.setItem(DIST.ls('pr.hist'), JSON.stringify(j)); return j; } } catch (e) {} try { return JSON.parse(localStorage.getItem(DIST.ls('pr.hist')) || 'null'); } catch (e) { return null; } },
+  async figures() { for (const u of ['portal-figures.json', 'https://aryajignesh007.github.io/inspection-app/portal-figures.json']) try { const r = await fetch(u + '?t=' + Date.now(), { cache: 'no-store' }); if (r.ok) { const j = await r.json(); localStorage.setItem(DIST.ls('pr.fig'), JSON.stringify(j)); return j; } } catch (e) {} try { return JSON.parse(localStorage.getItem(DIST.ls('pr.fig')) || 'null'); } catch (e) { return null; } },
   async days() { for (const u of ['portal-days.json', 'https://aryajignesh007.github.io/inspection-app/portal-days.json']) try { const r = await fetch(u + '?t=' + Date.now(), { cache: 'no-store' }); if (r.ok) { const j = await r.json(); localStorage.setItem(DIST.ls('pr.days'), JSON.stringify(j)); return j; } } catch (e) {} try { return JSON.parse(localStorage.getItem(DIST.ls('pr.days')) || 'null'); } catch (e) { return null; } },
   async manual() { const o = {}; (await DB.all('pendency')).filter(p => p.portal === 'monthly').forEach(p => o[p.ym] = p); return o; },
   n: v => v === '' || v == null || isNaN(v) ? null : Number(v),
@@ -38,11 +39,13 @@ const PR = {
     return `<svg viewBox="0 0 ${W} ${H}" style="width:100%;max-width:520px;background:#fff">${g}</svg><div>${leg}</div>`;
   },
   async data(to) {
-    const months = PR.months(to), hist = await PR.history(), H = hist?.districts?.[DIST.key] || {}, man = await PR.manual(), dj = await PR.days(), DD = dj?.districts?.[DIST.key] || {};
-    return { months, H, man, DD, dj, rows: months.map(m => ({ ym: m, h: H[m] || { noData: true }, c: PR.calc(man[m], H[m]), dd: DD.months?.[m] || null })), hist };
+    const months = PR.months(to), hist = await PR.history(), fig = await PR.figures(), H = hist?.districts?.[DIST.key] || {}, man = await PR.manual(), dj = await PR.days(), DD = dj?.districts?.[DIST.key] || {};
+    return { months, H, man, DD, dj, fig, rows: months.map(m => ({ ym: m, h: H[m] || { noData: true }, c: PR.calc(man[m], H[m]), dd: DD.months?.[m] || null })), hist };
   },
   html(D, forPdf) {
     const { months, rows } = D, ser = (f) => rows.map(f), dash = v => v == null ? '–' : v;
+    const prod = D.fig?.districts?.[DIST.key]?.esarkar?.productivity;
+    const prodBox = prod ? `<div class="warnbox" style="margin:6px 0"><strong>e-Sarkar View Productivity</strong> (${esc(prod.tab || 'View Productivity')}${prod.asOf ? ' · ' + esc(PFIG.when(prod.asOf)) : ''}): e-Tappal ${dash(prod.eTappal)}, Files ${dash(prod.files)}, RTI ${dash(prod.rti)}. ${prod.period ? esc(prod.period) + '. ' : ''}${prod.note ? esc(prod.note) + ' ' : ''}Received/disposed were not labelled separately, so they are not entered in the month table below.</div>` : `<div class="muted" style="margin:6px 0">e-Sarkar View Productivity has not been read yet for this district. Monthly received/disposed stay “–” until a month-wise reading is available.</div>`;
     const effChart = PR.chart(months, [{ l: 'e-Prohibition', v: ser(r => r.c.ep.eff) }, { l: 'LEMS IP', v: ser(r => r.c.lems.eff) }, { l: 'e-Sarkar', v: ser(r => r.c.es.eff) }, { l: 'Overall', v: ser(r => r.c.all.eff) }], { max: 100, unit: '%' });
     const dispChart = PR.chart(months, [{ l: 'e-Prohibition', v: ser(r => r.c.ep.d) }, { l: 'LEMS IP', v: ser(r => r.c.lems.ipD) }, { l: 'Health Permit registered', v: ser(r => r.c.lems.hpReg) }, { l: 'e-Sarkar', v: ser(r => r.c.es.d) }]);
     const pendChart = PR.chart(months, [{ l: 'e-Prohibition pending (month end)', v: ser(r => r.h.noData ? null : r.h.eprohibition?.end?.pending) }, { l: 'LEMS IP awaiting (avg)', v: ser(r => r.h.noData ? null : r.h.lems?.avgIpAwaiting) }, { l: 'e-Sarkar files (avg)', v: ser(r => r.h.noData ? null : r.h.esarkar?.avgFiles) }, { l: 'e-Tappal (avg)', v: ser(r => r.h.noData ? null : r.h.esarkar?.avgTappal) }]);
@@ -54,6 +57,7 @@ const PR = {
     const noData = rows.filter(r => r.h.noData && !r.h.healthPermitMonth && r.c.all.r == null).map(r => monthLabelEn(r.ym));
     return `<h3>${esc(DIST.info.en)} – Monthly efficiency &amp; performance (portal disposal) <small class="gu">માસિક કામગીરી અહેવાલ</small></h3>
       <div class="muted">Efficiency = disposed ÷ received in the month (from the portal's monthly figures entered below). Health Permit = registered count from LEMS FL2 Process (pending is not used); it adds to LEMS disposal but not to efficiency %. Months with no figures show "–"; nothing is estimated.</div>
+      ${prodBox}
       ${noData.length ? `<div class="warnbox" style="margin:6px 0">No portal data saved for: ${noData.map(esc).join(', ')}. Enter them from the portal's monthly report to fill the charts.</div>` : ''}
       <h4>Efficiency % by month</h4>${effChart}<h4>Disposal by month</h4>${dispChart}<h4>Pendency from twice-daily portal readings</h4>${pendChart}
       <h4>e-Prohibition – days to dispose (application date → approved date) <small class="gu">નિકાલમાં લાગેલ દિવસ</small></h4>
