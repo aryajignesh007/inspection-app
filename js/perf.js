@@ -38,6 +38,67 @@ const PR = {
     const leg = series.map((s, j) => `<span style="display:inline-flex;align-items:center;gap:3px;margin-right:8px;font-size:11px"><i style="width:10px;height:10px;background:${cols[j % 4]};display:inline-block"></i>${esc(s.l)}</span>`).join('');
     return `<svg viewBox="0 0 ${W} ${H}" style="width:100%;max-width:520px;background:#fff">${g}</svg><div>${leg}</div>`;
   },
+  fmtRed(v) { return v == null ? '–' : ((v > 0 ? '+' : '') + v); },
+  dayChart(days, series) {
+    const W = 340, H = 168, pl = 34, pb = 28, pr = 8, pt = 14, cols = ['#3949ab', '#00897b', '#ef6c00', '#8e24aa'];
+    const vals = series.flatMap(s => s.v).filter(v => v != null), M = Math.max(1, ...vals.map(v => Math.abs(v)));
+    const y0 = pt + (H - pt - pb) / 2, sc = (H - pt - pb) / 2 / M, x = i => pl + i * (W - pl - pr) / Math.max(1, days.length - 1);
+    const y = v => y0 - v * sc;
+    let g = `<line x1="${pl}" y1="${y0}" x2="${W - pr}" y2="${y0}" stroke="#bbb" stroke-dasharray="3 3"/><text x="4" y="${y0 + 3}" font-size="8" fill="#666">0</text>`;
+    g += `<text x="4" y="${pt + 6}" font-size="7" fill="#666">+${M}</text><text x="4" y="${H - pb - 2}" font-size="7" fill="#666">${-M}</text>`;
+    series.forEach((s, j) => {
+      let d = ''; let prev = null;
+      days.forEach((day, i) => {
+        const v = s.v[i];
+        if (v == null) { prev = null; return; }
+        const X = x(i), Y = y(v);
+        d += (prev == null ? `M${X} ${Y}` : `L${X} ${Y}`);
+        prev = i;
+        g += `<circle cx="${X}" cy="${Y}" r="2" fill="${cols[j % 4]}"/>`;
+      });
+      if (d) g += `<path d="${d}" fill="none" stroke="${cols[j % 4]}" stroke-width="1.4"/>`;
+    });
+    const ticks = [0, Math.floor((days.length - 1) / 2), days.length - 1].filter((v, i, a) => a.indexOf(v) === i);
+    ticks.forEach(i => { const lab = (days[i]?.date || '').slice(5); g += `<text x="${x(i)}" y="${H - 10}" font-size="8" text-anchor="middle">${esc(lab)}</text>`; });
+    const leg = series.map((s, j) => `<span style="display:inline-flex;align-items:center;gap:3px;margin-right:8px;font-size:11px"><i style="width:10px;height:2px;background:${cols[j % 4]};display:inline-block"></i>${esc(s.l)}</span>`).join('');
+    return `<svg viewBox="0 0 ${W} ${H}" style="width:100%;max-width:520px;background:#fff">${g}</svg><div>${leg}</div>`;
+  },
+  dailyHtml(D) {
+    const dd = D.hist?.daily?.districts?.[DIST.key];
+    if (!dd) return `<div class="muted" style="margin:10px 0 0">Day-wise pendency reduction will appear here after portal readings are saved.</div>`;
+    const keys = dd.keys || [], days = dd.days || [];
+    const show = ['epNew','epPending','epOfficerTotal','lemsIpAwaiting','esTappal','esFiles','esPendingTotal'];
+    const keyMeta = Object.fromEntries((keys).map(k => [k.id, k]));
+    const ser = show.filter(id => keyMeta[id]).map(id => ({ l: keyMeta[id].label, v: days.map(r => r.gap ? null : (r.reduction || {})[id]) }));
+    const chart = PR.dayChart(days, ser);
+    const avg = dd.avgDailyReduction || {}, run = dd.runningTotal || {};
+    const sumLine = show.filter(id => keyMeta[id]).map(id => {
+      const lab = keyMeta[id].label.replace('e-Prohibition ','EP ').replace('e-Sarkar ','ES ');
+      return `${esc(lab)}: running ${PR.fmtRed(run[id])}, avg/day ${avg[id] == null ? '–' : PR.fmtRed(avg[id])}`;
+    }).join(' · ');
+    const last = [...days].reverse().find(r => !r.gap);
+    const offRows = (last?.officers || []).map(o => {
+      const red = o.reduction, cls = red == null ? '' : (red > 0 ? ' style="color:#2e7d32"' : (red < 0 ? ' style="color:#c62828"' : ''));
+      return `<tr><td>${esc(o.pendingWith)}</td><td>${o.prev == null ? '–' : o.prev}</td><td>${o.value == null ? '–' : o.value}</td><td${cls}>${PR.fmtRed(o.reduction)}</td></tr>`;
+    }).join('');
+    const cell = (v, isRed) => {
+      if (v == null) return '<td class="muted">–</td>';
+      if (!isRed) return `<td>${v}</td>`;
+      const col = v > 0 ? '#2e7d32' : (v < 0 ? '#c62828' : '');
+      return `<td${col ? ` style="color:${col}"` : ''}>${PR.fmtRed(v)}</td>`;
+    };
+    const tbl = `<table class="t" style="width:100%;font-size:11px"><tr><th>Date</th><th>EP New</th><th>Δ</th><th>EP Pending</th><th>Δ</th><th>Officer total</th><th>Δ</th><th>LEMS IP awaiting</th><th>Δ</th><th>ES tiles</th><th>Δ</th></tr>` +
+      days.map(r => r.gap ? `<tr class="muted"><td>${esc(r.date)}</td><td colspan="10">no reading (gap)</td></tr>` :
+        `<tr><td>${esc(r.date)}</td>${cell(r.values.epNew)}${cell(r.reduction.epNew,true)}${cell(r.values.epPending)}${cell(r.reduction.epPending,true)}${cell(r.values.epOfficerTotal)}${cell(r.reduction.epOfficerTotal,true)}${cell(r.values.lemsIpAwaiting)}${cell(r.reduction.lemsIpAwaiting,true)}${cell(r.values.esPendingTotal)}${cell(r.reduction.esPendingTotal,true)}</tr>`).join('') +
+      `</table>`;
+    const lastLine = last ? `Latest reading ${esc(last.date)} vs ${esc(last.prevDate || '—')}: EP New ${PR.fmtRed(last.reduction.epNew)}, EP Pending ${PR.fmtRed(last.reduction.epPending)}, officer-wise total ${PR.fmtRed(last.reduction.epOfficerTotal)}, LEMS IP awaiting ${PR.fmtRed(last.reduction.lemsIpAwaiting)}, e-Sarkar pending tiles ${PR.fmtRed(last.reduction.esPendingTotal)}.` : '';
+    return `<h4 style="margin-top:14px">Day-wise pendency reduction</h4>
+      <div class="muted">Positive = pendency reduced since the previous reading; negative = increased. Days with no reading are gaps, not zero. Average = running total ÷ calendar days from the first to the last reading. This series updates automatically each time a portal refresh is saved.</div>
+      <div class="warnbox" style="margin:6px 0">${esc(sumLine)}<br>${esc(lastLine)}</div>
+      ${chart}
+      <div class="scroll-x" style="max-height:280px;overflow:auto;margin-top:6px">${tbl}</div>
+      ${offRows ? `<h4>Officer-wise pendency on ${esc(last.date)}</h4><div class="scroll-x"><table class="t" style="width:100%;font-size:12px"><tr><th>Pending with</th><th>Previous</th><th>This day</th><th>Reduction</th></tr>${offRows}</table></div>` : ''}`;
+  },
   async data(to) {
     const months = PR.months(to), hist = await PR.history(), fig = await PR.figures(), H = hist?.districts?.[DIST.key] || {}, man = await PR.manual(), dj = await PR.days(), DD = dj?.districts?.[DIST.key] || {};
     return { months, H, man, DD, dj, fig, rows: months.map(m => ({ ym: m, h: H[m] || { noData: true }, c: PR.calc(man[m], H[m]), dd: DD.months?.[m] || null })), hist };
@@ -58,6 +119,7 @@ const PR = {
     return `<h3>${esc(DIST.info.en)} – Monthly efficiency &amp; performance (portal disposal) <small class="gu">માસિક કામગીરી અહેવાલ</small></h3>
       <div class="muted">Efficiency = disposed ÷ received in the month (from the portal's monthly figures entered below). Health Permit = registered count from LEMS FL2 Process (pending is not used); it adds to LEMS disposal but not to efficiency %. Months with no figures show "–"; nothing is estimated.</div>
       ${prodBox}
+      ${PR.dailyHtml(D)}
       ${noData.length ? `<div class="warnbox" style="margin:6px 0">No portal data saved for: ${noData.map(esc).join(', ')}. Enter them from the portal's monthly report to fill the charts.</div>` : ''}
       <h4>Efficiency % by month</h4>${effChart}<h4>Disposal by month</h4>${dispChart}<h4>Pendency from twice-daily portal readings</h4>${pendChart}
       <h4>e-Prohibition – days to dispose (application date → approved date) <small class="gu">નિકાલમાં લાગેલ દિવસ</small></h4>

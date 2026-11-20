@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-19T15:07+05:30",
+ "generated": "2026-11-21T00:31+05:30",
  "from": "2026-04",
  "source": "Saved twice-daily portal readings (e-Prohibition, LEMS, e-Sarkar). A month without readings is marked noData – no figure is estimated.",
  "districts": {
@@ -74,9 +74,9 @@
     }
    },
    "2026-11": {
-    "readings": 32,
+    "readings": 33,
     "firstAt": "2026-11-01T10:11:00+05:30",
-    "lastAt": "2026-11-19T15:07:07+05:30",
+    "lastAt": "2026-11-21T00:31:01+05:30",
     "eprohibition": {
      "start": {
       "newApplications": 105,
@@ -93,10 +93,10 @@
     },
     "lems": {
      "end": {
-      "ipNew": 0,
+      "ipNew": 1,
       "ipExtend": 0,
       "ipAwaiting": 1,
-      "healthRegistered": 164
+      "healthRegistered": 169
      },
      "avgIpAwaiting": 1.3,
      "peakIpAwaiting": 3,
@@ -115,7 +115,7 @@
      "peakTappal": 2
     },
     "healthPermitMonth": {
-     "registered": 70
+     "registered": 75
     }
    }
   },
@@ -187,9 +187,9 @@
     }
    },
    "2026-11": {
-    "readings": 32,
+    "readings": 33,
     "firstAt": "2026-11-01T10:19:00+05:30",
-    "lastAt": "2026-11-19T15:07:07+05:30",
+    "lastAt": "2026-11-21T00:31:01+05:30",
     "eprohibition": {
      "start": {
       "newApplications": 44,
@@ -219,17 +219,3549 @@
     "esarkar": {
      "end": {
       "files": 0,
-      "eTappal": 0,
+      "eTappal": 3,
       "rti": 0
      },
      "avgFiles": 0.5,
      "peakFiles": 7,
-     "avgTappal": 0.2,
-     "peakTappal": 2
+     "avgTappal": 0.3,
+     "peakTappal": 3
     },
     "healthPermitMonth": {
      "registered": 6
     }
+   }
+  }
+ },
+ "daily": {
+  "note": "Day-wise reduction in pending numbers from one saved reading day to the next (latest snapshot of each day). Positive = pendency reduced; negative = increased. Days with no reading are gaps, not zero. Average daily reduction = running total ÷ calendar days from the first reading to the last. Future portal refreshes append automatically.",
+  "rule": "reduction = previous reading − this reading; officer reductions only when the same officer appears on both days.",
+  "districts": {
+   "surat": {
+    "from": "2026-10-24",
+    "to": "2026-11-21",
+    "spanDays": 28,
+    "readingDays": 22,
+    "gapDays": 7,
+    "runningTotal": {
+     "epNew": -3,
+     "epPending": -2,
+     "epOfficerTotal": 15,
+     "lemsIpAwaiting": 6,
+     "esFiles": 0,
+     "esTappal": 0,
+     "esRti": 0,
+     "esPendingTotal": 0
+    },
+    "avgDailyReduction": {
+     "epNew": -0.11,
+     "epPending": -0.07,
+     "epOfficerTotal": 0.54,
+     "lemsIpAwaiting": 0.21,
+     "esFiles": 0.0,
+     "esTappal": 0.0,
+     "esRti": 0.0,
+     "esPendingTotal": 0.0
+    },
+    "keys": [
+     {
+      "id": "epNew",
+      "label": "e-Prohibition New"
+     },
+     {
+      "id": "epPending",
+      "label": "e-Prohibition Pending"
+     },
+     {
+      "id": "epOfficerTotal",
+      "label": "e-Prohibition officer-wise total"
+     },
+     {
+      "id": "lemsIpAwaiting",
+      "label": "LEMS IP awaiting"
+     },
+     {
+      "id": "esFiles",
+      "label": "e-Sarkar Files"
+     },
+     {
+      "id": "esTappal",
+      "label": "e-Sarkar e-Tappal"
+     },
+     {
+      "id": "esRti",
+      "label": "e-Sarkar RTI"
+     },
+     {
+      "id": "esPendingTotal",
+      "label": "e-Sarkar pending tiles total"
+     }
+    ],
+    "days": [
+     {
+      "date": "2026-10-24",
+      "gap": false,
+      "asOf": "2026-10-24T18:40:00+05:30",
+      "values": {
+       "epNew": 105,
+       "epPending": 54,
+       "epOfficerTotal": 28,
+       "lemsIpAwaiting": 7,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      },
+      "reduction": {
+       "epNew": null,
+       "epPending": null,
+       "epOfficerTotal": null,
+       "lemsIpAwaiting": null,
+       "esFiles": null,
+       "esTappal": null,
+       "esRti": null,
+       "esPendingTotal": null
+      },
+      "officers": [
+       {
+        "pendingWith": "Inspector Prohibition (Alkaben P Hirapara)",
+        "prev": null,
+        "value": 4,
+        "reduction": null
+       },
+       {
+        "pendingWith": "Office Superintendent (Dipesh H Patel)",
+        "prev": null,
+        "value": 6,
+        "reduction": null
+       },
+       {
+        "pendingWith": "Junior Clerk (M D RATHOD)",
+        "prev": null,
+        "value": 1,
+        "reduction": null
+       },
+       {
+        "pendingWith": "Senior Clerk (Sameer P Kapuriya)",
+        "prev": null,
+        "value": 12,
+        "reduction": null
+       },
+       {
+        "pendingWith": "Sub Inspector (Vishal C Dodiya)",
+        "prev": null,
+        "value": 5,
+        "reduction": null
+       }
+      ],
+      "running": {
+       "epNew": 0,
+       "epPending": 0,
+       "epOfficerTotal": 0,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      }
+     },
+     {
+      "date": "2026-10-25",
+      "gap": true
+     },
+     {
+      "date": "2026-10-26",
+      "gap": true
+     },
+     {
+      "date": "2026-10-27",
+      "gap": false,
+      "asOf": "2026-10-27T17:16:00+05:30",
+      "values": {
+       "epNew": 105,
+       "epPending": 54,
+       "epOfficerTotal": 26,
+       "lemsIpAwaiting": 1,
+       "esFiles": 2,
+       "esTappal": 1,
+       "esRti": 0,
+       "esPendingTotal": 3
+      },
+      "reduction": {
+       "epNew": 0,
+       "epPending": 0,
+       "epOfficerTotal": 2,
+       "lemsIpAwaiting": 6,
+       "esFiles": -2,
+       "esTappal": -1,
+       "esRti": 0,
+       "esPendingTotal": -3
+      },
+      "officers": [
+       {
+        "pendingWith": "Inspector Prohibition (Alkaben P Hirapara)",
+        "prev": 4,
+        "value": 4,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Junior Clerk (M D RATHOD)",
+        "prev": 1,
+        "value": 1,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Office Superintendent (Dipesh H Patel)",
+        "prev": 6,
+        "value": 5,
+        "reduction": 1
+       },
+       {
+        "pendingWith": "Senior Clerk (Sameer P Kapuriya)",
+        "prev": 12,
+        "value": 5,
+        "reduction": 7
+       },
+       {
+        "pendingWith": "Sub Inspector (Vishal C Dodiya)",
+        "prev": 5,
+        "value": 4,
+        "reduction": 1
+       },
+       {
+        "pendingWith": "Superintendent of Prohibition and Excise (JIGNESH S TANNA)",
+        "prev": null,
+        "value": 7,
+        "reduction": null
+       }
+      ],
+      "prevDate": "2026-10-24",
+      "intervalDays": 3,
+      "running": {
+       "epNew": 0,
+       "epPending": 0,
+       "epOfficerTotal": 2,
+       "lemsIpAwaiting": 6,
+       "esFiles": -2,
+       "esTappal": -1,
+       "esRti": 0,
+       "esPendingTotal": -3
+      }
+     },
+     {
+      "date": "2026-10-28",
+      "gap": false,
+      "asOf": "2026-10-28T17:12:00+05:30",
+      "values": {
+       "epNew": 105,
+       "epPending": 54,
+       "epOfficerTotal": 18,
+       "lemsIpAwaiting": 3,
+       "esFiles": 4,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 4
+      },
+      "reduction": {
+       "epNew": 0,
+       "epPending": 0,
+       "epOfficerTotal": 8,
+       "lemsIpAwaiting": -2,
+       "esFiles": -2,
+       "esTappal": 1,
+       "esRti": 0,
+       "esPendingTotal": -1
+      },
+      "officers": [
+       {
+        "pendingWith": "Inspector Prohibition (Alkaben P Hirapara)",
+        "prev": 4,
+        "value": 4,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Junior Clerk (M D RATHOD)",
+        "prev": 1,
+        "value": 1,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Office Superintendent (Dipesh H Patel)",
+        "prev": 5,
+        "value": 2,
+        "reduction": 3
+       },
+       {
+        "pendingWith": "Senior Clerk (Sameer P Kapuriya)",
+        "prev": 5,
+        "value": 7,
+        "reduction": -2
+       },
+       {
+        "pendingWith": "Sub Inspector (Vishal C Dodiya)",
+        "prev": 4,
+        "value": 4,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Superintendent of Prohibition and Excise (JIGNESH S TANNA)",
+        "prev": 7,
+        "value": null,
+        "reduction": null
+       }
+      ],
+      "prevDate": "2026-10-27",
+      "intervalDays": 1,
+      "running": {
+       "epNew": 0,
+       "epPending": 0,
+       "epOfficerTotal": 10,
+       "lemsIpAwaiting": 4,
+       "esFiles": -4,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": -4
+      }
+     },
+     {
+      "date": "2026-10-29",
+      "gap": true
+     },
+     {
+      "date": "2026-10-30",
+      "gap": false,
+      "asOf": "2026-10-30T10:20:00+05:30",
+      "values": {
+       "epNew": 105,
+       "epPending": 54,
+       "epOfficerTotal": 19,
+       "lemsIpAwaiting": 0,
+       "esFiles": 5,
+       "esTappal": 3,
+       "esRti": 0,
+       "esPendingTotal": 8
+      },
+      "reduction": {
+       "epNew": 0,
+       "epPending": 0,
+       "epOfficerTotal": -1,
+       "lemsIpAwaiting": 3,
+       "esFiles": -1,
+       "esTappal": -3,
+       "esRti": 0,
+       "esPendingTotal": -4
+      },
+      "officers": [
+       {
+        "pendingWith": "Inspector Prohibition (Alkaben P Hirapara)",
+        "prev": 4,
+        "value": 3,
+        "reduction": 1
+       },
+       {
+        "pendingWith": "Junior Clerk (M D RATHOD)",
+        "prev": 1,
+        "value": null,
+        "reduction": null
+       },
+       {
+        "pendingWith": "Office Superintendent (Dipesh H Patel)",
+        "prev": 2,
+        "value": 7,
+        "reduction": -5
+       },
+       {
+        "pendingWith": "Senior Clerk (Sameer P Kapuriya)",
+        "prev": 7,
+        "value": 3,
+        "reduction": 4
+       },
+       {
+        "pendingWith": "Sub Inspector (Vishal C Dodiya)",
+        "prev": 4,
+        "value": 6,
+        "reduction": -2
+       }
+      ],
+      "prevDate": "2026-10-28",
+      "intervalDays": 2,
+      "running": {
+       "epNew": 0,
+       "epPending": 0,
+       "epOfficerTotal": 9,
+       "lemsIpAwaiting": 7,
+       "esFiles": -5,
+       "esTappal": -3,
+       "esRti": 0,
+       "esPendingTotal": -8
+      }
+     },
+     {
+      "date": "2026-10-31",
+      "gap": true
+     },
+     {
+      "date": "2026-11-01",
+      "gap": false,
+      "asOf": "2026-11-01T17:04:00+05:30",
+      "values": {
+       "epNew": 105,
+       "epPending": 54,
+       "epOfficerTotal": 22,
+       "lemsIpAwaiting": 1,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 1,
+       "esPendingTotal": 1
+      },
+      "reduction": {
+       "epNew": 0,
+       "epPending": 0,
+       "epOfficerTotal": -3,
+       "lemsIpAwaiting": -1,
+       "esFiles": 5,
+       "esTappal": 3,
+       "esRti": -1,
+       "esPendingTotal": 7
+      },
+      "officers": [
+       {
+        "pendingWith": "Inspector Prohibition (Alkaben P Hirapara)",
+        "prev": 3,
+        "value": 3,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Junior Clerk (M D RATHOD)",
+        "prev": null,
+        "value": 2,
+        "reduction": null
+       },
+       {
+        "pendingWith": "Office Superintendent (Dipesh H Patel)",
+        "prev": 7,
+        "value": 2,
+        "reduction": 5
+       },
+       {
+        "pendingWith": "Senior Clerk (Sameer P Kapuriya)",
+        "prev": 3,
+        "value": 3,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Sub Inspector (Vishal C Dodiya)",
+        "prev": 6,
+        "value": 8,
+        "reduction": -2
+       },
+       {
+        "pendingWith": "Superintendent of Prohibition and Excise (JIGNESH S TANNA)",
+        "prev": null,
+        "value": 4,
+        "reduction": null
+       }
+      ],
+      "prevDate": "2026-10-30",
+      "intervalDays": 2,
+      "running": {
+       "epNew": 0,
+       "epPending": 0,
+       "epOfficerTotal": 6,
+       "lemsIpAwaiting": 6,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": -1,
+       "esPendingTotal": -1
+      }
+     },
+     {
+      "date": "2026-11-02",
+      "gap": false,
+      "asOf": "2026-11-02T17:14:00+05:30",
+      "values": {
+       "epNew": 105,
+       "epPending": 54,
+       "epOfficerTotal": 19,
+       "lemsIpAwaiting": 1,
+       "esFiles": 0,
+       "esTappal": 2,
+       "esRti": 0,
+       "esPendingTotal": 2
+      },
+      "reduction": {
+       "epNew": 0,
+       "epPending": 0,
+       "epOfficerTotal": 3,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": -2,
+       "esRti": 1,
+       "esPendingTotal": -1
+      },
+      "officers": [
+       {
+        "pendingWith": "Inspector Prohibition (Alkaben P Hirapara)",
+        "prev": 3,
+        "value": 2,
+        "reduction": 1
+       },
+       {
+        "pendingWith": "Junior Clerk (M D RATHOD)",
+        "prev": 2,
+        "value": 4,
+        "reduction": -2
+       },
+       {
+        "pendingWith": "Office Superintendent (Dipesh H Patel)",
+        "prev": 2,
+        "value": 4,
+        "reduction": -2
+       },
+       {
+        "pendingWith": "Senior Clerk (Sameer P Kapuriya)",
+        "prev": 3,
+        "value": 6,
+        "reduction": -3
+       },
+       {
+        "pendingWith": "Sub Inspector (Vishal C Dodiya)",
+        "prev": 8,
+        "value": 3,
+        "reduction": 5
+       },
+       {
+        "pendingWith": "Superintendent of Prohibition and Excise (JIGNESH S TANNA)",
+        "prev": 4,
+        "value": null,
+        "reduction": null
+       }
+      ],
+      "prevDate": "2026-11-01",
+      "intervalDays": 1,
+      "running": {
+       "epNew": 0,
+       "epPending": 0,
+       "epOfficerTotal": 9,
+       "lemsIpAwaiting": 6,
+       "esFiles": 0,
+       "esTappal": -2,
+       "esRti": 0,
+       "esPendingTotal": -2
+      }
+     },
+     {
+      "date": "2026-11-03",
+      "gap": false,
+      "asOf": "2026-11-03T17:13:00+05:30",
+      "values": {
+       "epNew": 105,
+       "epPending": 54,
+       "epOfficerTotal": 19,
+       "lemsIpAwaiting": 3,
+       "esFiles": 2,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 2
+      },
+      "reduction": {
+       "epNew": 0,
+       "epPending": 0,
+       "epOfficerTotal": 0,
+       "lemsIpAwaiting": -2,
+       "esFiles": -2,
+       "esTappal": 2,
+       "esRti": 0,
+       "esPendingTotal": 0
+      },
+      "officers": [
+       {
+        "pendingWith": "Inspector Prohibition (Alkaben P Hirapara)",
+        "prev": 2,
+        "value": 2,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Junior Clerk (M D RATHOD)",
+        "prev": 4,
+        "value": 4,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Office Superintendent (Dipesh H Patel)",
+        "prev": 4,
+        "value": 3,
+        "reduction": 1
+       },
+       {
+        "pendingWith": "Senior Clerk (Sameer P Kapuriya)",
+        "prev": 6,
+        "value": 6,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Sub Inspector (Vishal C Dodiya)",
+        "prev": 3,
+        "value": 3,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Superintendent of Prohibition and Excise (JIGNESH S TANNA)",
+        "prev": null,
+        "value": 1,
+        "reduction": null
+       }
+      ],
+      "prevDate": "2026-11-02",
+      "intervalDays": 1,
+      "running": {
+       "epNew": 0,
+       "epPending": 0,
+       "epOfficerTotal": 9,
+       "lemsIpAwaiting": 4,
+       "esFiles": -2,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": -2
+      }
+     },
+     {
+      "date": "2026-11-04",
+      "gap": false,
+      "asOf": "2026-11-04T17:13:00+05:30",
+      "values": {
+       "epNew": 105,
+       "epPending": 54,
+       "epOfficerTotal": 20,
+       "lemsIpAwaiting": 1,
+       "esFiles": 0,
+       "esTappal": 1,
+       "esRti": 0,
+       "esPendingTotal": 1
+      },
+      "reduction": {
+       "epNew": 0,
+       "epPending": 0,
+       "epOfficerTotal": -1,
+       "lemsIpAwaiting": 2,
+       "esFiles": 2,
+       "esTappal": -1,
+       "esRti": 0,
+       "esPendingTotal": 1
+      },
+      "officers": [
+       {
+        "pendingWith": "Inspector Prohibition (Alkaben P Hirapara)",
+        "prev": 2,
+        "value": 1,
+        "reduction": 1
+       },
+       {
+        "pendingWith": "Junior Clerk (M D RATHOD)",
+        "prev": 4,
+        "value": 4,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Office Superintendent (Dipesh H Patel)",
+        "prev": 3,
+        "value": 7,
+        "reduction": -4
+       },
+       {
+        "pendingWith": "Senior Clerk (Sameer P Kapuriya)",
+        "prev": 6,
+        "value": 5,
+        "reduction": 1
+       },
+       {
+        "pendingWith": "Sub Inspector (Vishal C Dodiya)",
+        "prev": 3,
+        "value": 2,
+        "reduction": 1
+       },
+       {
+        "pendingWith": "Superintendent of Prohibition and Excise (JIGNESH S TANNA)",
+        "prev": 1,
+        "value": 1,
+        "reduction": 0
+       }
+      ],
+      "prevDate": "2026-11-03",
+      "intervalDays": 1,
+      "running": {
+       "epNew": 0,
+       "epPending": 0,
+       "epOfficerTotal": 8,
+       "lemsIpAwaiting": 6,
+       "esFiles": 0,
+       "esTappal": -1,
+       "esRti": 0,
+       "esPendingTotal": -1
+      }
+     },
+     {
+      "date": "2026-11-05",
+      "gap": false,
+      "asOf": "2026-11-05T17:15:00+05:30",
+      "values": {
+       "epNew": 105,
+       "epPending": 54,
+       "epOfficerTotal": 17,
+       "lemsIpAwaiting": 1,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      },
+      "reduction": {
+       "epNew": 0,
+       "epPending": 0,
+       "epOfficerTotal": 3,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": 1,
+       "esRti": 0,
+       "esPendingTotal": 1
+      },
+      "officers": [
+       {
+        "pendingWith": "Inspector Prohibition (Alkaben P Hirapara)",
+        "prev": 1,
+        "value": 1,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Junior Clerk (M D RATHOD)",
+        "prev": 4,
+        "value": 1,
+        "reduction": 3
+       },
+       {
+        "pendingWith": "Office Superintendent (Dipesh H Patel)",
+        "prev": 7,
+        "value": 2,
+        "reduction": 5
+       },
+       {
+        "pendingWith": "Senior Clerk (Sameer P Kapuriya)",
+        "prev": 5,
+        "value": 3,
+        "reduction": 2
+       },
+       {
+        "pendingWith": "Sub Inspector (Vishal C Dodiya)",
+        "prev": 2,
+        "value": 2,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Superintendent of Prohibition and Excise (JIGNESH S TANNA)",
+        "prev": 1,
+        "value": 8,
+        "reduction": -7
+       }
+      ],
+      "prevDate": "2026-11-04",
+      "intervalDays": 1,
+      "running": {
+       "epNew": 0,
+       "epPending": 0,
+       "epOfficerTotal": 11,
+       "lemsIpAwaiting": 6,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      }
+     },
+     {
+      "date": "2026-11-06",
+      "gap": false,
+      "asOf": "2026-11-06T23:50:55+05:30",
+      "values": {
+       "epNew": 106,
+       "epPending": 54,
+       "epOfficerTotal": 12,
+       "lemsIpAwaiting": 1,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      },
+      "reduction": {
+       "epNew": -1,
+       "epPending": 0,
+       "epOfficerTotal": 5,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      },
+      "officers": [
+       {
+        "pendingWith": "Inspector Prohibition (Alkaben P Hirapara)",
+        "prev": 1,
+        "value": 1,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Junior Clerk (M D RATHOD)",
+        "prev": 1,
+        "value": 2,
+        "reduction": -1
+       },
+       {
+        "pendingWith": "Office Superintendent (Dipesh H Patel)",
+        "prev": 2,
+        "value": 2,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Senior Clerk (Sameer P Kapuriya)",
+        "prev": 3,
+        "value": 4,
+        "reduction": -1
+       },
+       {
+        "pendingWith": "Sub Inspector (Vishal C Dodiya)",
+        "prev": 2,
+        "value": 1,
+        "reduction": 1
+       },
+       {
+        "pendingWith": "Superintendent of Prohibition and Excise (JIGNESH S TANNA)",
+        "prev": 8,
+        "value": 2,
+        "reduction": 6
+       }
+      ],
+      "prevDate": "2026-11-05",
+      "intervalDays": 1,
+      "running": {
+       "epNew": -1,
+       "epPending": 0,
+       "epOfficerTotal": 16,
+       "lemsIpAwaiting": 6,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      }
+     },
+     {
+      "date": "2026-11-07",
+      "gap": false,
+      "asOf": "2026-11-07T17:12:00+05:30",
+      "values": {
+       "epNew": 106,
+       "epPending": 54,
+       "epOfficerTotal": 11,
+       "lemsIpAwaiting": 2,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      },
+      "reduction": {
+       "epNew": 0,
+       "epPending": 0,
+       "epOfficerTotal": 1,
+       "lemsIpAwaiting": -1,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      },
+      "officers": [
+       {
+        "pendingWith": "Inspector Prohibition (Alkaben P Hirapara)",
+        "prev": 1,
+        "value": 1,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Junior Clerk (M D RATHOD)",
+        "prev": 2,
+        "value": 1,
+        "reduction": 1
+       },
+       {
+        "pendingWith": "Office Superintendent (Dipesh H Patel)",
+        "prev": 2,
+        "value": 2,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Senior Clerk (Sameer P Kapuriya)",
+        "prev": 4,
+        "value": 4,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Sub Inspector (Vishal C Dodiya)",
+        "prev": 1,
+        "value": 1,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Superintendent of Prohibition and Excise (JIGNESH S TANNA)",
+        "prev": 2,
+        "value": 2,
+        "reduction": 0
+       }
+      ],
+      "prevDate": "2026-11-06",
+      "intervalDays": 1,
+      "running": {
+       "epNew": -1,
+       "epPending": 0,
+       "epOfficerTotal": 17,
+       "lemsIpAwaiting": 5,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      }
+     },
+     {
+      "date": "2026-11-08",
+      "gap": false,
+      "asOf": "2026-11-08T17:26:39+05:30",
+      "values": {
+       "epNew": 106,
+       "epPending": 54,
+       "epOfficerTotal": 12,
+       "lemsIpAwaiting": 2,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      },
+      "reduction": {
+       "epNew": 0,
+       "epPending": 0,
+       "epOfficerTotal": -1,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      },
+      "officers": [
+       {
+        "pendingWith": "Inspector Prohibition (Alkaben P Hirapara)",
+        "prev": 1,
+        "value": 1,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Junior Clerk (M D RATHOD)",
+        "prev": 1,
+        "value": 1,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Office Superintendent (Dipesh H Patel)",
+        "prev": 2,
+        "value": 2,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Senior Clerk (Sameer P Kapuriya)",
+        "prev": 4,
+        "value": 5,
+        "reduction": -1
+       },
+       {
+        "pendingWith": "Sub Inspector (Vishal C Dodiya)",
+        "prev": 1,
+        "value": 1,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Superintendent of Prohibition and Excise (JIGNESH S TANNA)",
+        "prev": 2,
+        "value": 2,
+        "reduction": 0
+       }
+      ],
+      "prevDate": "2026-11-07",
+      "intervalDays": 1,
+      "running": {
+       "epNew": -1,
+       "epPending": 0,
+       "epOfficerTotal": 16,
+       "lemsIpAwaiting": 5,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      }
+     },
+     {
+      "date": "2026-11-09",
+      "gap": false,
+      "asOf": "2026-11-09T17:22:00+05:30",
+      "values": {
+       "epNew": 106,
+       "epPending": 54,
+       "epOfficerTotal": 12,
+       "lemsIpAwaiting": 2,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      },
+      "reduction": {
+       "epNew": 0,
+       "epPending": 0,
+       "epOfficerTotal": 0,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      },
+      "officers": [
+       {
+        "pendingWith": "Inspector Prohibition (Alkaben P Hirapara)",
+        "prev": 1,
+        "value": 1,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Junior Clerk (M D RATHOD)",
+        "prev": 1,
+        "value": 1,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Office Superintendent (Dipesh H Patel)",
+        "prev": 2,
+        "value": 2,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Senior Clerk (Sameer P Kapuriya)",
+        "prev": 5,
+        "value": 5,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Sub Inspector (Vishal C Dodiya)",
+        "prev": 1,
+        "value": 1,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Superintendent of Prohibition and Excise (JIGNESH S TANNA)",
+        "prev": 2,
+        "value": 2,
+        "reduction": 0
+       }
+      ],
+      "prevDate": "2026-11-08",
+      "intervalDays": 1,
+      "running": {
+       "epNew": -1,
+       "epPending": 0,
+       "epOfficerTotal": 16,
+       "lemsIpAwaiting": 5,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      }
+     },
+     {
+      "date": "2026-11-10",
+      "gap": false,
+      "asOf": "2026-11-10T17:33:00+05:30",
+      "values": {
+       "epNew": 106,
+       "epPending": 54,
+       "epOfficerTotal": 12,
+       "lemsIpAwaiting": 2,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      },
+      "reduction": {
+       "epNew": 0,
+       "epPending": 0,
+       "epOfficerTotal": 0,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      },
+      "officers": [
+       {
+        "pendingWith": "Inspector Prohibition (Alkaben P Hirapara)",
+        "prev": 1,
+        "value": 1,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Junior Clerk (M D RATHOD)",
+        "prev": 1,
+        "value": 1,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Office Superintendent (Dipesh H Patel)",
+        "prev": 2,
+        "value": 2,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Senior Clerk (Sameer P Kapuriya)",
+        "prev": 5,
+        "value": 5,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Sub Inspector (Vishal C Dodiya)",
+        "prev": 1,
+        "value": 1,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Superintendent of Prohibition and Excise (JIGNESH S TANNA)",
+        "prev": 2,
+        "value": 2,
+        "reduction": 0
+       }
+      ],
+      "prevDate": "2026-11-09",
+      "intervalDays": 1,
+      "running": {
+       "epNew": -1,
+       "epPending": 0,
+       "epOfficerTotal": 16,
+       "lemsIpAwaiting": 5,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      }
+     },
+     {
+      "date": "2026-11-11",
+      "gap": false,
+      "asOf": "2026-11-11T17:30:02+05:30",
+      "values": {
+       "epNew": 106,
+       "epPending": 54,
+       "epOfficerTotal": 12,
+       "lemsIpAwaiting": 2,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      },
+      "reduction": {
+       "epNew": 0,
+       "epPending": 0,
+       "epOfficerTotal": 0,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      },
+      "officers": [
+       {
+        "pendingWith": "Inspector Prohibition (Alkaben P Hirapara)",
+        "prev": 1,
+        "value": 1,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Junior Clerk (M D RATHOD)",
+        "prev": 1,
+        "value": 1,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Office Superintendent (Dipesh H Patel)",
+        "prev": 2,
+        "value": 2,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Senior Clerk (Sameer P Kapuriya)",
+        "prev": 5,
+        "value": 5,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Sub Inspector (Vishal C Dodiya)",
+        "prev": 1,
+        "value": 1,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Superintendent of Prohibition and Excise (JIGNESH S TANNA)",
+        "prev": 2,
+        "value": 2,
+        "reduction": 0
+       }
+      ],
+      "prevDate": "2026-11-10",
+      "intervalDays": 1,
+      "running": {
+       "epNew": -1,
+       "epPending": 0,
+       "epOfficerTotal": 16,
+       "lemsIpAwaiting": 5,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      }
+     },
+     {
+      "date": "2026-11-12",
+      "gap": false,
+      "asOf": "2026-11-12T17:24:40+05:30",
+      "values": {
+       "epNew": 107,
+       "epPending": 55,
+       "epOfficerTotal": 12,
+       "lemsIpAwaiting": 1,
+       "esFiles": 2,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 2
+      },
+      "reduction": {
+       "epNew": -1,
+       "epPending": -1,
+       "epOfficerTotal": 0,
+       "lemsIpAwaiting": 1,
+       "esFiles": -2,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": -2
+      },
+      "officers": [
+       {
+        "pendingWith": "Inspector Prohibition (Alkaben P Hirapara)",
+        "prev": 1,
+        "value": 1,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Junior Clerk (M D RATHOD)",
+        "prev": 1,
+        "value": 1,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Office Superintendent (Dipesh H Patel)",
+        "prev": 2,
+        "value": 2,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Senior Clerk (Sameer P Kapuriya)",
+        "prev": 5,
+        "value": 2,
+        "reduction": 3
+       },
+       {
+        "pendingWith": "Sub Inspector (Vishal C Dodiya)",
+        "prev": 1,
+        "value": 3,
+        "reduction": -2
+       },
+       {
+        "pendingWith": "Superintendent of Prohibition and Excise (JIGNESH S TANNA)",
+        "prev": 2,
+        "value": 3,
+        "reduction": -1
+       }
+      ],
+      "prevDate": "2026-11-11",
+      "intervalDays": 1,
+      "running": {
+       "epNew": -2,
+       "epPending": -1,
+       "epOfficerTotal": 16,
+       "lemsIpAwaiting": 6,
+       "esFiles": -2,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": -2
+      }
+     },
+     {
+      "date": "2026-11-13",
+      "gap": false,
+      "asOf": "2026-11-13T17:31:30+05:30",
+      "values": {
+       "epNew": 107,
+       "epPending": 55,
+       "epOfficerTotal": 11,
+       "lemsIpAwaiting": 1,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      },
+      "reduction": {
+       "epNew": 0,
+       "epPending": 0,
+       "epOfficerTotal": 1,
+       "lemsIpAwaiting": 0,
+       "esFiles": 2,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 2
+      },
+      "officers": [
+       {
+        "pendingWith": "Inspector Prohibition (Alkaben P Hirapara)",
+        "prev": 1,
+        "value": 1,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Junior Clerk (M D RATHOD)",
+        "prev": 1,
+        "value": 1,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Office Superintendent (Dipesh H Patel)",
+        "prev": 2,
+        "value": 2,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Senior Clerk (Sameer P Kapuriya)",
+        "prev": 2,
+        "value": 3,
+        "reduction": -1
+       },
+       {
+        "pendingWith": "Sub Inspector (Vishal C Dodiya)",
+        "prev": 3,
+        "value": 3,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Superintendent of Prohibition and Excise (JIGNESH S TANNA)",
+        "prev": 3,
+        "value": 1,
+        "reduction": 2
+       }
+      ],
+      "prevDate": "2026-11-12",
+      "intervalDays": 1,
+      "running": {
+       "epNew": -2,
+       "epPending": -1,
+       "epOfficerTotal": 17,
+       "lemsIpAwaiting": 6,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      }
+     },
+     {
+      "date": "2026-11-14",
+      "gap": false,
+      "asOf": "2026-11-14T17:35:01+05:30",
+      "values": {
+       "epNew": 108,
+       "epPending": 56,
+       "epOfficerTotal": 11,
+       "lemsIpAwaiting": 1,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      },
+      "reduction": {
+       "epNew": -1,
+       "epPending": -1,
+       "epOfficerTotal": 0,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      },
+      "officers": [
+       {
+        "pendingWith": "Inspector Prohibition (Alkaben P Hirapara)",
+        "prev": 1,
+        "value": 1,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Junior Clerk (M D RATHOD)",
+        "prev": 1,
+        "value": 1,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Office Superintendent (Dipesh H Patel)",
+        "prev": 2,
+        "value": 2,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Senior Clerk (Sameer P Kapuriya)",
+        "prev": 3,
+        "value": 3,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Sub Inspector (Vishal C Dodiya)",
+        "prev": 3,
+        "value": 3,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Superintendent of Prohibition and Excise (JIGNESH S TANNA)",
+        "prev": 1,
+        "value": 1,
+        "reduction": 0
+       }
+      ],
+      "prevDate": "2026-11-13",
+      "intervalDays": 1,
+      "running": {
+       "epNew": -3,
+       "epPending": -2,
+       "epOfficerTotal": 17,
+       "lemsIpAwaiting": 6,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      }
+     },
+     {
+      "date": "2026-11-15",
+      "gap": false,
+      "asOf": "2026-11-15T17:27:53+05:30",
+      "values": {
+       "epNew": 108,
+       "epPending": 56,
+       "epOfficerTotal": 11,
+       "lemsIpAwaiting": 1,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      },
+      "reduction": {
+       "epNew": 0,
+       "epPending": 0,
+       "epOfficerTotal": 0,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      },
+      "officers": [
+       {
+        "pendingWith": "Inspector Prohibition (Alkaben P Hirapara)",
+        "prev": 1,
+        "value": 1,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Junior Clerk (M D RATHOD)",
+        "prev": 1,
+        "value": 1,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Office Superintendent (Dipesh H Patel)",
+        "prev": 2,
+        "value": 2,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Senior Clerk (Sameer P Kapuriya)",
+        "prev": 3,
+        "value": 3,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Sub Inspector (Vishal C Dodiya)",
+        "prev": 3,
+        "value": 3,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Superintendent of Prohibition and Excise (JIGNESH S TANNA)",
+        "prev": 1,
+        "value": 1,
+        "reduction": 0
+       }
+      ],
+      "prevDate": "2026-11-14",
+      "intervalDays": 1,
+      "running": {
+       "epNew": -3,
+       "epPending": -2,
+       "epOfficerTotal": 17,
+       "lemsIpAwaiting": 6,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      }
+     },
+     {
+      "date": "2026-11-16",
+      "gap": false,
+      "asOf": "2026-11-16T17:37:56+05:30",
+      "values": {
+       "epNew": 108,
+       "epPending": 56,
+       "epOfficerTotal": 12,
+       "lemsIpAwaiting": 1,
+       "esFiles": 1,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 1
+      },
+      "reduction": {
+       "epNew": 0,
+       "epPending": 0,
+       "epOfficerTotal": -1,
+       "lemsIpAwaiting": 0,
+       "esFiles": -1,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": -1
+      },
+      "officers": [
+       {
+        "pendingWith": "Inspector Prohibition (Alkaben P Hirapara)",
+        "prev": 1,
+        "value": 2,
+        "reduction": -1
+       },
+       {
+        "pendingWith": "Junior Clerk (M D RATHOD)",
+        "prev": 1,
+        "value": null,
+        "reduction": null
+       },
+       {
+        "pendingWith": "Office Superintendent (Dipesh H Patel)",
+        "prev": 2,
+        "value": 2,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Senior Clerk (Sameer P Kapuriya)",
+        "prev": 3,
+        "value": 4,
+        "reduction": -1
+       },
+       {
+        "pendingWith": "Sub Inspector (Vishal C Dodiya)",
+        "prev": 3,
+        "value": 3,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Superintendent of Prohibition and Excise (JIGNESH S TANNA)",
+        "prev": 1,
+        "value": 1,
+        "reduction": 0
+       }
+      ],
+      "prevDate": "2026-11-15",
+      "intervalDays": 1,
+      "running": {
+       "epNew": -3,
+       "epPending": -2,
+       "epOfficerTotal": 16,
+       "lemsIpAwaiting": 6,
+       "esFiles": -1,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": -1
+      }
+     },
+     {
+      "date": "2026-11-17",
+      "gap": true
+     },
+     {
+      "date": "2026-11-18",
+      "gap": true
+     },
+     {
+      "date": "2026-11-19",
+      "gap": false,
+      "asOf": "2026-11-19T15:07:07+05:30",
+      "values": {
+       "epNew": 108,
+       "epPending": 56,
+       "epOfficerTotal": 14,
+       "lemsIpAwaiting": 1,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      },
+      "reduction": {
+       "epNew": 0,
+       "epPending": 0,
+       "epOfficerTotal": -2,
+       "lemsIpAwaiting": 0,
+       "esFiles": 1,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 1
+      },
+      "officers": [
+       {
+        "pendingWith": "Inspector Prohibition (Alkaben P Hirapara)",
+        "prev": 2,
+        "value": 2,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Junior Clerk (M D RATHOD)",
+        "prev": null,
+        "value": 1,
+        "reduction": null
+       },
+       {
+        "pendingWith": "Office Superintendent (Dipesh H Patel)",
+        "prev": 2,
+        "value": 2,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Senior Clerk (Sameer P Kapuriya)",
+        "prev": 4,
+        "value": 5,
+        "reduction": -1
+       },
+       {
+        "pendingWith": "Sub Inspector (Vishal C Dodiya)",
+        "prev": 3,
+        "value": 3,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Superintendent of Prohibition and Excise (JIGNESH S TANNA)",
+        "prev": 1,
+        "value": 1,
+        "reduction": 0
+       }
+      ],
+      "prevDate": "2026-11-16",
+      "intervalDays": 3,
+      "running": {
+       "epNew": -3,
+       "epPending": -2,
+       "epOfficerTotal": 14,
+       "lemsIpAwaiting": 6,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      }
+     },
+     {
+      "date": "2026-11-20",
+      "gap": true
+     },
+     {
+      "date": "2026-11-21",
+      "gap": false,
+      "asOf": "2026-11-21T00:31:01+05:30",
+      "values": {
+       "epNew": 108,
+       "epPending": 56,
+       "epOfficerTotal": 13,
+       "lemsIpAwaiting": 1,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      },
+      "reduction": {
+       "epNew": 0,
+       "epPending": 0,
+       "epOfficerTotal": 1,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      },
+      "officers": [
+       {
+        "pendingWith": "Inspector Prohibition (Alkaben P Hirapara)",
+        "prev": 2,
+        "value": 2,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Junior Clerk (M D RATHOD)",
+        "prev": 1,
+        "value": 1,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Office Superintendent (Dipesh H Patel)",
+        "prev": 2,
+        "value": 2,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Senior Clerk (Sameer P Kapuriya)",
+        "prev": 5,
+        "value": 2,
+        "reduction": 3
+       },
+       {
+        "pendingWith": "Sub Inspector (Vishal C Dodiya)",
+        "prev": 3,
+        "value": 5,
+        "reduction": -2
+       },
+       {
+        "pendingWith": "Superintendent of Prohibition and Excise (JIGNESH S TANNA)",
+        "prev": 1,
+        "value": 1,
+        "reduction": 0
+       }
+      ],
+      "prevDate": "2026-11-19",
+      "intervalDays": 2,
+      "running": {
+       "epNew": -3,
+       "epPending": -2,
+       "epOfficerTotal": 15,
+       "lemsIpAwaiting": 6,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      }
+     }
+    ]
+   },
+   "valsad": {
+    "from": "2026-10-24",
+    "to": "2026-11-21",
+    "spanDays": 28,
+    "readingDays": 22,
+    "gapDays": 7,
+    "runningTotal": {
+     "epNew": -1,
+     "epPending": -1,
+     "epOfficerTotal": -7,
+     "lemsIpAwaiting": 0,
+     "esFiles": 0,
+     "esTappal": -3,
+     "esRti": 0,
+     "esPendingTotal": -3
+    },
+    "avgDailyReduction": {
+     "epNew": -0.04,
+     "epPending": -0.04,
+     "epOfficerTotal": -0.25,
+     "lemsIpAwaiting": 0.0,
+     "esFiles": 0.0,
+     "esTappal": -0.11,
+     "esRti": 0.0,
+     "esPendingTotal": -0.11
+    },
+    "keys": [
+     {
+      "id": "epNew",
+      "label": "e-Prohibition New"
+     },
+     {
+      "id": "epPending",
+      "label": "e-Prohibition Pending"
+     },
+     {
+      "id": "epOfficerTotal",
+      "label": "e-Prohibition officer-wise total"
+     },
+     {
+      "id": "lemsIpAwaiting",
+      "label": "LEMS IP awaiting"
+     },
+     {
+      "id": "esFiles",
+      "label": "e-Sarkar Files"
+     },
+     {
+      "id": "esTappal",
+      "label": "e-Sarkar e-Tappal"
+     },
+     {
+      "id": "esRti",
+      "label": "e-Sarkar RTI"
+     },
+     {
+      "id": "esPendingTotal",
+      "label": "e-Sarkar pending tiles total"
+     }
+    ],
+    "days": [
+     {
+      "date": "2026-10-24",
+      "gap": false,
+      "asOf": "2026-10-24T18:40:00+05:30",
+      "values": {
+       "epNew": 43,
+       "epPending": 19,
+       "epOfficerTotal": 44,
+       "lemsIpAwaiting": null,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      },
+      "reduction": {
+       "epNew": null,
+       "epPending": null,
+       "epOfficerTotal": null,
+       "lemsIpAwaiting": null,
+       "esFiles": null,
+       "esTappal": null,
+       "esRti": null,
+       "esPendingTotal": null
+      },
+      "officers": [
+       {
+        "pendingWith": "Superintendent of Prohibition and Excise (J S Tanna)",
+        "prev": null,
+        "value": 5,
+        "reduction": null
+       },
+       {
+        "pendingWith": "Inspector Prohibition (AKSHAYKUMAR S PATEL)",
+        "prev": null,
+        "value": 4,
+        "reduction": null
+       },
+       {
+        "pendingWith": "Office Superintendent (DIPAK DEVJIBHAI VISANI)",
+        "prev": null,
+        "value": 3,
+        "reduction": null
+       },
+       {
+        "pendingWith": "Junior Clerk (HITESHBHAI GOVINDBHAI CHAUDHARI)",
+        "prev": null,
+        "value": 7,
+        "reduction": null
+       },
+       {
+        "pendingWith": "Senior Clerk (Vishal M Minama)",
+        "prev": null,
+        "value": 6,
+        "reduction": null
+       },
+       {
+        "pendingWith": "Sub Inspector (NILESHKUMAR R VASAVE)",
+        "prev": null,
+        "value": 18,
+        "reduction": null
+       },
+       {
+        "pendingWith": "Sub Inspector (NIKULKUMAR L CHAUDHARI)",
+        "prev": null,
+        "value": 1,
+        "reduction": null
+       }
+      ],
+      "running": {
+       "epNew": 0,
+       "epPending": 0,
+       "epOfficerTotal": 0,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      }
+     },
+     {
+      "date": "2026-10-25",
+      "gap": true
+     },
+     {
+      "date": "2026-10-26",
+      "gap": true
+     },
+     {
+      "date": "2026-10-27",
+      "gap": false,
+      "asOf": "2026-10-27T17:18:00+05:30",
+      "values": {
+       "epNew": 43,
+       "epPending": 19,
+       "epOfficerTotal": 40,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      },
+      "reduction": {
+       "epNew": 0,
+       "epPending": 0,
+       "epOfficerTotal": 4,
+       "lemsIpAwaiting": null,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      },
+      "officers": [
+       {
+        "pendingWith": "Inspector Prohibition (AKSHAYKUMAR S PATEL)",
+        "prev": 4,
+        "value": 7,
+        "reduction": -3
+       },
+       {
+        "pendingWith": "Junior Clerk (HITESHBHAI GOVINDBHAI CHAUDHARI)",
+        "prev": 7,
+        "value": null,
+        "reduction": null
+       },
+       {
+        "pendingWith": "Office Superintendent (DIPAK DEVJIBHAI VISANI)",
+        "prev": 3,
+        "value": 1,
+        "reduction": 2
+       },
+       {
+        "pendingWith": "Senior Clerk (Vishal M Minama)",
+        "prev": 6,
+        "value": 2,
+        "reduction": 4
+       },
+       {
+        "pendingWith": "Sub Inspector (NIKULKUMAR L CHAUDHARI)",
+        "prev": 1,
+        "value": 1,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Sub Inspector (NILESHKUMAR R VASAVE)",
+        "prev": 18,
+        "value": 22,
+        "reduction": -4
+       },
+       {
+        "pendingWith": "Superintendent of Prohibition and Excise (J S Tanna)",
+        "prev": 5,
+        "value": 7,
+        "reduction": -2
+       }
+      ],
+      "prevDate": "2026-10-24",
+      "intervalDays": 3,
+      "running": {
+       "epNew": 0,
+       "epPending": 0,
+       "epOfficerTotal": 4,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      }
+     },
+     {
+      "date": "2026-10-28",
+      "gap": false,
+      "asOf": "2026-10-28T17:14:00+05:30",
+      "values": {
+       "epNew": 43,
+       "epPending": 19,
+       "epOfficerTotal": 37,
+       "lemsIpAwaiting": 0,
+       "esFiles": 2,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 2
+      },
+      "reduction": {
+       "epNew": 0,
+       "epPending": 0,
+       "epOfficerTotal": 3,
+       "lemsIpAwaiting": 0,
+       "esFiles": -2,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": -2
+      },
+      "officers": [
+       {
+        "pendingWith": "Inspector Prohibition (AKSHAYKUMAR S PATEL)",
+        "prev": 7,
+        "value": 6,
+        "reduction": 1
+       },
+       {
+        "pendingWith": "Office Superintendent (DIPAK DEVJIBHAI VISANI)",
+        "prev": 1,
+        "value": 1,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Senior Clerk (Vishal M Minama)",
+        "prev": 2,
+        "value": 3,
+        "reduction": -1
+       },
+       {
+        "pendingWith": "Sub Inspector (NIKULKUMAR L CHAUDHARI)",
+        "prev": 1,
+        "value": 1,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Sub Inspector (NILESHKUMAR R VASAVE)",
+        "prev": 22,
+        "value": 18,
+        "reduction": 4
+       },
+       {
+        "pendingWith": "Superintendent of Prohibition and Excise (J S Tanna)",
+        "prev": 7,
+        "value": 8,
+        "reduction": -1
+       }
+      ],
+      "prevDate": "2026-10-27",
+      "intervalDays": 1,
+      "running": {
+       "epNew": 0,
+       "epPending": 0,
+       "epOfficerTotal": 7,
+       "lemsIpAwaiting": 0,
+       "esFiles": -2,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": -2
+      }
+     },
+     {
+      "date": "2026-10-29",
+      "gap": true
+     },
+     {
+      "date": "2026-10-30",
+      "gap": false,
+      "asOf": "2026-10-30T10:09:00+05:30",
+      "values": {
+       "epNew": 44,
+       "epPending": 20,
+       "epOfficerTotal": 39,
+       "lemsIpAwaiting": 0,
+       "esFiles": 3,
+       "esTappal": 3,
+       "esRti": 0,
+       "esPendingTotal": 6
+      },
+      "reduction": {
+       "epNew": -1,
+       "epPending": -1,
+       "epOfficerTotal": -2,
+       "lemsIpAwaiting": 0,
+       "esFiles": -1,
+       "esTappal": -3,
+       "esRti": 0,
+       "esPendingTotal": -4
+      },
+      "officers": [
+       {
+        "pendingWith": "Inspector Prohibition (AKSHAYKUMAR S PATEL)",
+        "prev": 6,
+        "value": 7,
+        "reduction": -1
+       },
+       {
+        "pendingWith": "Junior Clerk (HITESHBHAI GOVINDBHAI CHAUDHARI)",
+        "prev": null,
+        "value": 4,
+        "reduction": null
+       },
+       {
+        "pendingWith": "Office Superintendent (DIPAK DEVJIBHAI VISANI)",
+        "prev": 1,
+        "value": 2,
+        "reduction": -1
+       },
+       {
+        "pendingWith": "Senior Clerk (Vishal M Minama)",
+        "prev": 3,
+        "value": 8,
+        "reduction": -5
+       },
+       {
+        "pendingWith": "Sub Inspector (NIKULKUMAR L CHAUDHARI)",
+        "prev": 1,
+        "value": 1,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Sub Inspector (NILESHKUMAR R VASAVE)",
+        "prev": 18,
+        "value": 17,
+        "reduction": 1
+       },
+       {
+        "pendingWith": "Superintendent of Prohibition and Excise (J S Tanna)",
+        "prev": 8,
+        "value": null,
+        "reduction": null
+       }
+      ],
+      "prevDate": "2026-10-28",
+      "intervalDays": 2,
+      "running": {
+       "epNew": -1,
+       "epPending": -1,
+       "epOfficerTotal": 5,
+       "lemsIpAwaiting": 0,
+       "esFiles": -3,
+       "esTappal": -3,
+       "esRti": 0,
+       "esPendingTotal": -6
+      }
+     },
+     {
+      "date": "2026-10-31",
+      "gap": true
+     },
+     {
+      "date": "2026-11-01",
+      "gap": false,
+      "asOf": "2026-11-01T17:07:00+05:30",
+      "values": {
+       "epNew": 44,
+       "epPending": 20,
+       "epOfficerTotal": 39,
+       "lemsIpAwaiting": 0,
+       "esFiles": 1,
+       "esTappal": 1,
+       "esRti": 0,
+       "esPendingTotal": 2
+      },
+      "reduction": {
+       "epNew": 0,
+       "epPending": 0,
+       "epOfficerTotal": 0,
+       "lemsIpAwaiting": 0,
+       "esFiles": 2,
+       "esTappal": 2,
+       "esRti": 0,
+       "esPendingTotal": 4
+      },
+      "officers": [
+       {
+        "pendingWith": "Inspector Prohibition (AKSHAYKUMAR S PATEL)",
+        "prev": 7,
+        "value": 7,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Junior Clerk (HITESHBHAI GOVINDBHAI CHAUDHARI)",
+        "prev": 4,
+        "value": 3,
+        "reduction": 1
+       },
+       {
+        "pendingWith": "Office Superintendent (DIPAK DEVJIBHAI VISANI)",
+        "prev": 2,
+        "value": 3,
+        "reduction": -1
+       },
+       {
+        "pendingWith": "Senior Clerk (Vishal M Minama)",
+        "prev": 8,
+        "value": 4,
+        "reduction": 4
+       },
+       {
+        "pendingWith": "Sub Inspector (NIKULKUMAR L CHAUDHARI)",
+        "prev": 1,
+        "value": 1,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Sub Inspector (NILESHKUMAR R VASAVE)",
+        "prev": 17,
+        "value": 21,
+        "reduction": -4
+       }
+      ],
+      "prevDate": "2026-10-30",
+      "intervalDays": 2,
+      "running": {
+       "epNew": -1,
+       "epPending": -1,
+       "epOfficerTotal": 5,
+       "lemsIpAwaiting": 0,
+       "esFiles": -1,
+       "esTappal": -1,
+       "esRti": 0,
+       "esPendingTotal": -2
+      }
+     },
+     {
+      "date": "2026-11-02",
+      "gap": false,
+      "asOf": "2026-11-02T17:15:00+05:30",
+      "values": {
+       "epNew": 44,
+       "epPending": 20,
+       "epOfficerTotal": 38,
+       "lemsIpAwaiting": 0,
+       "esFiles": 1,
+       "esTappal": 2,
+       "esRti": 0,
+       "esPendingTotal": 3
+      },
+      "reduction": {
+       "epNew": 0,
+       "epPending": 0,
+       "epOfficerTotal": 1,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": -1,
+       "esRti": 0,
+       "esPendingTotal": -1
+      },
+      "officers": [
+       {
+        "pendingWith": "Inspector Prohibition (AKSHAYKUMAR S PATEL)",
+        "prev": 7,
+        "value": 7,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Junior Clerk (HITESHBHAI GOVINDBHAI CHAUDHARI)",
+        "prev": 3,
+        "value": 6,
+        "reduction": -3
+       },
+       {
+        "pendingWith": "Office Superintendent (DIPAK DEVJIBHAI VISANI)",
+        "prev": 3,
+        "value": 3,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Senior Clerk (Vishal M Minama)",
+        "prev": 4,
+        "value": 4,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Sub Inspector (NIKULKUMAR L CHAUDHARI)",
+        "prev": 1,
+        "value": 1,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Sub Inspector (NILESHKUMAR R VASAVE)",
+        "prev": 21,
+        "value": 16,
+        "reduction": 5
+       },
+       {
+        "pendingWith": "Superintendent of Prohibition and Excise (J S Tanna)",
+        "prev": null,
+        "value": 1,
+        "reduction": null
+       }
+      ],
+      "prevDate": "2026-11-01",
+      "intervalDays": 1,
+      "running": {
+       "epNew": -1,
+       "epPending": -1,
+       "epOfficerTotal": 6,
+       "lemsIpAwaiting": 0,
+       "esFiles": -1,
+       "esTappal": -2,
+       "esRti": 0,
+       "esPendingTotal": -3
+      }
+     },
+     {
+      "date": "2026-11-03",
+      "gap": false,
+      "asOf": "2026-11-03T17:16:00+05:30",
+      "values": {
+       "epNew": 44,
+       "epPending": 20,
+       "epOfficerTotal": 37,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      },
+      "reduction": {
+       "epNew": 0,
+       "epPending": 0,
+       "epOfficerTotal": 1,
+       "lemsIpAwaiting": 0,
+       "esFiles": 1,
+       "esTappal": 2,
+       "esRti": 0,
+       "esPendingTotal": 3
+      },
+      "officers": [
+       {
+        "pendingWith": "Inspector Prohibition (AKSHAYKUMAR S PATEL)",
+        "prev": 7,
+        "value": 5,
+        "reduction": 2
+       },
+       {
+        "pendingWith": "Junior Clerk (HITESHBHAI GOVINDBHAI CHAUDHARI)",
+        "prev": 6,
+        "value": 8,
+        "reduction": -2
+       },
+       {
+        "pendingWith": "Office Superintendent (DIPAK DEVJIBHAI VISANI)",
+        "prev": 3,
+        "value": 3,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Senior Clerk (Vishal M Minama)",
+        "prev": 4,
+        "value": 8,
+        "reduction": -4
+       },
+       {
+        "pendingWith": "Sub Inspector (NIKULKUMAR L CHAUDHARI)",
+        "prev": 1,
+        "value": 1,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Sub Inspector (NILESHKUMAR R VASAVE)",
+        "prev": 16,
+        "value": 9,
+        "reduction": 7
+       },
+       {
+        "pendingWith": "Superintendent of Prohibition and Excise (J S Tanna)",
+        "prev": 1,
+        "value": 3,
+        "reduction": -2
+       }
+      ],
+      "prevDate": "2026-11-02",
+      "intervalDays": 1,
+      "running": {
+       "epNew": -1,
+       "epPending": -1,
+       "epOfficerTotal": 7,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      }
+     },
+     {
+      "date": "2026-11-04",
+      "gap": false,
+      "asOf": "2026-11-04T17:15:00+05:30",
+      "values": {
+       "epNew": 44,
+       "epPending": 20,
+       "epOfficerTotal": 32,
+       "lemsIpAwaiting": 0,
+       "esFiles": 7,
+       "esTappal": 2,
+       "esRti": 0,
+       "esPendingTotal": 9
+      },
+      "reduction": {
+       "epNew": 0,
+       "epPending": 0,
+       "epOfficerTotal": 5,
+       "lemsIpAwaiting": 0,
+       "esFiles": -7,
+       "esTappal": -2,
+       "esRti": 0,
+       "esPendingTotal": -9
+      },
+      "officers": [
+       {
+        "pendingWith": "Inspector Prohibition (AKSHAYKUMAR S PATEL)",
+        "prev": 5,
+        "value": 7,
+        "reduction": -2
+       },
+       {
+        "pendingWith": "Junior Clerk (HITESHBHAI GOVINDBHAI CHAUDHARI)",
+        "prev": 8,
+        "value": 5,
+        "reduction": 3
+       },
+       {
+        "pendingWith": "Office Superintendent (DIPAK DEVJIBHAI VISANI)",
+        "prev": 3,
+        "value": 1,
+        "reduction": 2
+       },
+       {
+        "pendingWith": "Senior Clerk (Vishal M Minama)",
+        "prev": 8,
+        "value": 4,
+        "reduction": 4
+       },
+       {
+        "pendingWith": "Sub Inspector (NIKULKUMAR L CHAUDHARI)",
+        "prev": 1,
+        "value": 1,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Sub Inspector (NILESHKUMAR R VASAVE)",
+        "prev": 9,
+        "value": 9,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Superintendent of Prohibition and Excise (J S Tanna)",
+        "prev": 3,
+        "value": 5,
+        "reduction": -2
+       }
+      ],
+      "prevDate": "2026-11-03",
+      "intervalDays": 1,
+      "running": {
+       "epNew": -1,
+       "epPending": -1,
+       "epOfficerTotal": 12,
+       "lemsIpAwaiting": 0,
+       "esFiles": -7,
+       "esTappal": -2,
+       "esRti": 0,
+       "esPendingTotal": -9
+      }
+     },
+     {
+      "date": "2026-11-05",
+      "gap": false,
+      "asOf": "2026-11-05T17:17:00+05:30",
+      "values": {
+       "epNew": 44,
+       "epPending": 20,
+       "epOfficerTotal": 31,
+       "lemsIpAwaiting": 0,
+       "esFiles": 2,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 2
+      },
+      "reduction": {
+       "epNew": 0,
+       "epPending": 0,
+       "epOfficerTotal": 1,
+       "lemsIpAwaiting": 0,
+       "esFiles": 5,
+       "esTappal": 2,
+       "esRti": 0,
+       "esPendingTotal": 7
+      },
+      "officers": [
+       {
+        "pendingWith": "Inspector Prohibition (AKSHAYKUMAR S PATEL)",
+        "prev": 7,
+        "value": 7,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Junior Clerk (HITESHBHAI GOVINDBHAI CHAUDHARI)",
+        "prev": 5,
+        "value": 4,
+        "reduction": 1
+       },
+       {
+        "pendingWith": "Office Superintendent (DIPAK DEVJIBHAI VISANI)",
+        "prev": 1,
+        "value": 1,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Senior Clerk (Vishal M Minama)",
+        "prev": 4,
+        "value": 6,
+        "reduction": -2
+       },
+       {
+        "pendingWith": "Sub Inspector (NIKULKUMAR L CHAUDHARI)",
+        "prev": 1,
+        "value": 1,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Sub Inspector (NILESHKUMAR R VASAVE)",
+        "prev": 9,
+        "value": 11,
+        "reduction": -2
+       },
+       {
+        "pendingWith": "Superintendent of Prohibition and Excise (J S Tanna)",
+        "prev": 5,
+        "value": 1,
+        "reduction": 4
+       }
+      ],
+      "prevDate": "2026-11-04",
+      "intervalDays": 1,
+      "running": {
+       "epNew": -1,
+       "epPending": -1,
+       "epOfficerTotal": 13,
+       "lemsIpAwaiting": 0,
+       "esFiles": -2,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": -2
+      }
+     },
+     {
+      "date": "2026-11-06",
+      "gap": false,
+      "asOf": "2026-11-06T23:54:04+05:30",
+      "values": {
+       "epNew": 44,
+       "epPending": 20,
+       "epOfficerTotal": 32,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      },
+      "reduction": {
+       "epNew": 0,
+       "epPending": 0,
+       "epOfficerTotal": -1,
+       "lemsIpAwaiting": 0,
+       "esFiles": 2,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 2
+      },
+      "officers": [
+       {
+        "pendingWith": "Inspector Prohibition (AKSHAYKUMAR S PATEL)",
+        "prev": 7,
+        "value": 6,
+        "reduction": 1
+       },
+       {
+        "pendingWith": "Junior Clerk (HITESHBHAI GOVINDBHAI CHAUDHARI)",
+        "prev": 4,
+        "value": 4,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Office Superintendent (DIPAK DEVJIBHAI VISANI)",
+        "prev": 1,
+        "value": 3,
+        "reduction": -2
+       },
+       {
+        "pendingWith": "Senior Clerk (Vishal M Minama)",
+        "prev": 6,
+        "value": 3,
+        "reduction": 3
+       },
+       {
+        "pendingWith": "Sub Inspector (NIKULKUMAR L CHAUDHARI)",
+        "prev": 1,
+        "value": 1,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Sub Inspector (NILESHKUMAR R VASAVE)",
+        "prev": 11,
+        "value": 15,
+        "reduction": -4
+       },
+       {
+        "pendingWith": "Superintendent of Prohibition and Excise (J S Tanna)",
+        "prev": 1,
+        "value": null,
+        "reduction": null
+       }
+      ],
+      "prevDate": "2026-11-05",
+      "intervalDays": 1,
+      "running": {
+       "epNew": -1,
+       "epPending": -1,
+       "epOfficerTotal": 12,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      }
+     },
+     {
+      "date": "2026-11-07",
+      "gap": false,
+      "asOf": "2026-11-07T17:12:00+05:30",
+      "values": {
+       "epNew": 44,
+       "epPending": 20,
+       "epOfficerTotal": 32,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      },
+      "reduction": {
+       "epNew": 0,
+       "epPending": 0,
+       "epOfficerTotal": 0,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      },
+      "officers": [
+       {
+        "pendingWith": "Inspector Prohibition (AKSHAYKUMAR S PATEL)",
+        "prev": 6,
+        "value": 6,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Junior Clerk (HITESHBHAI GOVINDBHAI CHAUDHARI)",
+        "prev": 4,
+        "value": 4,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Office Superintendent (DIPAK DEVJIBHAI VISANI)",
+        "prev": 3,
+        "value": 3,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Senior Clerk (Vishal M Minama)",
+        "prev": 3,
+        "value": 3,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Sub Inspector (NIKULKUMAR L CHAUDHARI)",
+        "prev": 1,
+        "value": 1,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Sub Inspector (NILESHKUMAR R VASAVE)",
+        "prev": 15,
+        "value": 15,
+        "reduction": 0
+       }
+      ],
+      "prevDate": "2026-11-06",
+      "intervalDays": 1,
+      "running": {
+       "epNew": -1,
+       "epPending": -1,
+       "epOfficerTotal": 12,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      }
+     },
+     {
+      "date": "2026-11-08",
+      "gap": false,
+      "asOf": "2026-11-08T17:26:39+05:30",
+      "values": {
+       "epNew": 44,
+       "epPending": 20,
+       "epOfficerTotal": 32,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      },
+      "reduction": {
+       "epNew": 0,
+       "epPending": 0,
+       "epOfficerTotal": 0,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      },
+      "officers": [
+       {
+        "pendingWith": "Inspector Prohibition (AKSHAYKUMAR S PATEL)",
+        "prev": 6,
+        "value": 6,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Junior Clerk (HITESHBHAI GOVINDBHAI CHAUDHARI)",
+        "prev": 4,
+        "value": 4,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Office Superintendent (DIPAK DEVJIBHAI VISANI)",
+        "prev": 3,
+        "value": 3,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Senior Clerk (Vishal M Minama)",
+        "prev": 3,
+        "value": 3,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Sub Inspector (NIKULKUMAR L CHAUDHARI)",
+        "prev": 1,
+        "value": 1,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Sub Inspector (NILESHKUMAR R VASAVE)",
+        "prev": 15,
+        "value": 15,
+        "reduction": 0
+       }
+      ],
+      "prevDate": "2026-11-07",
+      "intervalDays": 1,
+      "running": {
+       "epNew": -1,
+       "epPending": -1,
+       "epOfficerTotal": 12,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      }
+     },
+     {
+      "date": "2026-11-09",
+      "gap": false,
+      "asOf": "2026-11-09T17:22:00+05:30",
+      "values": {
+       "epNew": 44,
+       "epPending": 20,
+       "epOfficerTotal": 32,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      },
+      "reduction": {
+       "epNew": 0,
+       "epPending": 0,
+       "epOfficerTotal": 0,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      },
+      "officers": [
+       {
+        "pendingWith": "Inspector Prohibition (AKSHAYKUMAR S PATEL)",
+        "prev": 6,
+        "value": 6,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Junior Clerk (HITESHBHAI GOVINDBHAI CHAUDHARI)",
+        "prev": 4,
+        "value": 4,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Office Superintendent (DIPAK DEVJIBHAI VISANI)",
+        "prev": 3,
+        "value": 3,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Senior Clerk (Vishal M Minama)",
+        "prev": 3,
+        "value": 3,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Sub Inspector (NIKULKUMAR L CHAUDHARI)",
+        "prev": 1,
+        "value": 1,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Sub Inspector (NILESHKUMAR R VASAVE)",
+        "prev": 15,
+        "value": 15,
+        "reduction": 0
+       }
+      ],
+      "prevDate": "2026-11-08",
+      "intervalDays": 1,
+      "running": {
+       "epNew": -1,
+       "epPending": -1,
+       "epOfficerTotal": 12,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      }
+     },
+     {
+      "date": "2026-11-10",
+      "gap": false,
+      "asOf": "2026-11-10T17:33:00+05:30",
+      "values": {
+       "epNew": 44,
+       "epPending": 20,
+       "epOfficerTotal": 32,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      },
+      "reduction": {
+       "epNew": 0,
+       "epPending": 0,
+       "epOfficerTotal": 0,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      },
+      "officers": [
+       {
+        "pendingWith": "Inspector Prohibition (AKSHAYKUMAR S PATEL)",
+        "prev": 6,
+        "value": 6,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Junior Clerk (HITESHBHAI GOVINDBHAI CHAUDHARI)",
+        "prev": 4,
+        "value": 4,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Office Superintendent (DIPAK DEVJIBHAI VISANI)",
+        "prev": 3,
+        "value": 3,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Senior Clerk (Vishal M Minama)",
+        "prev": 3,
+        "value": 3,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Sub Inspector (NIKULKUMAR L CHAUDHARI)",
+        "prev": 1,
+        "value": 1,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Sub Inspector (NILESHKUMAR R VASAVE)",
+        "prev": 15,
+        "value": 15,
+        "reduction": 0
+       }
+      ],
+      "prevDate": "2026-11-09",
+      "intervalDays": 1,
+      "running": {
+       "epNew": -1,
+       "epPending": -1,
+       "epOfficerTotal": 12,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      }
+     },
+     {
+      "date": "2026-11-11",
+      "gap": false,
+      "asOf": "2026-11-11T17:30:02+05:30",
+      "values": {
+       "epNew": 44,
+       "epPending": 20,
+       "epOfficerTotal": 32,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      },
+      "reduction": {
+       "epNew": 0,
+       "epPending": 0,
+       "epOfficerTotal": 0,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      },
+      "officers": [
+       {
+        "pendingWith": "Inspector Prohibition (AKSHAYKUMAR S PATEL)",
+        "prev": 6,
+        "value": 6,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Junior Clerk (HITESHBHAI GOVINDBHAI CHAUDHARI)",
+        "prev": 4,
+        "value": 4,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Office Superintendent (DIPAK DEVJIBHAI VISANI)",
+        "prev": 3,
+        "value": 3,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Senior Clerk (Vishal M Minama)",
+        "prev": 3,
+        "value": 3,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Sub Inspector (NIKULKUMAR L CHAUDHARI)",
+        "prev": 1,
+        "value": 1,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Sub Inspector (NILESHKUMAR R VASAVE)",
+        "prev": 15,
+        "value": 15,
+        "reduction": 0
+       }
+      ],
+      "prevDate": "2026-11-10",
+      "intervalDays": 1,
+      "running": {
+       "epNew": -1,
+       "epPending": -1,
+       "epOfficerTotal": 12,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      }
+     },
+     {
+      "date": "2026-11-12",
+      "gap": false,
+      "asOf": "2026-11-12T17:24:40+05:30",
+      "values": {
+       "epNew": 44,
+       "epPending": 20,
+       "epOfficerTotal": 44,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      },
+      "reduction": {
+       "epNew": 0,
+       "epPending": 0,
+       "epOfficerTotal": -12,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      },
+      "officers": [
+       {
+        "pendingWith": "Inspector Prohibition (AKSHAYKUMAR S PATEL)",
+        "prev": 6,
+        "value": 6,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Junior Clerk (HITESHBHAI GOVINDBHAI CHAUDHARI)",
+        "prev": 4,
+        "value": 16,
+        "reduction": -12
+       },
+       {
+        "pendingWith": "Office Superintendent (DIPAK DEVJIBHAI VISANI)",
+        "prev": 3,
+        "value": 3,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Senior Clerk (Vishal M Minama)",
+        "prev": 3,
+        "value": 6,
+        "reduction": -3
+       },
+       {
+        "pendingWith": "Sub Inspector (NIKULKUMAR L CHAUDHARI)",
+        "prev": 1,
+        "value": 1,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Sub Inspector (NILESHKUMAR R VASAVE)",
+        "prev": 15,
+        "value": 12,
+        "reduction": 3
+       }
+      ],
+      "prevDate": "2026-11-11",
+      "intervalDays": 1,
+      "running": {
+       "epNew": -1,
+       "epPending": -1,
+       "epOfficerTotal": 0,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      }
+     },
+     {
+      "date": "2026-11-13",
+      "gap": false,
+      "asOf": "2026-11-13T17:31:30+05:30",
+      "values": {
+       "epNew": 44,
+       "epPending": 20,
+       "epOfficerTotal": 40,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      },
+      "reduction": {
+       "epNew": 0,
+       "epPending": 0,
+       "epOfficerTotal": 4,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      },
+      "officers": [
+       {
+        "pendingWith": "Inspector Prohibition (AKSHAYKUMAR S PATEL)",
+        "prev": 6,
+        "value": 5,
+        "reduction": 1
+       },
+       {
+        "pendingWith": "Junior Clerk (HITESHBHAI GOVINDBHAI CHAUDHARI)",
+        "prev": 16,
+        "value": 16,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Office Superintendent (DIPAK DEVJIBHAI VISANI)",
+        "prev": 3,
+        "value": 3,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Senior Clerk (Vishal M Minama)",
+        "prev": 6,
+        "value": 7,
+        "reduction": -1
+       },
+       {
+        "pendingWith": "Sub Inspector (NIKULKUMAR L CHAUDHARI)",
+        "prev": 1,
+        "value": 1,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Sub Inspector (NILESHKUMAR R VASAVE)",
+        "prev": 12,
+        "value": 8,
+        "reduction": 4
+       }
+      ],
+      "prevDate": "2026-11-12",
+      "intervalDays": 1,
+      "running": {
+       "epNew": -1,
+       "epPending": -1,
+       "epOfficerTotal": 4,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      }
+     },
+     {
+      "date": "2026-11-14",
+      "gap": false,
+      "asOf": "2026-11-14T17:35:01+05:30",
+      "values": {
+       "epNew": 44,
+       "epPending": 20,
+       "epOfficerTotal": 40,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      },
+      "reduction": {
+       "epNew": 0,
+       "epPending": 0,
+       "epOfficerTotal": 0,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      },
+      "officers": [
+       {
+        "pendingWith": "Inspector Prohibition (AKSHAYKUMAR S PATEL)",
+        "prev": 5,
+        "value": 5,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Junior Clerk (HITESHBHAI GOVINDBHAI CHAUDHARI)",
+        "prev": 16,
+        "value": 16,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Office Superintendent (DIPAK DEVJIBHAI VISANI)",
+        "prev": 3,
+        "value": 3,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Senior Clerk (Vishal M Minama)",
+        "prev": 7,
+        "value": 7,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Sub Inspector (NIKULKUMAR L CHAUDHARI)",
+        "prev": 1,
+        "value": 1,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Sub Inspector (NILESHKUMAR R VASAVE)",
+        "prev": 8,
+        "value": 8,
+        "reduction": 0
+       }
+      ],
+      "prevDate": "2026-11-13",
+      "intervalDays": 1,
+      "running": {
+       "epNew": -1,
+       "epPending": -1,
+       "epOfficerTotal": 4,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      }
+     },
+     {
+      "date": "2026-11-15",
+      "gap": false,
+      "asOf": "2026-11-15T17:27:53+05:30",
+      "values": {
+       "epNew": 44,
+       "epPending": 20,
+       "epOfficerTotal": 40,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      },
+      "reduction": {
+       "epNew": 0,
+       "epPending": 0,
+       "epOfficerTotal": 0,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      },
+      "officers": [
+       {
+        "pendingWith": "Inspector Prohibition (AKSHAYKUMAR S PATEL)",
+        "prev": 5,
+        "value": 5,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Junior Clerk (HITESHBHAI GOVINDBHAI CHAUDHARI)",
+        "prev": 16,
+        "value": 16,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Office Superintendent (DIPAK DEVJIBHAI VISANI)",
+        "prev": 3,
+        "value": 3,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Senior Clerk (Vishal M Minama)",
+        "prev": 7,
+        "value": 7,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Sub Inspector (NIKULKUMAR L CHAUDHARI)",
+        "prev": 1,
+        "value": 1,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Sub Inspector (NILESHKUMAR R VASAVE)",
+        "prev": 8,
+        "value": 8,
+        "reduction": 0
+       }
+      ],
+      "prevDate": "2026-11-14",
+      "intervalDays": 1,
+      "running": {
+       "epNew": -1,
+       "epPending": -1,
+       "epOfficerTotal": 4,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      }
+     },
+     {
+      "date": "2026-11-16",
+      "gap": false,
+      "asOf": "2026-11-16T17:37:56+05:30",
+      "values": {
+       "epNew": 44,
+       "epPending": 20,
+       "epOfficerTotal": 38,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      },
+      "reduction": {
+       "epNew": 0,
+       "epPending": 0,
+       "epOfficerTotal": 2,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      },
+      "officers": [
+       {
+        "pendingWith": "Inspector Prohibition (AKSHAYKUMAR S PATEL)",
+        "prev": 5,
+        "value": 14,
+        "reduction": -9
+       },
+       {
+        "pendingWith": "Junior Clerk (HITESHBHAI GOVINDBHAI CHAUDHARI)",
+        "prev": 16,
+        "value": 5,
+        "reduction": 11
+       },
+       {
+        "pendingWith": "Office Superintendent (DIPAK DEVJIBHAI VISANI)",
+        "prev": 3,
+        "value": 6,
+        "reduction": -3
+       },
+       {
+        "pendingWith": "Senior Clerk (Vishal M Minama)",
+        "prev": 7,
+        "value": 3,
+        "reduction": 4
+       },
+       {
+        "pendingWith": "Sub Inspector (NIKULKUMAR L CHAUDHARI)",
+        "prev": 1,
+        "value": 1,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Sub Inspector (NILESHKUMAR R VASAVE)",
+        "prev": 8,
+        "value": 9,
+        "reduction": -1
+       }
+      ],
+      "prevDate": "2026-11-15",
+      "intervalDays": 1,
+      "running": {
+       "epNew": -1,
+       "epPending": -1,
+       "epOfficerTotal": 6,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      }
+     },
+     {
+      "date": "2026-11-17",
+      "gap": true
+     },
+     {
+      "date": "2026-11-18",
+      "gap": true
+     },
+     {
+      "date": "2026-11-19",
+      "gap": false,
+      "asOf": "2026-11-19T15:07:07+05:30",
+      "values": {
+       "epNew": 44,
+       "epPending": 20,
+       "epOfficerTotal": 46,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      },
+      "reduction": {
+       "epNew": 0,
+       "epPending": 0,
+       "epOfficerTotal": -8,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      },
+      "officers": [
+       {
+        "pendingWith": "Inspector Prohibition (AKSHAYKUMAR S PATEL)",
+        "prev": 14,
+        "value": 14,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Junior Clerk (HITESHBHAI GOVINDBHAI CHAUDHARI)",
+        "prev": 5,
+        "value": 4,
+        "reduction": 1
+       },
+       {
+        "pendingWith": "Office Superintendent (DIPAK DEVJIBHAI VISANI)",
+        "prev": 6,
+        "value": 7,
+        "reduction": -1
+       },
+       {
+        "pendingWith": "Senior Clerk (Vishal M Minama)",
+        "prev": 3,
+        "value": 12,
+        "reduction": -9
+       },
+       {
+        "pendingWith": "Sub Inspector (NIKULKUMAR L CHAUDHARI)",
+        "prev": 1,
+        "value": 1,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Sub Inspector (NILESHKUMAR R VASAVE)",
+        "prev": 9,
+        "value": 7,
+        "reduction": 2
+       },
+       {
+        "pendingWith": "Superintendent of Prohibition and Excise (J S Tanna)",
+        "prev": null,
+        "value": 1,
+        "reduction": null
+       }
+      ],
+      "prevDate": "2026-11-16",
+      "intervalDays": 3,
+      "running": {
+       "epNew": -1,
+       "epPending": -1,
+       "epOfficerTotal": -2,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      }
+     },
+     {
+      "date": "2026-11-20",
+      "gap": true
+     },
+     {
+      "date": "2026-11-21",
+      "gap": false,
+      "asOf": "2026-11-21T00:31:01+05:30",
+      "values": {
+       "epNew": 44,
+       "epPending": 20,
+       "epOfficerTotal": 51,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": 3,
+       "esRti": 0,
+       "esPendingTotal": 3
+      },
+      "reduction": {
+       "epNew": 0,
+       "epPending": 0,
+       "epOfficerTotal": -5,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": -3,
+       "esRti": 0,
+       "esPendingTotal": -3
+      },
+      "officers": [
+       {
+        "pendingWith": "Inspector Prohibition (AKSHAYKUMAR S PATEL)",
+        "prev": 14,
+        "value": 10,
+        "reduction": 4
+       },
+       {
+        "pendingWith": "Junior Clerk (HITESHBHAI GOVINDBHAI CHAUDHARI)",
+        "prev": 4,
+        "value": 10,
+        "reduction": -6
+       },
+       {
+        "pendingWith": "Office Superintendent (DIPAK DEVJIBHAI VISANI)",
+        "prev": 7,
+        "value": 1,
+        "reduction": 6
+       },
+       {
+        "pendingWith": "Senior Clerk (Vishal M Minama)",
+        "prev": 12,
+        "value": 4,
+        "reduction": 8
+       },
+       {
+        "pendingWith": "Sub Inspector (NIKULKUMAR L CHAUDHARI)",
+        "prev": 1,
+        "value": 1,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Sub Inspector (NILESHKUMAR R VASAVE)",
+        "prev": 7,
+        "value": 17,
+        "reduction": -10
+       },
+       {
+        "pendingWith": "Superintendent of Prohibition and Excise (J S Tanna)",
+        "prev": 1,
+        "value": 8,
+        "reduction": -7
+       }
+      ],
+      "prevDate": "2026-11-19",
+      "intervalDays": 2,
+      "running": {
+       "epNew": -1,
+       "epPending": -1,
+       "epOfficerTotal": -7,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": -3,
+       "esRti": 0,
+       "esPendingTotal": -3
+      }
+     }
+    ]
    }
   }
  }
