@@ -1,19 +1,19 @@
 {
-  "asOf": "2026-11-21T00:31:01+05:30",
+  "asOf": "2026-11-23T10:30:24+05:30",
   "note": "Pendency counts read from the portals by Grok Bot; e-Prohibition officer-wise list shown with Sir's approval. null = not checked.",
   "districts": {
     "surat": {
-      "asOf": "2026-11-21T00:31:01+05:30",
+      "asOf": "2026-11-23T10:30:24+05:30",
       "district": "surat",
       "eprohibition": {
-        "asOf": "2026-11-21T00:02:21+05:30",
+        "asOf": "2026-11-23T10:08:59+05:30",
         "newApplications": 108,
         "pending": 56,
         "approved": 44,
         "rejected": 8,
         "officerPendency": {
           "title": "Office Pendancy As On Today",
-          "date": "2026-11-21",
+          "date": "2026-11-23",
           "columns": [
             "New Application",
             "Amendment Application",
@@ -33,7 +33,7 @@
             {
               "pendingWith": "Inspector Prohibition (Alkaben P Hirapara)",
               "counts": {
-                "New Application": 1,
+                "New Application": 2,
                 "Amendment Application": 0,
                 "Renewal Application": 1,
                 "Surrender Application": 0
@@ -49,19 +49,10 @@
               }
             },
             {
-              "pendingWith": "Junior Clerk (M D RATHOD)",
-              "counts": {
-                "New Application": 1,
-                "Amendment Application": 0,
-                "Renewal Application": 0,
-                "Surrender Application": 0
-              }
-            },
-            {
               "pendingWith": "Senior Clerk (Sameer P Kapuriya)",
               "counts": {
                 "New Application": 0,
-                "Amendment Application": 2,
+                "Amendment Application": 3,
                 "Renewal Application": 0,
                 "Surrender Application": 0
               }
@@ -69,18 +60,18 @@
             {
               "pendingWith": "Sub Inspector (Vishal C Dodiya)",
               "counts": {
-                "New Application": 2,
-                "Amendment Application": 1,
+                "New Application": 1,
+                "Amendment Application": 0,
                 "Renewal Application": 0,
                 "Surrender Application": 2
               }
             }
           ],
-          "asOf": "2026-11-21T00:02:21+05:30"
+          "asOf": "2026-11-23T10:08:59+05:30"
         }
       },
       "esarkar": {
-        "asOf": "2026-11-21T00:24:22+05:30",
+        "asOf": "2026-11-23T10:24:28+05:30",
         "files": 0,
         "other": {
           "Workdesk": 0,
@@ -102,23 +93,23 @@
         },
         "received": null,
         "disposed": null,
-        "note": "Pending Work Items tiles (fully loaded; year dropdown ignored). View Productivity in Last Month was opened on the office desk: e-Tappal 22, File 77, RTI 4 (single count per type, not labelled received vs disposed). That widget did not offer a working month or office 3-dots picker, so April–October 2026 could not be read from it. Received/disposed not assumed.",
+        "note": "Pending Work Items tiles (fully loaded; year dropdown ignored). View Productivity in Last Month was opened on the office desk: e-Tappal 17, File 70, RTI 3 (single count per type, not labelled received vs disposed). That widget did not offer a working month or office 3-dots picker, so April–November 2026 could not be read from it. Received/disposed not assumed.",
         "productivity": {
           "source": "e-Sarkar View Productivity",
           "tab": "View Productivity in Last Month",
           "period": "Last Month (widget; month/office picker was not available or not applied)",
-          "asOf": "2026-11-21T00:28+05:30",
-          "eTappal": 22,
-          "files": 77,
-          "rti": 4,
+          "asOf": "2026-11-23T10:24+05:30",
+          "eTappal": 17,
+          "files": 70,
+          "rti": 3,
           "received": null,
           "disposed": null,
           "note": "Single count per type in the Last Month modal, not labelled received vs disposed. The 3-dots month picker was not present on this widget, so April–November could not be read month-wise. Month filter was not applied; the same Last Month snapshot is not a monthly series. Received/disposed not assumed."
         }
       },
       "lems": {
-        "asOf": "2026-11-21T00:19:00+05:30",
-        "ipVerificationNew": 1,
+        "asOf": "2026-11-23T10:16:44+05:30",
+        "ipVerificationNew": 0,
         "ipVerificationExtend": 0,
         "other": {
           "Overtime Verification": 0,
@@ -127,13 +118,13 @@
           "IP awaiting action – total": 1
         },
         "healthPermit": {
-          "asOf": "2026-11-21T00:19:19+05:30",
+          "asOf": "2026-11-23T10:17:03+05:30",
           "source": "LEMS FL2 Process",
           "tab": "FL2 Process › Apply For Permit (status Verified, Health Permit types)",
-          "registered": 169,
+          "registered": 170,
           "byMonth": {
             "2026-11": {
-              "registered": 75
+              "registered": 76
             },
             "2025-03": {
               "registered": 2
@@ -173,17 +164,17 @@
       }
     },
     "valsad": {
-      "asOf": "2026-11-21T00:31:01+05:30",
+      "asOf": "2026-11-23T10:30:24+05:30",
       "district": "valsad",
       "eprohibition": {
-        "asOf": "2026-11-21T00:04:45+05:30",
+        "asOf": "2026-11-23T10:11:53+05:30",
         "newApplications": 44,
         "pending": 20,
         "approved": 14,
         "rejected": 10,
         "officerPendency": {
           "title": "Office Pendancy As On Today",
-          "date": "2026-11-21",
+          "date": "2026-11-23",
           "columns": [
             "New Application",
             "Amendment Application",
@@ -195,7 +186,7 @@
               "pendingWith": "Superintendent of Prohibition and Excise (J S Tanna)",
               "counts": {
                 "New Application": 0,
-                "Amendment Application": 8,
+                "Amendment Application": 7,
                 "Renewal Application": 0,
                 "Surrender Application": 0
               }
@@ -204,7 +195,7 @@
               "pendingWith": "Inspector Prohibition (AKSHAYKUMAR S PATEL)",
               "counts": {
                 "New Application": 1,
-                "Amendment Application": 9,
+                "Amendment Application": 8,
                 "Renewal Application": 0,
                 "Surrender Application": 0
               }
@@ -213,7 +204,7 @@
               "pendingWith": "Office Superintendent (DIPAK DEVJIBHAI VISANI)",
               "counts": {
                 "New Application": 0,
-                "Amendment Application": 1,
+                "Amendment Application": 7,
                 "Renewal Application": 0,
                 "Surrender Application": 0
               }
@@ -221,8 +212,8 @@
             {
               "pendingWith": "Junior Clerk (HITESHBHAI GOVINDBHAI CHAUDHARI)",
               "counts": {
-                "New Application": 2,
-                "Amendment Application": 8,
+                "New Application": 0,
+                "Amendment Application": 4,
                 "Renewal Application": 0,
                 "Surrender Application": 0
               }
@@ -231,7 +222,7 @@
               "pendingWith": "Senior Clerk (Vishal M Minama)",
               "counts": {
                 "New Application": 0,
-                "Amendment Application": 4,
+                "Amendment Application": 6,
                 "Renewal Application": 0,
                 "Surrender Application": 0
               }
@@ -249,17 +240,17 @@
               "pendingWith": "Sub Inspector (NILESHKUMAR R VASAVE)",
               "counts": {
                 "New Application": 1,
-                "Amendment Application": 16,
+                "Amendment Application": 4,
                 "Renewal Application": 0,
                 "Surrender Application": 0
               }
             }
           ],
-          "asOf": "2026-11-21T00:04:45+05:30"
+          "asOf": "2026-11-23T10:11:53+05:30"
         }
       },
       "esarkar": {
-        "asOf": "2026-11-21T00:29:18+05:30",
+        "asOf": "2026-11-23T10:27:23+05:30",
         "files": 0,
         "other": {
           "Workdesk": 0,
@@ -281,14 +272,14 @@
         },
         "received": null,
         "disposed": null,
-        "note": "Pending Work Items tiles (fully loaded; year dropdown ignored). View Productivity in Last Month was opened on the office desk: e-Tappal 17, File 55, no RTI row shown (single count per type, not labelled received vs disposed). The 3-dots month picker was not present, so April–November could not be read month-wise. Received/disposed not assumed.",
+        "note": "Pending Work Items tiles (fully loaded; year dropdown ignored). View Productivity in Last Month was opened on the office desk: e-Tappal 15, File 44, no RTI row shown (single count per type, not labelled received vs disposed). The 3-dots month picker was not present, so April–November could not be read month-wise. Received/disposed not assumed.",
         "productivity": {
           "source": "e-Sarkar View Productivity",
           "tab": "View Productivity in Last Month",
           "period": "Last Month (widget; month/office picker was not available or not applied)",
-          "asOf": "2026-11-21T00:29+05:30",
-          "eTappal": 17,
-          "files": 55,
+          "asOf": "2026-11-23T10:27+05:30",
+          "eTappal": 15,
+          "files": 44,
           "rti": null,
           "received": null,
           "disposed": null,
@@ -296,7 +287,7 @@
         }
       },
       "lems": {
-        "asOf": "2026-11-21T00:21:59+05:30",
+        "asOf": "2026-11-23T10:20:50+05:30",
         "ipVerificationNew": 0,
         "ipVerificationExtend": 0,
         "other": {
@@ -306,7 +297,7 @@
           "IP awaiting action – total": 0
         },
         "healthPermit": {
-          "asOf": "2026-11-21T00:22:17+05:30",
+          "asOf": "2026-11-23T10:21:08+05:30",
           "source": "LEMS FL2 Process",
           "tab": "FL2 Process › Apply For Permit (status Verified, Health Permit types)",
           "registered": 34,
