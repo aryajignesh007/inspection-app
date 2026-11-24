@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-23T10:30+05:30",
+ "generated": "2026-11-24T10:33+05:30",
  "from": "2026-04",
  "source": "Saved twice-daily portal readings (e-Prohibition, LEMS, e-Sarkar). A month without readings is marked noData – no figure is estimated.",
  "districts": {
@@ -74,9 +74,9 @@
     }
    },
    "2026-11": {
-    "readings": 34,
+    "readings": 35,
     "firstAt": "2026-11-01T10:11:00+05:30",
-    "lastAt": "2026-11-23T10:30:24+05:30",
+    "lastAt": "2026-11-24T10:33:16+05:30",
     "eprohibition": {
      "start": {
       "newApplications": 105,
@@ -100,7 +100,7 @@
      },
      "avgIpAwaiting": 1.3,
      "peakIpAwaiting": 3,
-     "avgIpNew": 1.0,
+     "avgIpNew": 0.9,
      "healthRecorded": true
     },
     "esarkar": {
@@ -187,9 +187,9 @@
     }
    },
    "2026-11": {
-    "readings": 34,
+    "readings": 35,
     "firstAt": "2026-11-01T10:19:00+05:30",
-    "lastAt": "2026-11-23T10:30:24+05:30",
+    "lastAt": "2026-11-24T10:33:16+05:30",
     "eprohibition": {
      "start": {
       "newApplications": 44,
@@ -224,7 +224,7 @@
      },
      "avgFiles": 0.4,
      "peakFiles": 7,
-     "avgTappal": 0.4,
+     "avgTappal": 0.5,
      "peakTappal": 3
     },
     "healthPermitMonth": {
@@ -239,14 +239,14 @@
   "districts": {
    "surat": {
     "from": "2026-10-24",
-    "to": "2026-11-23",
-    "spanDays": 30,
-    "readingDays": 23,
+    "to": "2026-11-24",
+    "spanDays": 31,
+    "readingDays": 24,
     "gapDays": 8,
     "runningTotal": {
      "epNew": -3,
      "epPending": -2,
-     "epOfficerTotal": 16,
+     "epOfficerTotal": 12,
      "lemsIpAwaiting": 6,
      "esFiles": 0,
      "esTappal": 0,
@@ -255,9 +255,9 @@
     },
     "avgDailyReduction": {
      "epNew": -0.1,
-     "epPending": -0.07,
-     "epOfficerTotal": 0.53,
-     "lemsIpAwaiting": 0.2,
+     "epPending": -0.06,
+     "epOfficerTotal": 0.39,
+     "lemsIpAwaiting": 0.19,
      "esFiles": 0.0,
      "esTappal": 0.0,
      "esRti": 0.0,
@@ -2040,19 +2040,88 @@
        "esRti": 0,
        "esPendingTotal": 0
       }
+     },
+     {
+      "date": "2026-11-24",
+      "gap": false,
+      "asOf": "2026-11-24T10:33:16+05:30",
+      "values": {
+       "epNew": 108,
+       "epPending": 56,
+       "epOfficerTotal": 16,
+       "lemsIpAwaiting": 1,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      },
+      "reduction": {
+       "epNew": 0,
+       "epPending": 0,
+       "epOfficerTotal": -4,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      },
+      "officers": [
+       {
+        "pendingWith": "Inspector Prohibition (Alkaben P Hirapara)",
+        "prev": 3,
+        "value": 3,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Office Superintendent (Dipesh H Patel)",
+        "prev": 2,
+        "value": 2,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Senior Clerk (Sameer P Kapuriya)",
+        "prev": 3,
+        "value": 2,
+        "reduction": 1
+       },
+       {
+        "pendingWith": "Sub Inspector (Vishal C Dodiya)",
+        "prev": 3,
+        "value": 3,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Superintendent of Prohibition and Excise (JIGNESH S TANNA)",
+        "prev": 1,
+        "value": 6,
+        "reduction": -5
+       }
+      ],
+      "prevDate": "2026-11-23",
+      "intervalDays": 1,
+      "running": {
+       "epNew": -3,
+       "epPending": -2,
+       "epOfficerTotal": 12,
+       "lemsIpAwaiting": 6,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      }
      }
     ]
    },
    "valsad": {
     "from": "2026-10-24",
-    "to": "2026-11-23",
-    "spanDays": 30,
-    "readingDays": 23,
+    "to": "2026-11-24",
+    "spanDays": 31,
+    "readingDays": 24,
     "gapDays": 8,
     "runningTotal": {
      "epNew": -1,
      "epPending": -1,
-     "epOfficerTotal": 5,
+     "epOfficerTotal": 3,
      "lemsIpAwaiting": 0,
      "esFiles": 0,
      "esTappal": -3,
@@ -2062,7 +2131,7 @@
     "avgDailyReduction": {
      "epNew": -0.03,
      "epPending": -0.03,
-     "epOfficerTotal": 0.17,
+     "epOfficerTotal": 0.1,
      "lemsIpAwaiting": 0.0,
      "esFiles": 0.0,
      "esTappal": -0.1,
@@ -3918,6 +3987,87 @@
        "epNew": -1,
        "epPending": -1,
        "epOfficerTotal": 5,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": -3,
+       "esRti": 0,
+       "esPendingTotal": -3
+      }
+     },
+     {
+      "date": "2026-11-24",
+      "gap": false,
+      "asOf": "2026-11-24T10:33:16+05:30",
+      "values": {
+       "epNew": 44,
+       "epPending": 20,
+       "epOfficerTotal": 41,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": 3,
+       "esRti": 0,
+       "esPendingTotal": 3
+      },
+      "reduction": {
+       "epNew": 0,
+       "epPending": 0,
+       "epOfficerTotal": -2,
+       "lemsIpAwaiting": 0,
+       "esFiles": 0,
+       "esTappal": 0,
+       "esRti": 0,
+       "esPendingTotal": 0
+      },
+      "officers": [
+       {
+        "pendingWith": "Inspector Prohibition (AKSHAYKUMAR S PATEL)",
+        "prev": 9,
+        "value": 5,
+        "reduction": 4
+       },
+       {
+        "pendingWith": "Junior Clerk (HITESHBHAI GOVINDBHAI CHAUDHARI)",
+        "prev": 4,
+        "value": 7,
+        "reduction": -3
+       },
+       {
+        "pendingWith": "Office Superintendent (DIPAK DEVJIBHAI VISANI)",
+        "prev": 7,
+        "value": 7,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Senior Clerk (Vishal M Minama)",
+        "prev": 6,
+        "value": 6,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Sub Inspector (NIKULKUMAR L CHAUDHARI)",
+        "prev": 1,
+        "value": 1,
+        "reduction": 0
+       },
+       {
+        "pendingWith": "Sub Inspector (NILESHKUMAR R VASAVE)",
+        "prev": 5,
+        "value": 4,
+        "reduction": 1
+       },
+       {
+        "pendingWith": "Superintendent of Prohibition and Excise (J S Tanna)",
+        "prev": 7,
+        "value": 11,
+        "reduction": -4
+       }
+      ],
+      "prevDate": "2026-11-23",
+      "intervalDays": 1,
+      "running": {
+       "epNew": -1,
+       "epPending": -1,
+       "epOfficerTotal": 3,
        "lemsIpAwaiting": 0,
        "esFiles": 0,
        "esTappal": -3,
